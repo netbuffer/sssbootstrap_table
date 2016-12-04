@@ -1,5 +1,7 @@
 package cn.com.ttblog.sssbootstrap_table;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
 import org.junit.Ignore;
@@ -8,6 +10,9 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
@@ -40,6 +45,39 @@ public class TestSpringDataJpa {
 	public void testFindByName() {
 		User user = userService.getUserByName("2");
 		logger.debug("testFindByName - user1:{}",user);
+		PageRequest pr=new PageRequest(0,1,new Sort(Sort.Direction.DESC,"id"));
+		Page<User> page=userService.getUserByName("",pr);
+		logger.debug("page.getTotalPages():{}",page.getTotalPages());
+		logger.debug("page.getTotalElements():{}",page.getTotalElements());
+		logger.debug("page.getNumberOfElements():{}",page.getNumberOfElements());
+		logger.debug("page.getNumber():{}",page.getNumber());
+		logger.debug("page.getSize():{}",page.getSize());
+		logger.debug("page.getSort():{}",page.getSort());
+		logger.debug("page.getContent():{}",page.getContent());
+		//页码从0开始
+		PageRequest pr2=new PageRequest(1,1,new Sort(Sort.Direction.DESC,"id"));
+		Page<User> page2=userService.getUserByName("",pr2);
+	}
+
+	@Test
+	public void testSaveUser() {
+		User u=new User("图图","男",22,"13288383832","收获地址",(int)System.currentTimeMillis()/1000,"remark");
+		userService.addUser(u);
+//		userDao.save(u);
+	}
+
+	@Test
+	public void testUpdateUser(){
+		User user=userDao.findOne(1L);
+		user.setName("修改");
+		user.setAge(20);
+		logger.warn("修改后user:{}",user);
+		userDao.save(user);
+	}
+
+	@Test
+	public void testDeleteUser(){
+		userDao.delete(19420L);
 	}
 
 	@Test
@@ -79,24 +117,22 @@ public class TestSpringDataJpa {
 		//jdk动态代理
 		logger.info("AopUtils.isJdkDynamicProxy(userService):{}",AopUtils.isJdkDynamicProxy(userService)); 
 	}
-	
+
 	@Test
-	@Ignore
-	public void testTran(){
-		userService.addUM();
+	public void testFindTop5ByPhoneContaining(){
+		logger.debug("\r");
+		userDao.findTop5ByPhoneContaining("1",new Sort(Sort.Direction.DESC,"adddate"));
+		logger.debug("\r");
+		Sort.Order order=new Sort.Order(Sort.Direction.ASC,"age");
+		userDao.findTop5ByPhoneContaining("1",new Sort(order));
+		logger.debug("\r");
+		Sort.Order order1=new Sort.Order(Sort.Direction.ASC,"age");
+		Sort.Order order2=new Sort.Order(Sort.Direction.DESC,"id");
+		List<Sort.Order> orders=new ArrayList<>();
+		orders.add(order1);
+		orders.add(order2);
+		userDao.findTop5ByPhoneContaining("1",new Sort(orders));
+
 	}
-	
-	@Test
-	@Ignore
-	public void testTrantest(){
-		userService.addUMtest();
-	}
-	
-	@Test
-	@Ignore
-	public void testSelectCache(){
-		//mapper中需要配置<cache />节点，会开启缓存
-		logger.debug("select1：{}",userService.getUserById(1));
-		logger.debug("select2：{}",userService.getUserById(1));
-	}
+
 }

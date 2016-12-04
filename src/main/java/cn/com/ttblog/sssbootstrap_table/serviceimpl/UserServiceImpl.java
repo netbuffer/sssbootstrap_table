@@ -4,6 +4,7 @@ import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,8 +30,15 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public void addUser(User user) {
+	public Page<User> getUserByName(String userName, Pageable page) {
+		return userDao.findByNameContaining(userName,page);
+	}
 
+	@Override
+	public void addUser(User user) {
+		userDao.save(user);
+		//事务测试
+//		int i=1/0;
 	}
 
 	@Override

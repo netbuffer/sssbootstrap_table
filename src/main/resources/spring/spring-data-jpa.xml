@@ -30,9 +30,6 @@
         <constructor-arg ref="oridataSource" />
     </bean>
 
-    <!-- 持久化对象处理 -->
-    <!--<bean id="persistenceProvider" class="org.hibernate.jpa.HibernatePersistenceProvider" />-->
-
     <!-- 配置jpa适配器 -->
     <bean id="hibernateJpaVendorAdapter"  class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"></bean>
 
@@ -40,8 +37,6 @@
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <!-- 注入数据源 -->
         <property name="dataSource" ref="dataSource" />
-        <!-- 注入持久化对象 -->
-        <!--<property name="persistenceProvider" ref="persistenceProvider" />-->
         <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
         <property name="packagesToScan" value="cn.com.ttblog.sssbootstrap_table.model" />
         <property name="jpaProperties">
@@ -64,7 +59,8 @@
     <!-- Spring Data Jpa配置 -->
     <jpa:repositories base-package="cn.com.ttblog.sssbootstrap_table.dao"
                       entity-manager-factory-ref="entityManagerFactory"
-                      transaction-manager-ref="transactionManager" repository-impl-postfix="Impl">
+                      transaction-manager-ref="transactionManager"
+                      repository-impl-postfix="Impl">
     </jpa:repositories>
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -80,7 +76,7 @@
         </tx:attributes>
     </tx:advice>
     <aop:config>
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.serviceimpl..*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />
     </aop:config>
 
 </beans>

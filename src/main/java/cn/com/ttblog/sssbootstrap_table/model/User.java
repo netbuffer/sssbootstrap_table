@@ -23,14 +23,14 @@ public class User implements Serializable {
 	 * 用户id
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Size(min = 2, max = 6, message = "{用户名长度必须在2到6个字符之间}")
 	private String name;
 
 	private String sex;
 
-	@NotNull(message = "年龄不能为空")
+	@NotNull(message = "年龄不能为空并且在1-150之间")
 	@Range(min = 1, max = 150)
 	private Integer age;
 
