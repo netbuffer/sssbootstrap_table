@@ -1,0 +1,12 @@
+!/.gitignore
+/target/**
+/catalina.base_IS_UNDEFINED/
+/.classpath
+/.project
+/.settings/
+/reports
+/.pmd
+/.springBeans
+/.idea/**
+/META-INF/**
+/sssbootstrap_table.iml

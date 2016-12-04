@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="logname" value="sssbootstrap_table" />
+	<property name="logbase" value="${catalina.base}/logs/sssbootstrap_table/" />
+	<jmxConfigurator />
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder charset="utf-8">
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="logfile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Prudent>true</Prudent>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${logbase}${logname}.%d{yyyy-MM-dd}.html
+			</FileNamePattern>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.html.HTMLLayout">
+			<Pattern>
+				%date%level%thread%10logger%file%line%msg
+			</Pattern>
+		</layout>
+	</appender>
+	
+	<!-- 访问日志 appender  -->
+    <appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 按天回滚 daily -->
+            <fileNamePattern>${logbase}${logname}-access-%d{yyyy-MM-dd}.html</fileNamePattern>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+	<!--
+		 写入数据库日志配置,需要先在数据库中建表，导入logback.sql
+		http://logback.qos.ch/manual/appenders.html 
+	-->
+	<!-- <appender name="db-classic-mysql" class="ch.qos.logback.classic.db.DBAppender">  
+        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">  
+            <driverClass>com.mysql.jdbc.Driver</driverClass>  
+            <url>jdbc:mysql://127.0.0.1:3306/u?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</url>  
+            <user>root</user>  
+            <password>root</password>  
+        </connectionSource>  
+    </appender> -->
+	<!-- <logger name="org.springframework.core" level="DEBUG" />
+	<logger name="org.springframework.beans" level="DEBUG" />
+	<logger name="org.springframework.context" level="DEBUG" />
+	<logger name="org.springframework.http" level="DEBUG" /> -->
+	<logger name="org.springframework" level="DEBUG" />
+	<logger name="org.mybatis" level="OFF" />
+	<logger name="com.ibatis" level="DEBUG" />
+	<logger name="java.sql" level="DEBUG" />
+	<!-- mybatis使用slf4j作为日志实现，需要配置dao或者mapper namespace的日志级别，就可以打印sql了-->
+	<logger name="cn.com.ttblog.sssbootstrap_table.dao" level="INFO" />
+	<logger name="cn.com.ttblog.sssbootstrap_table" level="DEBUG" />
+	<!-- log4j-jdbc-remix/log4jdbc-log4j2 result以表格打印结果 -->
+	<logger name="jdbc.resultsettable" level="INFO" />
+	<logger name="jdbc.connection" level="OFF" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<logger name="jdbc.sqlonly" level="OFF" />
+	<logger name="jdbc.sqltiming" level="INFO" />
+	<logger name="log4jdbc.debug" level="DEBUG" />
+	<logger name="net.sf.ehcache" level="ALL"/>
+	
+	<logger name="access" level="INFO">
+        <appender-ref ref="ACCESS"/>
+    </logger>
+    
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="stdout" />
+		<appender-ref ref="logfile" />
+		<appender-ref ref="ACCESS" />
+		<!-- 数据库日志 -->
+		<!-- <appender-ref ref="db-classic-mysql" /> -->
+	</root>
+</configuration>

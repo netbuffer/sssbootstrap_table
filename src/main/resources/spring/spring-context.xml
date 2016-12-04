@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                        http://www.springframework.org/schema/context    
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	
+	<context:component-scan base-package="cn.com.ttblog.sssbootstrap_table">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+    </context:component-scan>
+
+	<bean id="configProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath*:app.properties</value>
+				<value>classpath*:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="config"
+		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<!-- 启用aop -->
+	<aop:aspectj-autoproxy />
+
+	<!-- 加载资源文件 -->
+
+	<!-- jsonpfilter -->
+	<!--<bean class="com.intera.util.web.servlet.filter.JsonpCallbackFilter"-->
+		<!--id="jsonpCallbackFilter" />-->
+	<!-- loginFilter 登录处理 -->	
+	<bean class="cn.com.ttblog.sssbootstrap_table.filter.LoginFilter"
+		id="loginFilter" />
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<!-- 设置cookieName名称，可以根据名称通过js来修改设置，默认的名称为 类名+.LOCALE -->
+		<property name="cookieName" value="lang" />
+		<!-- 设置最大有效时间，如果是-1，则不存储，浏览器关闭后即失效，默认为Integer.MAX_INT -->
+		<property name="cookieMaxAge" value="100000" />
+		<!-- 设置cookie可见的地址，默认是“/”即对网站所有地址都是可见的，如果设为其它地址，则只有该地址或其后的地址才可见 -->
+		<property name="cookiePath" value="/" />
+	</bean>
+	<!--导入spring-data-jpa配置-->
+	<import resource="spring-data-jpa.xml" />
+	<beans profile="develop">
+		<bean id="userFromSpring" class="cn.com.ttblog.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
+			 <property name="id" value="1" />
+             <property name="name" value="develop-user" />
+		</bean>
+	</beans>
+	<beans profile="production">
+		<bean id="userFromSpring" class="cn.com.ttblog.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
+			 <property name="id" value="2" />
+             <property name="name" value="production-user" />
+		</bean>
+	</beans>
+</beans>

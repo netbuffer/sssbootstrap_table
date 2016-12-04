@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+  <display-name>sssbootstrap-table</display-name>
+  <context-param>
+    <param-name>spring.profiles.active</param-name>
+    <param-value>production</param-value>
+  </context-param>
+  <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>webapp.root</param-value>
+  </context-param>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      classpath:spring/spring-context.xml
+    </param-value>
+  </context-param>
+
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <async-supported>true</async-supported>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>ASYNC</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+  <!-- 使用spring管理filter，可以在filter中拿到spring容器中的依赖 -->
+  <filter>
+    <filter-name>LoginFilter</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    <async-supported>true</async-supported>
+    <init-param>
+      <param-name>targetBeanName</param-name>
+      <param-value>loginFilter</param-value>
+    </init-param>
+    <init-param>
+      <param-name>targetFilterLifecycle</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>enable</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>noFilterTags</param-name>
+      <param-value>
+        /*/index.html*
+        /*/login/**
+        /*/register/**
+        /*/captcha/**
+        /*/css/**
+        /*/js/**
+        /*/image/**
+        /*/jsonp/**
+        /*/cxf/**
+      </param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>ASYNC</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>druidfilter</filter-name>
+    <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+    <async-supported>true</async-supported>
+    <init-param>
+      <param-name>exclusions</param-name>
+      <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>druidfilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>ASYNC</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!-- https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_StatViewServlet%E9%85%8D%E7%BD%AE -->
+  <servlet>
+    <servlet-name>druidstat</servlet-name>
+    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+    <init-param>
+      <!-- 用户名 -->
+      <param-name>loginUsername</param-name>
+      <param-value>admin</param-value>
+    </init-param>
+    <init-param>
+      <!-- 密码 -->
+      <param-name>loginPassword</param-name>
+      <param-value>admin</param-value>
+    </init-param>
+    <init-param>
+      <param-name>allow</param-name>
+      <param-value>127.0.0.1</param-value>
+    </init-param>
+    <!-- <init-param> <param-name>deny</param-name> <param-value>128.242.127.4</param-value>
+        </init-param> -->
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>druidstat</servlet-name>
+    <url-pattern>/druid/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SpringMVC</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring/spring-mvc.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>0</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+    <!-- http://www.lai18.com/content/2483896.html filter中也需要开启异步支持 -->
+    <async-supported>true</async-supported>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SpringMVC</servlet-name>
+    <!-- <url-pattern>/*</url-pattern> -->
+    <!-- csdn连接:http://bbs.csdn.net/topics/390610045 如果使用/*拦截,会直接显示jsp源码了,配置成/会被正确解析 -->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <jsp-config>
+    <!-- jsp-property-group配置 -->
+    <!-- <jsp-property-group> <url-pattern>*.jsp</url-pattern> 禁止EL表达式 设置，禁止后会原样输出
+        <el-ignored>false</el-ignored> 禁止<%%>脚本设置 <scripting-invalid>true</scripting-invalid>
+        抬头 <include-prelude>/prelude.jspf</include-prelude> 结尾 <include-coda>/coda.jspf</include-coda>
+        清除jsp中由于page指令引入带来的空行 <trim-directive-whitespaces>true</trim-directive-whitespaces>
+        </jsp-property-group> -->
+    <!-- <jsp-property-group> <url-pattern>/aa/*.jsp</url-pattern> 禁止EL表达式
+        设置，禁止后会原样输出 <el-ignored>false</el-ignored> 禁止<%%>脚本设置 <scripting-invalid>true</scripting-invalid>
+        抬头 <include-prelude>/prelude.jspf</include-prelude> 结尾 <include-coda>/coda.jspf</include-coda>
+        清除jsp中由于page指令引入带来的空行 <trim-directive-whitespaces>true</trim-directive-whitespaces>
+        </jsp-property-group> -->
+  </jsp-config>
+
+  <session-config>
+    <session-timeout>30</session-timeout>
+    <cookie-config>
+      <!-- http-only:true-确保cookie不能被客户端脚本访问 -->
+      <http-only>false</http-only>
+      <!-- 防止信息泄露，在https中传输启用 -->
+      <secure>false</secure>
+    </cookie-config>
+    <!-- Servlet3.0规范中的<tracking-mode>允许你定义JSESSIONID是存储在cookie中还是URL参数中 -->
+    <tracking-mode>COOKIE</tracking-mode>
+  </session-config>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/404.html</location>
+  </error-page>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
