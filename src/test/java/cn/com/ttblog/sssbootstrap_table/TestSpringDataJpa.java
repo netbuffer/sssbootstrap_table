@@ -135,4 +135,19 @@ public class TestSpringDataJpa {
 
 	}
 
+	@Test
+	public void testQuerySex(){
+		logger.debug("获取sex:{}",userDao.querySex(1L));
+	}
+
+	@Test
+	public void testGetNewDataCount(){
+		logger.debug("getNewDate:{}",userDao.getNewDate());
+	}
+
+	@Test
+	public void testGetDataSum(){
+		logger.debug("testGetDataSum:{}",userDao.getDataSum());
+	}
+
 }

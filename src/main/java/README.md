@@ -6,5 +6,12 @@
 * `TestController`-一些乱七八糟的测试...
 * `MySpringTextWsHandler`spring-websocket测试
 * `UserController`测试数据获取、json/pdf/excel视图
+---
+#### JPQL(java持久化查询语言)使用整理
+##### jpql操作的是对象和属性，sql操作的是表和字段
+> 运算符`:`+ - *  / ; = > < >= <= <> between like in is null is empty member of not and or  
+> 内置函数`:`concat substring trim upper lower length locate ;日期函数CURRENT_DATE CURRENT_TIME CURRENT_TIMESTAMP
+数学函数:ABS SORT MOD SIZE;聚合函数:avg sum count min max  
+> `where... group by ... having... order by `
 
 > 使用idea编译工程需要在maven pom.xml中配置打包xml/properties资源,默认idea不打包,eclipse会打包

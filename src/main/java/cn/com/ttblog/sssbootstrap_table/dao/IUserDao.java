@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
+import java.util.Map;
 
 /**
  * JpaRepository支持接口规范方法名查询。意思是如果在接口中定义的查询方法符合它的命名规则，就可以不用写实现
@@ -34,12 +35,15 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 	List<User> findTop5ByPhoneContaining(String phone,Sort sort);
 
 	Page<User> findByNameContaining(String name, Pageable page);
+
+	@Query(value = "select concat('性别:',u.sex) from User u where u.id=:id")
+	String querySex(@Param("id") Long id);
+
+	@Query(value = "select count(id) from user where DATE_FORMAT(NOW(),'%Y-%m-%d')=FROM_UNIXTIME(adddate,'%Y-%m-%d')",nativeQuery = true)
+	int getNewDate();
+
+	@Query(value = "select count(id) num,FROM_UNIXTIME(adddate,'%Y-%m-%d') adddate from user group by FROM_UNIXTIME(adddate,'%Y-%m-%d')",nativeQuery = true)
+	List getDataSum();
 //	//带有查询条件
 //	public List<User> getUserList(String search, String order, int limit, int offset);
-//	public long getUserListCount();
-//	public int getNewData();
-//	public List<Map<String, Object>> getDataSum();
-//	public void addUM();
-//	public void addUMtest() throws IllegalArgumentException;
-//	public void deleteById(Long id);
 }

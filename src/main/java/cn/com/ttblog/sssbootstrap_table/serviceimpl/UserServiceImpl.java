@@ -62,12 +62,12 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public int getNewData() {
-		return 0;
+		return userDao.getNewDate();
 	}
 
 	@Override
-	public List<Map<String, Object>> getDataSum() {
-		return null;
+	public List getDataSum() {
+		return userDao.getDataSum();
 	}
 
 	@Override
@@ -82,6 +82,6 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public void deleteById(Long id) {
-
+		userDao.delete(id);
 	}
 }
