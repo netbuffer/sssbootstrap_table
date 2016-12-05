@@ -17,16 +17,16 @@
     </developer>
   </developers>
 
-  <!--<scm>-->
-    <!--<url>https://github.com/netbuffer/ssmbootstrap_table/</url>-->
-    <!--<connection>scm:git:git://github.com/netbuffer/ssmbootstrap_table.git</connection>-->
-    <!--<developerConnection>scm:git:ssh://git@github.com:netbuffer/ssmbootstrap_table.git</developerConnection>-->
-  <!--</scm>-->
+  <scm>
+    <url>https://github.com/netbuffer/sssbootstrap_table/</url>
+    <connection>scm:git:git://github.com/netbuffer/sssbootstrap_table.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:netbuffer/sssbootstrap_table.git</developerConnection>
+  </scm>
 
-  <!--<issueManagement>-->
-    <!--<system>Github</system>-->
-    <!--<url>https://github.com/netbuffer/ssmbootstrap_table/issues</url>-->
-  <!--</issueManagement>-->
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/netbuffer/sssbootstrap_table/issues</url>
+  </issueManagement>
 
   <properties>
     <!--4.1.6.RELEASE-->
