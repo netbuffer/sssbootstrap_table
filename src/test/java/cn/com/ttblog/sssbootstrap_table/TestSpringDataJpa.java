@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
+import javax.persistence.criteria.*;
+
 import cn.com.ttblog.sssbootstrap_table.service.CrudService;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -14,7 +16,9 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
@@ -67,14 +71,14 @@ public class TestSpringDataJpa {
 		logger.debug("testFindByName - user1:{}",user);
 		PageRequest pr=new PageRequest(0,1,new Sort(Sort.Direction.DESC,"id"));
 		Page<User> page=userService.getUserByName("",pr);
-		logger.debug("page.getTotalPages():{}",page.getTotalPages());
-		logger.debug("page.getTotalElements():{}",page.getTotalElements());
-		logger.debug("page.getNumberOfElements():{}",page.getNumberOfElements());
-		logger.debug("page.getNumber():{}",page.getNumber());
+		logger.debug("page.getTotalPages()总页数:{}",page.getTotalPages());
+		logger.debug("page.getTotalElements()总记录数:{}",page.getTotalElements());
+		logger.debug("page.getNumberOfElements()当前页记录数:{}",page.getNumberOfElements());
+		logger.debug("page.getNumber()当前页:{}",page.getNumber());
 		logger.debug("page.getSize():{}",page.getSize());
 		logger.debug("page.getSort():{}",page.getSort());
-		logger.debug("page.getContent():{}",page.getContent());
-		//页码从0开始
+		logger.debug("page.getContent()当前页数据:{}",page.getContent());
+		//页码page从0开始
 		PageRequest pr2=new PageRequest(1,1,new Sort(Sort.Direction.DESC,"id"));
 		Page<User> page2=userService.getUserByName("",pr2);
 	}
@@ -172,7 +176,7 @@ public class TestSpringDataJpa {
 
 	@Test
 	public void testGetMaxIdUser(){
-//		logger.debug("max user:{}",userDao.queryMaxUser());
+		logger.debug("max user:{}",userDao.queryMaxUser());
 	}
 
 	@Test
@@ -180,5 +184,28 @@ public class TestSpringDataJpa {
 		logger.debug("testQueryUserNameLike:{}",userDao.queryUserNameLike("用户"));
 	}
 
+	/**
+	 * 实现带查询条件的分页
+	 */
+	@Test
+	public void testJpaSpecificationExecutor(){
+		Pageable pr=new PageRequest(0,3);
+		Specification<User> spec=new Specification<User>() {
+			/**
+			 *
+			 * @param root 查询的实体类
+			 * @param criteriaQuery
+			 * @param criteriaBuilder 创建Criteria
+			 * @return
+			 */
+			@Override
+			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+				Path path=root.get("id");
+				Predicate prd=criteriaBuilder.gt(path,10000);
+				return prd;
+			}
+		};
+		Page<User> page=userDao.findAll(spec,pr);
+	}
 //	@Modifying +jpql修改数据
 }

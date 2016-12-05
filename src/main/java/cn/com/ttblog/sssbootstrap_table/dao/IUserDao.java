@@ -9,12 +9,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
-import java.util.Map;
 
 /**
  * JpaRepository支持接口规范方法名查询。意思是如果在接口中定义的查询方法符合它的命名规则，就可以不用写实现
  * find+全局修饰+By+实体的属性名称+限定词+连接词+ …(其它实体属性)+OrderBy+排序属性+排序方向
  * http://blog.csdn.net/WANTAWAY314/article/details/52945978
+ * JpaRepository<User,Long> 第一个泛型参数指的是实体类，第二个泛型参数指定实体主键类型
+ * JpaSpecificationExecutor<User> 泛型参数为实体类
  */
 public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecutor<User> {
 	@Query(value = "select u from User u where u.id=:id")
@@ -42,9 +43,10 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 //	//带有查询条件
 //	public List<User> getUserList(String search, String order, int limit, int offset);
 
-//	@Query(value = "select u from User u where u.id = (slect max(u2.id) from User u2) ")
-//	User queryMaxUser();
+	@Query(value = "select u from User u where u.id = (select max(u2.id) from User u2) ")
+	User queryMaxUser();
 
 	@Query(value = "select u from User u where u.name like %:name%")
 	List<User> queryUserNameLike(@Param("name") String name);
+
 }
