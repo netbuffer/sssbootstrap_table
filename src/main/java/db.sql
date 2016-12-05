@@ -13,7 +13,9 @@ DROP TABLE IF EXISTS `address`;
 CREATE TABLE `address` (
   `user_id` bigint(20) DEFAULT NULL,
   `province` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL
+  `city` varchar(255) DEFAULT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `menu`;

@@ -2,8 +2,16 @@ package cn.com.ttblog.sssbootstrap_table.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Address {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "address")
+public class Address {
+	@Id
+	@GeneratedValue
+	private Long id;
+
+	@Column(name = "user_id")
 	private Long userId;
 
 	private String province;

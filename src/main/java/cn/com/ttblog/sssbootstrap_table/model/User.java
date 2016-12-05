@@ -26,25 +26,19 @@ public class User implements Serializable {
 	private Long id;
 	@Size(min = 2, max = 6, message = "{用户名长度必须在2到6个字符之间}")
 	private String name;
-
 	private String sex;
-
 	@NotNull(message = "年龄不能为空并且在1-150之间")
 	@Range(min = 1, max = 150)
 	private Integer age;
-
 	private String phone;
-
 	private String deliveryaddress;
-
 	private Integer adddate;
-
-//	private Card card;
-
+	private Card card;
 	private transient String comments;
-	
+	// 用户使用的地址
+	private List<Address> addresses;
 //	private String[] img;
-	
+//
 //	public String[] getImg() {
 //		return img;
 //	}
@@ -61,16 +55,20 @@ public class User implements Serializable {
 		this.comments = comments;
 	}
 
-	// 用户使用的地址
-//	List<Address> addresses;
+	/**
+	 * address表的user_id字段
+	 * @return
+     */
+	@OneToMany
+	@JoinColumn(name = "user_id")
+	@Access(AccessType.PROPERTY)//不添加此注解会抛错误:Could not determine type for: java.util.List, at table: user, for columns: [org.hibernate.mapping.Column(addresses)]
+	public List<Address> getAddresses() {
+		return addresses;
+	}
 
-//	public List<Address> getAddresses() {
-//		return addresses;
-//	}
-
-//	public void setAddresses(List<Address> addresses) {
-//		this.addresses = addresses;
-//	}
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
 
 	public Long getId() {
 		return id;
@@ -128,15 +126,20 @@ public class User implements Serializable {
 		this.adddate = adddate;
 	}
 
-//	@OneToOne
-//	@JoinColumn(name = "card_id")
-//	public Card getCard() {
-//		return card;
-//	}
-//
-//	public void setCard(Card card) {
-//		this.card = card;
-//	}
+	/**
+	 * 使用user表的id字段
+	 * @return
+     */
+	@OneToOne
+	@JoinColumn(name = "id")
+	@Access(AccessType.PROPERTY)
+	public Card getCard() {
+		return card;
+	}
+
+	public void setCard(Card card) {
+		this.card = card;
+	}
 
 	public User(String name, String sex, Integer age, String phone, String deliveryaddress, Integer adddate,
 				String comments) {
@@ -150,19 +153,19 @@ public class User implements Serializable {
 		this.comments = comments;
 	}
 
-//	public User(String name, String sex, Integer age, String phone, String deliveryaddress, Integer adddate,
-//			String comments, List<Address> addresses, Card card) {
-//		super();
-//		this.name = name;
-//		this.sex = sex;
-//		this.age = age;
-//		this.phone = phone;
-//		this.deliveryaddress = deliveryaddress;
-//		this.adddate = adddate;
-//		this.comments = comments;
-//		this.addresses = addresses;
-//		this.card = card;
-//	}
+	public User(String name, String sex, Integer age, String phone, String deliveryaddress, Integer adddate,
+			String comments, List<Address> addresses, Card card) {
+		super();
+		this.name = name;
+		this.sex = sex;
+		this.age = age;
+		this.phone = phone;
+		this.deliveryaddress = deliveryaddress;
+		this.adddate = adddate;
+		this.comments = comments;
+		this.addresses = addresses;
+		this.card = card;
+	}
 
 	public User() {
 

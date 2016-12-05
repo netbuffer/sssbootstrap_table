@@ -24,8 +24,9 @@ public class ApiController {
 	
 	@RequestMapping(value = { "", "/{id}", "/index/{id}" },method=RequestMethod.GET)
 	public User index(@PathVariable("id") int id) {
-		logger.debug("restapi get user:",id);
-		return userService.getUserById(id);
+		User u=userService.getUserById(id);
+		logger.debug("restapi get user id:{},query user:{}",id,u);
+		return u;
 	}
 
 }

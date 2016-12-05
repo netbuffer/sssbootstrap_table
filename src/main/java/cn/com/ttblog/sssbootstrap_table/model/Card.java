@@ -18,8 +18,6 @@ import javax.persistence.*;
 @Table(name = "card")
 public class Card implements Serializable{
 	@Id
-	@GeneratedValue
-	private Long id;
     @Column(name = "user_id")
 	private Long userId;
 	@Column(name = "card_no")
@@ -30,14 +28,6 @@ public class Card implements Serializable{
     public Card(Long userId, String cardNo) {
         this.userId = userId;
         this.cardNo = cardNo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getUserId() {
