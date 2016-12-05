@@ -17,17 +17,12 @@ import java.util.Map;
  * http://blog.csdn.net/WANTAWAY314/article/details/52945978
  */
 public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecutor<User> {
-	@Query(value = "from User u where u.id=:id")
+	@Query(value = "select u from User u where u.id=:id")
 	User getUserById(@Param(value = "id") long userId);
     User findByName(String userName);
-//	public User getUserByName(String userName);
-//	public void addUser(User user);
 
 	@Query(value = "select * from user ORDER BY CASE WHEN :order = 'asc'  THEN  adddate end ASC,CASE WHEN :order = 'desc' THEN adddate end DESC limit :offset,:limit",nativeQuery = true)
 	List<User> getUserList(@Param("order") String order,@Param("limit") int limit, @Param("offset") int offset);
-
-//	@Query(value = "select * from user limit :offset,:limit",nativeQuery = true)
-//	List<User> getUserList(@Param("limit") int limit, @Param("offset") int offset, Sort sort);
 
 	@Query(value = "select count (u) from User u")
 	long getUserListCount();
@@ -46,4 +41,10 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 	List getDataSum();
 //	//带有查询条件
 //	public List<User> getUserList(String search, String order, int limit, int offset);
+
+//	@Query(value = "select u from User u where u.id = (slect max(u2.id) from User u2) ")
+//	User queryMaxUser();
+
+	@Query(value = "select u from User u where u.name like %:name%")
+	List<User> queryUserNameLike(@Param("name") String name);
 }

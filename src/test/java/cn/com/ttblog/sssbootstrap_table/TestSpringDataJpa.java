@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -169,4 +170,15 @@ public class TestSpringDataJpa {
 		logger.debug("testGetDataSum:{}",userDao.getDataSum());
 	}
 
+	@Test
+	public void testGetMaxIdUser(){
+//		logger.debug("max user:{}",userDao.queryMaxUser());
+	}
+
+	@Test
+	public void testQueryUserNameLike(){
+		logger.debug("testQueryUserNameLike:{}",userDao.queryUserNameLike("用户"));
+	}
+
+//	@Modifying +jpql修改数据
 }
