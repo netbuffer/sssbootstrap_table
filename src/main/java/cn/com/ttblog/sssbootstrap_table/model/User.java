@@ -3,7 +3,6 @@ package cn.com.ttblog.sssbootstrap_table.model;
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -40,6 +39,8 @@ public class User implements Serializable {
 
 	private Integer adddate;
 
+//	private Card card;
+
 	private transient String comments;
 	
 //	private String[] img;
@@ -62,16 +63,6 @@ public class User implements Serializable {
 
 	// 用户使用的地址
 //	List<Address> addresses;
-
-//	private Card card;
-
-//	public Card getCard() {
-//		return card;
-//	}
-
-//	public void setCard(Card card) {
-//		this.card = card;
-//	}
 
 //	public List<Address> getAddresses() {
 //		return addresses;
@@ -136,6 +127,16 @@ public class User implements Serializable {
 	public void setAdddate(Integer adddate) {
 		this.adddate = adddate;
 	}
+
+//	@OneToOne
+//	@JoinColumn(name = "card_id")
+//	public Card getCard() {
+//		return card;
+//	}
+//
+//	public void setCard(Card card) {
+//		this.card = card;
+//	}
 
 	public User(String name, String sex, Integer age, String phone, String deliveryaddress, Integer adddate,
 				String comments) {

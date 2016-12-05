@@ -94,3 +94,20 @@ call insert_touser(1,10000);
 lock tables user read;
 lock tables user write;
 unlock tables;
+
+-- 添加card的外键约束
+ALTER TABLE `card` DROP FOREIGN KEY `user_id_fk`;
+ALTER TABLE `card` ADD CONSTRAINT `user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- 测试onetoone关系表
+CREATE TABLE `t_crud_demo` (
+  `id` bigint(20) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `sub_id` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_crud_demosub` (
+  `id` bigint(20) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

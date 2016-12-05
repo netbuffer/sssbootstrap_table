@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
+import cn.com.ttblog.sssbootstrap_table.service.CrudService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -29,11 +31,18 @@ public class TestSpringDataJpa {
 	private IUserService userService;
 	@Resource 
 	private IUserDao userDao;
+	@Autowired
+	private CrudService crudService;
 	// @Before
 	// public void before() {
 	// ac = new ClassPathXmlApplicationContext("applicationContext.xml");
 	// userService = (IUserService) ac.getBean("userService");
 	// }
+
+	@Test
+	public void testGetCrudModel(){
+		logger.debug("crudmodel:{}",crudService.findOne(1L));
+	}
 
 	@Test
 	public void testFindById() {
