@@ -3,6 +3,8 @@ package cn.com.ttblog.sssbootstrap_table.serviceimpl;
 import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,12 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements IUserService{
-
+	private static final Logger LOG= LoggerFactory.getLogger(UserServiceImpl.class);
 	@Autowired
 	private IUserDao userDao;
 
@@ -68,7 +69,21 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public List getDataSum() {
-		return userDao.getDataSum();
+		List datas=userDao.getDataSum();
+		LOG.debug("dao层拿到数据:{},size:{}",datas,datas.size());
+		if(null!=datas&&datas.size()>0){
+			int count=datas.size();
+			List<Map<String, Object>> result=new ArrayList<>(count);
+			for (int i=0;i<count;i++) {
+				LOG.debug("datas.get({}):{}",i,datas.get(i));
+				Map<String,Object> m=new HashMap<>();
+				m.put("num",((Object[]) datas.get(i))[0]);
+				m.put("adddate",((Object[])datas.get(i))[1]);
+				result.add(m);
+			}
+			return result;
+		}
+		return null;
 	}
 
 	@Override

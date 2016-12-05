@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
@@ -33,11 +34,20 @@ public class TestSpringDataJpa {
 	private IUserDao userDao;
 	@Autowired
 	private CrudService crudService;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	// @Before
 	// public void before() {
 	// ac = new ClassPathXmlApplicationContext("applicationContext.xml");
 	// userService = (IUserService) ac.getBean("userService");
 	// }
+
+	@Test
+	public void testJdbcTemplate(){
+		jdbcTemplate.execute("SELECT now()");
+		jdbcTemplate.queryForObject("SELECT count(*) from user",Long.class);
+		jdbcTemplate.queryForList("SELECT * from user limit 10");
+	}
 
 	@Test
 	public void testGetCrudModel(){
