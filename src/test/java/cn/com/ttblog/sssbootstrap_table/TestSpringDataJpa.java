@@ -207,5 +207,10 @@ public class TestSpringDataJpa {
 		};
 		Page<User> page=userDao.findAll(spec,pr);
 	}
+
+	@Test
+	public void testGetUserSum(){
+		logger.debug("testGetUserSum:{}",userDao.getUserSum());
+	}
 //	@Modifying +jpql修改数据
 }

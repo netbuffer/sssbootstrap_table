@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
-
 /**
  * JpaRepository支持接口规范方法名查询。意思是如果在接口中定义的查询方法符合它的命名规则，就可以不用写实现
  * find+全局修饰+By+实体的属性名称+限定词+连接词+ …(其它实体属性)+OrderBy+排序属性+排序方向
@@ -49,4 +48,6 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 	@Query(value = "select u from User u where u.name like %:name%")
 	List<User> queryUserNameLike(@Param("name") String name);
 
+	@Query(value = "select new cn.com.ttblog.sssbootstrap_table.model.Data(count(u.id),FROM_UNIXTIME(u.adddate,'%Y-%m-%d')) from User u group by FROM_UNIXTIME(u.adddate,'%Y-%m-%d')")
+	List getUserSum();
 }
