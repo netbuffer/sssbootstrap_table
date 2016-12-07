@@ -50,4 +50,13 @@ public class TestStringFormat {
 		out_trade_no=out_trade_no.substring(0, out_trade_no.indexOf("-"));
 		System.out.println("out_trade_no:"+out_trade_no);
 	}
+
+	@Test
+	public void testStringBuilder(){
+		StringBuilder sb=new StringBuilder("test1,test2,");
+		System.out.println("sb:"+sb);
+		System.out.println("sb.toString:"+sb.toString());
+		System.out.println("sb.length:"+sb.length());
+		System.out.println("sb.replace(sb.length()-1,sb.length(),\"\"):"+sb.replace(sb.length()-1,sb.length(),""));
+	}
 }
