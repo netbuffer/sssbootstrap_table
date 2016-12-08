@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.annotation.Resource;
 import javax.persistence.criteria.*;
 
+import cn.com.ttblog.sssbootstrap_table.dao.CrudDao;
 import cn.com.ttblog.sssbootstrap_table.service.CrudService;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,6 +40,8 @@ public class TestSpringDataJpa {
 	private IUserDao userDao;
 	@Autowired
 	private CrudService crudService;
+	@Autowired
+	private CrudDao crudDao;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	// @Before
@@ -118,13 +121,30 @@ public class TestSpringDataJpa {
 			userService.addUser(u);
 		}
 	}
-	
+
+	@Test
+	public void testBatchAddUser() {
+		List<User> users=new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			User u = new User();
+			u.setAge(i+1 + new Random().nextInt(1));
+			u.setAdddate((int)(System.currentTimeMillis() / 1000));
+			u.setName("batch-add-user:"+i);
+			u.setDeliveryaddress("收货地址");
+			u.setPhone("1324");
+			u.setSex("男");
+			users.add(u);
+		}
+		logger.debug("批量添加的学生列表:{}",users);
+		userDao.save(users);
+	}
+
 	@Test
 	@Ignore
 	public void testDatacount(){
 		logger.info("datacount:{}",userService.getDataSum());
 	}
-	
+
 	@Test
 	@Ignore
 	public void testAddUserTran(){
@@ -137,9 +157,9 @@ public class TestSpringDataJpa {
 		userService.addUser(u);
 		logger.info("AopUtils.isAopProxy(userService):{}",AopUtils.isAopProxy(userService));
 		//cglib
-		logger.info("AopUtils.isCglibProxy(userService):{}",AopUtils.isCglibProxy(userService)); 
+		logger.info("AopUtils.isCglibProxy(userService):{}",AopUtils.isCglibProxy(userService));
 		//jdk动态代理
-		logger.info("AopUtils.isJdkDynamicProxy(userService):{}",AopUtils.isJdkDynamicProxy(userService)); 
+		logger.info("AopUtils.isJdkDynamicProxy(userService):{}",AopUtils.isJdkDynamicProxy(userService));
 	}
 
 	@Test
@@ -211,6 +231,11 @@ public class TestSpringDataJpa {
 	@Test
 	public void testGetUserSum(){
 		logger.debug("testGetUserSum:{}",userDao.getUserSum());
+	}
+
+	@Test
+	public void testCustomDaoMethod(){
+		logger.debug("通过自定义方法查询记录数:{}",crudDao.getTotal());
 	}
 //	@Modifying +jpql修改数据
 }

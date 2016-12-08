@@ -24,7 +24,7 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Size(min = 2, max = 6, message = "{用户名长度必须在2到6个字符之间}")
+	@Size(min = 1, max = 20, message = "{用户名长度必须在1到20个字符之间}")
 	private String name;
 	private String sex;
 	@NotNull(message = "年龄不能为空并且在1-150之间")
