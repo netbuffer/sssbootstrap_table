@@ -15,13 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import com.alibaba.fastjson.JSON;
@@ -189,6 +183,56 @@ public class JsonpController {
 			@RequestParam(value = "v") String[] values, Model model) {
 		logger.debug("接收到的数组参数:{}", Arrays.deepToString(values));
 		return values;
+	}
+
+	/**
+	 var d={"id":1,name:"test"};
+	 $.ajax({
+	 url:"http://localhost:8080/sssbootstrap_table/jsonp/receivejson",
+	 data:{"json":JSON.stringify(d)},
+	 type:"post",
+	 ContentType: "application/json;charset=UTF-8",
+	 success:function(data){
+	 console.log(data);
+	 },
+	 error:function(xhr){
+	 console.log(xhr);
+	 }
+	 });
+	 get to http://localhost:8080/sssbootstrap_table/jsonp/receivejson?json={%22id%22:1,name:%22test%22}
+	 *
+	 * @param values
+	 * @return
+	 */
+	@RequestMapping("/receivejson")
+	public @ResponseBody Object receivejson(@RequestParam(value="json") String json) {
+		logger.debug("receive json str:{}",json);
+		JSONObject j=(JSONObject) JSONObject.parse(json);
+		logger.debug("receive json to jsonobject:{}",j);
+		return j;
+	}
+
+	/**
+	 $.ajax({
+	 url:"http://localhost:8080/sssbootstrap_table/jsonp/receivejsonobj",
+	 type:"post",
+	 contentType:'application/json;charset=UTF-8',
+	 data: "{id:1,name:\"test\"}",
+	 success:function(data){
+	 console.log(data);
+	 },
+	 error:function(xhr){
+	 console.log(xhr);
+	 }
+	 });
+	 *
+	 * @param values
+	 * @return
+	 */
+	@RequestMapping("/receivejsonobj")
+	public @ResponseBody User receivejsonobj(@RequestBody User user) {
+		logger.debug("receive json obj:{}",user);
+		return user;
 	}
 
 	/**
