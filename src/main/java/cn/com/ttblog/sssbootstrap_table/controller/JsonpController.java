@@ -1,15 +1,15 @@
 package cn.com.ttblog.sssbootstrap_table.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import com.alibaba.fastjson.JSONArray;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
 
@@ -246,5 +244,47 @@ public class JsonpController {
 			@ModelAttribute("name") String name, HttpSession session) {
 		logger.debug("name:{}", name);
 		return session.getAttribute("name").toString();
+	}
+
+	@RequestMapping("/source")
+	@ResponseBody
+	public JSONArray source() {
+		JSONArray arr=new JSONArray();
+		for(int i=0;i<5;i++){
+			String rs=RandomStringUtils.randomAscii(3);
+			arr.add(rs);
+		}
+		return arr;
+	}
+
+	@RequestMapping("/map")
+	@ResponseBody
+	public Map map() {
+		Map map=new HashMap();
+		String rs=RandomStringUtils.randomAscii(3);
+		map.put("key",rs);
+		return map;
+	}
+
+	@RequestMapping("/set")
+	@ResponseBody
+	public Set set() {
+		Set arr=new HashSet();
+		for(int i=0;i<5;i++){
+			String rs=RandomStringUtils.randomAscii(3);
+			arr.add(rs);
+		}
+		return arr;
+	}
+
+	@RequestMapping("/list")
+	@ResponseBody
+	public List list() {
+		List arr=new ArrayList();
+		for(int i=0;i<5;i++){
+			String rs=RandomStringUtils.randomAscii(3);
+			arr.add(rs);
+		}
+		return arr;
 	}
 }
