@@ -27,7 +27,13 @@ import cn.com.ttblog.sssbootstrap_table.service.IUserService;
  */
 @Controller
 @RequestMapping("/jsonp")
-@SessionAttributes("name")
+/**
+ * @SessionAttributes(value = {"name"},types = {User.class})
+ * 会将model中的name键值放入session中
+ * 会将model中的User类型模型放入session中
+ * 修饰在类上
+ */
+@SessionAttributes(value = {"name"},types = {User.class})
 public class JsonpController {
 
 	@Resource
@@ -37,6 +43,7 @@ public class JsonpController {
 
 	/**
 	 * 被@ModelAttribute注释的方法会在此controller每个方法执行前被执行
+	 * 适用于修改数据库数据实体时，先查数据实体，前端传来的数据覆盖这里的数据实体，没有传递的则使用数据库查询出来的实体更新
 	 */
 	@ModelAttribute
 	public void testModelAttr(HttpSession session, Model model) {

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -504,5 +498,46 @@ public class TestController {
 		String indexurl=request.getScheme()+"://"+AjaxUtils.getLocalIP()+":"+configProperties.getProperty("appport")+request.getContextPath();
 		logger.debug("indexurl:{}",indexurl);
 		return indexurl;
+	}
+
+	/**
+	 * springmvc 精确匹配路径
+	 * ,headers = {"Accept-Language:zh-CN"}
+	 * @return
+	 */
+	@RequestMapping(value="/ph",params = {"username","pwd=1"})
+	public @ResponseBody String ph(){
+		LOG.debug("execute");
+		return "success";
+	}
+
+	/**
+	 * 绑定header参数
+	 * @param accept
+	 * @return
+	 */
+	@RequestMapping(value="/headerval")
+	public @ResponseBody String headerval(@RequestHeader(value = "Accept",required = false) String accept){
+		LOG.debug("accept header val:{}",accept);
+		return "accept:"+accept;
+	}
+
+	/**
+	 * 绑定cookie参数
+	 * @param sessionId
+	 * @return
+	 */
+	@RequestMapping(value="/cookieval")
+	public @ResponseBody String cookieval(@CookieValue(value = "JSESSIONID",required = false) String sessionId){
+		LOG.debug("cookie JSESSIONID val:{}",sessionId);
+		return "cookie JSESSIONID:"+sessionId;
+	}
+
+	@RequestMapping(value="/customview")
+	public String customview(Map m){
+		LOG.debug("customview");
+		m.put("date",new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+		return "custom_view";//需要返回视图bean的id
+//		return "customView";
 	}
 }
