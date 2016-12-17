@@ -8,6 +8,9 @@
 * `UserController`测试数据获取、json/pdf/excel视图  
 * `@RequestMapping`支持ant风格url匹配的模式，* ?  
 * `@RequestHeader`、`@RequestCookie`   
+* ![@ModelAttribute](../../../src/main/webapp/image/modelattribute.png)  
+`@ModelAttribute`从数据库先查询出bean，再组装前端传递的参数到controller中的方法入参
+
 ---
 #### JPQL(java持久化查询语言)使用整理
 ##### jpql操作的是对象和属性，sql操作的是表和字段

@@ -188,13 +188,9 @@
 			console.log(value, row, index);
 		},
 		'click .edit' : function(e, value, row, index) {
-			console.log($("[data-index=" + index + "]").find('td').eq(8).html());
-			//alert($("[data-index="+index+"]").find('td').eq(3).text());
-			$("#waitph").val(
-					$("[data-index=" + index + "]").find('td').eq(3).text());
+		    console.log("row:%o",row);
+			$("#waituserid").val(row.id);
 			$("#edituc").modal("show");
-			//alert('You click edit icon, row: ' + JSON.stringify(row));
-			//console.log(value, row, index);
 		},
 		'click .remove' : function(e, value, row, index) {
 			//alert('You click remove icon, row: ' + JSON.stringify(row));
@@ -238,18 +234,18 @@
 		return params;
 	}
 
-	function saveUcode() {
-		//alert($("#waiteduc").val());
-		//alert($("#waitph").val());
-		$.post('user/edit', {
-			"phone" : $("#waitph").val(),
-			"uc" : $("#waiteduc").val()
-		}, function() {
-			//alert('保存成功!');
-			$("#edituc").modal('hide');
-			$("#waiteduc").val('');
-			$("#waitph").val('');
-			refreshTable();
+	function saveUser() {
+	    $.ajax({
+	        url:"user",
+			data:{"id" : $("#waituserid").val(), "name" : $("#user_name").val(),"_method":"PUT"},
+			type:"post",
+			success:function (data) {
+                $("#edituc").modal('hide');
+                $("#user_name").val('');
+                $("#waituserid").val('');
+                refreshTable();
+	            alert(JSON.stringify(data));
+            }
 		});
 	}
 
@@ -413,14 +409,13 @@
 						<h4 class="modal-title" id="myModalLabel">编辑当前用户的资料</h4>
 					</div>
 					<div class="modal-body">
-						<input id="waiteduc" type="text" class="form-control" value=""
-							pattern="" required="required" /> <input id="waitph"
-							type="hidden" />
+						<input id="user_name" type="text" class="form-control" value="" pattern="" required="required" />
+						<input id="waituserid" type="hidden" />
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 						<button type="button" class="btn btn-primary"
-							onclick="saveUcode();">保存</button>
+							onclick="saveUser();">保存</button>
 					</div>
 				</div>
 			</div>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="l2d" uri="/WEB-INF/LongToDateTag.tld"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,13 +45,17 @@
 </script>	
 </head>
 <body>
-	<form action="${pageContext.request.contextPath }/test/form" method="post">
+	<form action="<c:choose><c:when test="${not empty from&&from=='user'}">${pageContext.request.contextPath }/user</c:when><c:otherwise>${pageContext.request.contextPath }/test/form</c:otherwise></c:choose>" method="post">
+			<%--<c:choose>
+				<c:when test="${not empty from&&from=='user'}"></c:when>
+				<c:otherwise></c:otherwise>
+			</c:choose>--%>
 			<div class="weui_cell">
 				<div class="weui_cell_hd">
 					<label class="weui_label">昵称</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
-					<input type="text" name="name" placeholder="请输入昵称" class="weui_input">
+					<input type="text" name="name" placeholder="请输入昵称" class="weui_input" value="${user.name}">
 				</div>
 			</div>
 			<div class="weui_cell weui_vcode">
@@ -58,7 +63,7 @@
 					<label class="weui_label">年龄</label>
 				</div>
 				<div class="weui_cell_bd weui_cell_primary">
-					<input type="number" name="age" placeholder="请输入年龄" class="weui_input">
+					<input type="number" name="age" placeholder="请输入年龄" class="weui_input" value="${user.age}">
 				</div>
 			</div>
 			<div class="weui_cells_title">性别</div>

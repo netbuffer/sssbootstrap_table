@@ -7,16 +7,14 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import cn.com.ttblog.sssbootstrap_table.model.User;
@@ -31,7 +29,68 @@ public class UserController {
 	@Resource
 	private IUserService userService;
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+	@RequestMapping(method=RequestMethod.GET)
+	public String add(Map m){
+		logger.debug("to get user page");
+		m.put("from","user");
+		return "user/add";
+	}
+
+	@ModelAttribute
+	public void getUser(@RequestParam(value = "id",required = false) Long id,Map m){
+		if(id!=null&&id>0){
+			User user=userService.getUserById(id);
+			logger.info("modelattribute执行!,查询用户:{},放入map:{}",id,user);
+			m.put("user",user);
+		}
+	}
+	//增
+	@RequestMapping(method=RequestMethod.POST)
+	public String save(@Valid User user){
+		logger.debug("save user:{}",user);
+		if(user.getAdddate()==null){
+			user.setAdddate((int)(System.currentTimeMillis() / 1000));
+		}
+		userService.addUser(user);
+		return "redirect:user";
+	}
+
+	//删
+	@RequestMapping(method=RequestMethod.DELETE)
+	@ResponseBody
+	public Map delete(@RequestParam(value = "id",required =false)Long id){
+		Map result=new HashMap(2);
+		logger.debug("delete user:{}",id);
+		try {
+			result.put("success",true);
+			userService.deleteById(id);
+		}catch (Exception e){
+			result.put("success",false);
+			result.put("msg",e.getMessage());
+			logger.error("delete user出错:{}",id,e);
+		}
+		return result;
+	}
+
+	//改
+	@RequestMapping(method=RequestMethod.PUT)
+	@ResponseBody
+	public Map update(@Valid User user){
+		Map result=new HashMap(2);
+		logger.debug("update user:{}",user);
+		try {
+			result.put("success",true);
+			userService.addUser(user);
+		}catch (Exception e){
+			result.put("success",false);
+			result.put("msg",e.getMessage());
+			logger.error("save user出错:{}",user,e);
+		}
+		result.put("user",user);
+		return result;
+	}
 
 	@RequestMapping(value="/photos",method={RequestMethod.GET,RequestMethod.HEAD})
 	public String photos() {
