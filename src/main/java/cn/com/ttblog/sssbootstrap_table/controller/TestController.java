@@ -33,6 +33,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.alibaba.fastjson.JSONObject;
@@ -89,6 +90,34 @@ public class TestController {
 	private MessageSource ms;
 
 	/**
+	 * 当前控制器异常捕获,如果当前控制器未设置，则去@ControllerAdvice标记中的类寻找@ExceptionHandler标记的方法处理异常
+	 * 需要使用ModelAndView来绑定模型数据
+	 * @param e
+	 * @return
+	 */
+	@ExceptionHandler({Exception.class})
+	public ModelAndView handlerException(Exception e){
+		ModelAndView modelAndView=new ModelAndView("error");
+		LOG.error("控制器发生Exception级异常:{}",e.getMessage());
+		modelAndView.addObject("errMsg",e.getMessage());
+		return modelAndView;
+	}
+
+	@ExceptionHandler({RuntimeException.class})
+	public ModelAndView handlerRunTimeException(RuntimeException e){
+		ModelAndView modelAndView=new ModelAndView("error");
+		LOG.error("控制器发生RunTime级异常:{}",e.getMessage());
+		modelAndView.addObject("errMsg",e.getMessage());
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "divide",method = RequestMethod.GET)
+	public String divide(){
+		int i=1/0;
+		return 	"test";
+	}
+
+	/**
 	 * 获取国际化资源消息 i18n
 	 * @return
 	 */
@@ -101,6 +130,17 @@ public class TestController {
 		m.put("us",us);
 		m.put("zh_CN",zh_CN);
 		LOG.info("get message locale info:{}",m);
+		return m;
+	}
+
+	@RequestMapping(value = "msglocale",method = RequestMethod.GET)
+	@ResponseBody
+	public Map msglocale(Locale locale){
+		Map m=new HashMap(2);
+		String val=ms.getMessage("Range.user.age",null,locale);
+		m.put("locale",locale);
+		m.put("val",val);
+		LOG.info("get message locale:{},info:{}",locale,m);
 		return m;
 	}
 

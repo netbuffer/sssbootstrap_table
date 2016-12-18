@@ -129,7 +129,8 @@
 	<!-- <mvc:resources mapping="/css/**" location="/css/"/> -->
 	
 	<mvc:view-controller path="/" view-name="index" />
-	<!-- <bean name="xStreamMarshallingView" id="xStreamMarshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView"> 
+	<mvc:view-controller path="/i18n" view-name="test" />
+	<!-- <bean name="xStreamMarshallingView" id="xStreamMarshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
 		<property name="marshaller"> <bean class="org.springframework.oxm.xstream.XStreamMarshaller"> 
 		<property name="autodetectAnnotations" value="true" /> <property name="aliases"> 
 		<map> Account这个类的别名就变成了myBeans，那么转换后的xml中就是myBeans <entry key="u" value="cn.com.ttblog.sssbootstrap_table.model.User" 
@@ -194,7 +195,7 @@
 	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
         <property name="paramName" value="lang"/>
     </bean>
-	
+
 	<mvc:interceptors>
 	 	<!-- 国际化拦截器 -->
 	 	<!-- <ref bean="localeChangeInterceptor"/> -->

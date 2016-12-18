@@ -18,6 +18,7 @@
 	<code>spring:message code="header.language":</code><spring:message code="header.language"/><br/><hr/>
 	syn:${syn}<hr/>
 	<span style="color:green;">user</span>:${user}<br />
-	<span style="color:red;">u</span>:${u}
+	<span style="color:red;">u</span>:${u}<hr/>
+	Range.user.age:<fmt:message key="Range.user.age"></fmt:message>
 </body>
 </html>
