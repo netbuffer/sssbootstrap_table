@@ -9,6 +9,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.NumberFormat;
+
 @Entity
 @Table(name = "user")
 @XmlRootElement
@@ -29,6 +31,7 @@ public class User implements Serializable {
 	private String sex;
 	@NotNull(message = "年龄不能为空并且在1-150之间")
 	@Range(min = 1, max = 150)
+//	@NumberFormat() 可以设置时间日期的格式化
 	private Integer age;
 	private String phone;
 	private String deliveryaddress;

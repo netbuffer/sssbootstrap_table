@@ -11,9 +11,14 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.BindingResultUtils;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
@@ -30,6 +35,10 @@ public class UserController {
 	private IUserService userService;
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+//	@InitBinder
+//	public void initBinder(WebDataBinder binder){
+//	}
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String add(Map m){
@@ -77,7 +86,8 @@ public class UserController {
 	//改
 	@RequestMapping(method=RequestMethod.PUT)
 	@ResponseBody
-	public Map update(@Valid User user){
+	public Map update(@Valid User user, BindingResult br){
+		logger.debug("update user bindiing result:{}",br);
 		Map result=new HashMap(2);
 		logger.debug("update user:{}",user);
 		try {

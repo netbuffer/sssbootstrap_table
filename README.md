@@ -3,6 +3,7 @@
 ## 技术栈/technology stack
 * spring+springmvc+spring data jpa
 * bootstrap-table1.9
+* `bootstrap-datetimepicker`
 * druid
 * fastjson
 * log4jdbc-log4j2(show sql)
