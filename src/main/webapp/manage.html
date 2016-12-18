@@ -197,7 +197,9 @@
 		'click .edit' : function(e, value, row, index) {
 		    console.log("row:%o",row);
 		    $("#user_edit_form input[name='name']").attr("placeholder",row.name);
+            $("#user_edit_form input[name='name']").val(row.name);
             $("#user_edit_form input[name='age']").attr("placeholder",row.age);
+            $("#user_edit_form input[name='age']").val(row.age);
             $("#user_edit_form input[type='radio'][name='sex'][value='"+row.sex+"']").attr("checked",'checked');
             $("#user_edit_form input[name='adddate']").attr("placeholder",moment(moment.unix(row.adddate)).format('YYYY-MM-DD HH:mm:ss'));
 			$("#waituserid").val(row.id);
@@ -413,7 +415,7 @@
 					<th data-field="age">年龄</th>
 					<th data-field="phone">手机号</th>
 					<th data-field="deliveryaddress">收货地址</th>
-					<th data-field="adddate" data-formatter="dateFormatter">添加时间</th>
+					<th data-field="adddate" data-formatter="dateFormatter" data-sortable="true">添加时间</th>
 					<th data-field="operate" data-formatter="operateFormatter"
 						data-events="operateEvents">操作</th>
 				</tr>
