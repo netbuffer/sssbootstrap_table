@@ -10,6 +10,8 @@
 * `@RequestHeader`、`@RequestCookie`   
 * ![@ModelAttribute](../../../src/main/webapp/image/modelattribute.png)  
 `@ModelAttribute`从数据库先查询出bean，再组装前端传递的参数到controller中的方法入参
+* ![@ModelAttribute](../../../src/main/webapp/image/i18.png)  
+i18n国际化消息展示
 
 ---
 #### JPQL(java持久化查询语言)使用整理

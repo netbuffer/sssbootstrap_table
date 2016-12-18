@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -83,6 +84,26 @@ public class TestController {
 	private Lock lock=new ReentrantLock();
 	//注入静态属性值
 	private static String  JDBCURL;
+
+	@Autowired
+	private MessageSource ms;
+
+	/**
+	 * 获取国际化资源消息 i18n
+	 * @return
+	 */
+	@RequestMapping(value = "msg",method = RequestMethod.GET)
+	@ResponseBody
+	public Map getMsg(){
+		Map m=new HashMap(2);
+		String us=ms.getMessage("Range.user.age",null,Locale.US);
+		String zh_CN=ms.getMessage("Range.user.age",null,Locale.CHINA);
+		m.put("us",us);
+		m.put("zh_CN",zh_CN);
+		LOG.info("get message locale info:{}",m);
+		return m;
+	}
+
 	//注入方法
 	@Value("#{configProperties['url']}")
     public void setJdbcUrl(String url) {

@@ -88,6 +88,9 @@ public class UserController {
 	@ResponseBody
 	public Map update(@Valid User user, BindingResult br){
 		logger.debug("update user bindiing result:{}",br);
+		if(br.getFieldErrorCount()>0){
+			logger.error("User校验错误:{}",br.getFieldErrors());
+		}
 		Map result=new HashMap(2);
 		logger.debug("update user:{}",user);
 		try {

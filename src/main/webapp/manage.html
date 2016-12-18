@@ -261,13 +261,17 @@
 //			data:$("#user_edit_form").serialize(),
 			type:"post",
 			success:function (data) {
-                $("#edituc").modal('hide');
-                $(':input','#user_edit_form')
-				.not(':button, :submit, :reset')
-				.val('')
-				.removeAttr('checked')
-				.removeAttr('selected');
-                refreshTable();
+	            if(data.success){
+					$("#edituc").modal('hide');
+					$(':input','#user_edit_form')
+					.not(':button, :submit, :reset')
+					.val('')
+					.removeAttr('checked')
+					.removeAttr('selected');
+					refreshTable();
+				}else {
+                    bootbox.alert(JSON.stringify(data));
+				}
             }
 		});
 	}
