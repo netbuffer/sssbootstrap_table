@@ -203,7 +203,7 @@ public class UserController {
 			
 		}
 		List<User> users =search==null? userService.getUserList(order, limit, offset): userService.getUserList(search,order, limit, offset);
-		long total = userService.getUserListCount();
+		long total = search==null?userService.getUserListCount():userService.getUserListCount(search);
 		Map<String, Object> params = new HashMap<String, Object>();
 		model.addAttribute("total", total);
 		model.addAttribute("rows", users);

@@ -16,6 +16,7 @@ public interface IUserService {
 	//带有查询条件
 	public List<User> getUserList(String search, String order, int limit,int offset);
 	public long getUserListCount();
+	public long getUserListCount(String search);
 	public int getNewData();
 	public List<Map<String, Object>> getDataSum();
 	public void addUM();

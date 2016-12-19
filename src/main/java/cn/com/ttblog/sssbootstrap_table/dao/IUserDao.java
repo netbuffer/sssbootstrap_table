@@ -24,8 +24,14 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 	@Query(value = "select * from user ORDER BY CASE WHEN :order = 'asc'  THEN  adddate end ASC,CASE WHEN :order = 'desc' THEN adddate end DESC limit :offset,:limit",nativeQuery = true)
 	List<User> getUserList(@Param("order") String order,@Param("limit") int limit, @Param("offset") int offset);
 
+	@Query(value = "select * from user where name like %:search% ORDER BY CASE WHEN :order = 'asc'  THEN  adddate end ASC,CASE WHEN :order = 'desc' THEN adddate end DESC limit :offset,:limit",nativeQuery = true)
+	List<User> getUserListQueryByName(@Param("search") String search,@Param("order") String order,@Param("limit") int limit, @Param("offset") int offset);
+
 	@Query(value = "select count (u) from User u")
 	long getUserListCount();
+
+	@Query(value = "select count (u) from User u where u.name like %?1%")
+	long getUserListCount(String search);
 
 	List<User> findTop5ByPhoneContaining(String phone,Sort sort);
 
@@ -50,4 +56,5 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 
 	@Query(value = "select new cn.com.ttblog.sssbootstrap_table.model.Data(count(u.id),FROM_UNIXTIME(u.adddate,'%Y-%m-%d')) from User u group by FROM_UNIXTIME(u.adddate,'%Y-%m-%d')")
 	List getUserSum();
+
 }

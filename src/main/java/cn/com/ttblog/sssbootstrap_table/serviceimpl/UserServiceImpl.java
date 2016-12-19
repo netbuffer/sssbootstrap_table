@@ -54,12 +54,17 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public List<User> getUserList(String search, String order, int limit, int offset) {
-		return null;
+		return userDao.getUserListQueryByName(search,order,limit,offset);
 	}
 
 	@Override
 	public long getUserListCount() {
 		return userDao.getUserListCount();
+	}
+
+	@Override
+	public long getUserListCount(String search) {
+		return userDao.getUserListCount(search);
 	}
 
 	@Override
