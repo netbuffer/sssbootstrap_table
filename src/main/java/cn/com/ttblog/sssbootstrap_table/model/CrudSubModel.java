@@ -11,8 +11,6 @@ import javax.persistence.Table;
 @Table(name = "t_crud_demosub")
 public class CrudSubModel {
 
-    @Id
-    @GeneratedValue
     private Long id;
     private String name;
 
@@ -24,6 +22,8 @@ public class CrudSubModel {
         this.name = name;
     }
 
+    @Id
+    @GeneratedValue
     public Long getId() {
         return id;
     }

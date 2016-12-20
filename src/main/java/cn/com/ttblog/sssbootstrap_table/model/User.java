@@ -11,6 +11,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.NumberFormat;
 
+/**
+ *  jpa注解标记在get方法上,get方法上没有加注解标识默认为@Basic注解映射
+ *  @Transient注解不需要映射的方法
+ * 	@Temporal(TemporalType.DATE/TIME/TIMESTAMP)注解时间类型对应的三种类型精度
+ */
 @Entity
 @Table(name = "user")
 @XmlRootElement
@@ -23,12 +28,10 @@ public class User implements Serializable {
 	/**
 	 * 用户id
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Size(min = 1, max = 20, message = "{用户名长度必须在1到20个字符之间}")
 	private String name;
 	private String sex;
+	@Size(min = 1, max = 20, message = "{用户名长度必须在1到20个字符之间}")
 	@NotNull(message = "年龄不能为空并且在1-150之间")
 	@Range(min = 1, max = 150)
 //	@NumberFormat() 可以设置时间日期的格式化
@@ -73,6 +76,8 @@ public class User implements Serializable {
 		this.addresses = addresses;
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -205,6 +210,11 @@ public class User implements Serializable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Transient
+	public String getUserInfo(){
+		return "用户名:"+this.name;
 	}
 
 	public String toString() {

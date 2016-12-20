@@ -17,10 +17,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "card")
 public class Card implements Serializable{
-	@Id
-    @Column(name = "user_id")
 	private Long userId;
-	@Column(name = "card_no")
 	private String cardNo;
     public Card(){
 
@@ -30,6 +27,8 @@ public class Card implements Serializable{
         this.cardNo = cardNo;
     }
 
+	@Id
+    @Column(name = "user_id")
     public Long getUserId() {
         return userId;
     }
@@ -38,6 +37,7 @@ public class Card implements Serializable{
         this.userId = userId;
     }
 
+	@Column(name = "card_no")
     public String getCardNo() {
         return cardNo;
     }
