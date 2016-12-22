@@ -53,6 +53,7 @@ public class User implements Serializable {
 //		this.img = img;
 //	}
 
+	@Transient
 	public String getComments() {
 		return comments;
 	}
