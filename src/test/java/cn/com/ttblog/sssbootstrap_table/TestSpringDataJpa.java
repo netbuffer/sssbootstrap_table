@@ -1,6 +1,7 @@
 package cn.com.ttblog.sssbootstrap_table;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
@@ -209,7 +210,8 @@ public class TestSpringDataJpa {
 	 */
 	@Test
 	public void testJpaSpecificationExecutor(){
-		Pageable pr=new PageRequest(0,3);
+
+        Pageable pr=new PageRequest(0,3);
 		Specification<User> spec=new Specification<User>() {
 			/**
 			 *
@@ -226,6 +228,19 @@ public class TestSpringDataJpa {
 			}
 		};
 		Page<User> page=userDao.findAll(spec,pr);
+
+		Specification<User> specs=new Specification<User>() {
+			@Override
+			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+				List<Predicate> list = new ArrayList<>();
+                list.add(criteriaBuilder.gt(root.get("id").as(Integer.class),1));
+                list.add(criteriaBuilder.like(root.get("name").as(String.class),"%add%"));
+                Predicate[] parr=new Predicate[list.size()];
+                return criteriaBuilder.and(list.toArray(parr));
+			}
+		};
+        List<User> users=userDao.findAll(specs);
+        logger.debug("use specs:{},query users:{}",specs,users);
 	}
 
 	@Test
