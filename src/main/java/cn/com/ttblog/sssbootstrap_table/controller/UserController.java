@@ -52,7 +52,8 @@ public class UserController {
 		if(id!=null&&id>0){
 			User user=userService.getUserById(id);
 			logger.info("modelattribute执行!,查询用户:{},放入map:{}",id,user);
-			m.put("user",user);
+//			m.put("user",user);
+			m.put("u",user);//放入的键不是类名小写的话,那么在方法入参上需要加@ModelAttribute("u") User user标记
 		}
 	}
 	//增
@@ -86,7 +87,7 @@ public class UserController {
 	//改
 	@RequestMapping(method=RequestMethod.PUT)
 	@ResponseBody
-	public Map update(@Valid User user, BindingResult br){
+	public Map update(@Valid @ModelAttribute("u") User user, BindingResult br){
 		logger.debug("update user bindiing result:{}",br);
 		if(br.getFieldErrorCount()>0){
 			logger.error("User校验错误:{}",br.getFieldErrors());

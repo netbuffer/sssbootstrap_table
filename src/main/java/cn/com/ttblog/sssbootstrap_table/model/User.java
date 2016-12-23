@@ -29,9 +29,9 @@ public class User implements Serializable {
 	 * 用户id
 	 */
 	private Long id;
+	@Size(min = 1, max = 20, message = "{用户名长度必须在1到20个字符之间}")
 	private String name;
 	private String sex;
-	@Size(min = 1, max = 20, message = "{用户名长度必须在1到20个字符之间}")
 	@NotNull(message = "年龄不能为空并且在1-150之间")
 	@Range(min = 1, max = 150)
 //	@NumberFormat() 可以设置时间日期的格式化
