@@ -22,8 +22,8 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public User getUserById(long userId) {
-//		return userDao.getUserById(userId);
-		return userDao.findOne(userId);
+		return userDao.getUserById(userId);
+//		return userDao.findOne(userId);
 	}
 
 	@Override

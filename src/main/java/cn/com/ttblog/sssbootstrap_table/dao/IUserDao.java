@@ -6,10 +6,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.scheduling.annotation.Async;
+
+import javax.persistence.LockModeType;
 import java.util.List;
+import java.util.concurrent.Future;
+
 /**
+ * http://docs.spring.io/spring-data/data-jpa/docs/1.10.1.RELEASE/reference/html/#repositories.query-methods.query-creation
  * JpaRepository支持接口规范方法名查询。意思是如果在接口中定义的查询方法符合它的命名规则，就可以不用写实现
  * find+全局修饰+By+实体的属性名称+限定词+连接词+ …(其它实体属性)+OrderBy+排序属性+排序方向
  * http://blog.csdn.net/WANTAWAY314/article/details/52945978
@@ -17,9 +24,12 @@ import java.util.List;
  * JpaSpecificationExecutor<User> 泛型参数为实体类
  */
 public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecutor<User> {
+
+	@Lock(LockModeType.PESSIMISTIC_WRITE)// select ... where id=.. for update行级锁
 	@Query(value = "select u from User u where u.id=:id")
 	User getUserById(@Param(value = "id") long userId);
-    User findByName(String userName);
+
+	User findByName(String userName);
 
 	@Query(value = "select * from user ORDER BY CASE WHEN :order = 'asc'  THEN  adddate end ASC,CASE WHEN :order = 'desc' THEN adddate end DESC limit :offset,:limit",nativeQuery = true)
 	List<User> getUserList(@Param("order") String order,@Param("limit") int limit, @Param("offset") int offset);
@@ -57,4 +67,32 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 	@Query(value = "select new cn.com.ttblog.sssbootstrap_table.model.Data(count(u.id),FROM_UNIXTIME(u.adddate,'%Y-%m-%d')) from User u group by FROM_UNIXTIME(u.adddate,'%Y-%m-%d')")
 	List getUserSum();
 
+	@Query(value = "select u from User u where u.card.cardNo like %:no%")
+	List<User> getUserByCardNo(@Param("no") String no);
+
+	//select .. where upper(name) = upper(name) order by id desc
+	List<User> findByNameIgnoreCaseOrderByIdDesc(String name);
+
+	//select .. where name like name
+	List<User> findByNameLike(String name);
+	List<User> findByNameLike(String name,Pageable pageable);
+
+	@Async
+	Future<User> findById(Long id);
+
+	User findByN(String name);
+	/**
+	 * spring data jpa 方法名示例
+	 */
+//	List<Person> findByEmailAddressAndLastname(EmailAddress emailAddress, String lastname);
+//	// Enables the distinct flag for the query
+//	List<Person> findDistinctPeopleByLastnameOrFirstname(String lastname, String firstname);
+//	List<Person> findPeopleDistinctByLastnameOrFirstname(String lastname, String firstname);
+//	// Enabling ignoring case for an individual property
+//	List<Person> findByLastnameIgnoreCase(String lastname);
+//	// Enabling ignoring case for all suitable properties
+//	List<Person> findByLastnameAndFirstnameAllIgnoreCase(String lastname, String firstname);
+//	// Enabling static ORDER BY for a query
+//	List<Person> findByLastnameOrderByFirstnameAsc(String lastname);
+//	List<Person> findByLastnameOrderByFirstnameDesc(String lastname);
 }

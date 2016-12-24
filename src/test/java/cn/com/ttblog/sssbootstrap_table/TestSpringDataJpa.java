@@ -1,14 +1,10 @@
 package cn.com.ttblog.sssbootstrap_table;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import javax.annotation.Resource;
-import javax.persistence.criteria.*;
-
 import cn.com.ttblog.sssbootstrap_table.dao.CrudDao;
+import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
+import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.CrudService;
+import cn.com.ttblog.sssbootstrap_table.service.IUserService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +17,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
-import cn.com.ttblog.sssbootstrap_table.model.User;
-import cn.com.ttblog.sssbootstrap_table.service.IUserService;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 // 表示继承了SpringJUnit4ClassRunner类
@@ -45,6 +45,9 @@ public class TestSpringDataJpa {
 	private CrudDao crudDao;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private EntityManagerFactory em;
+
 	// @Before
 	// public void before() {
 	// ac = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -58,15 +61,62 @@ public class TestSpringDataJpa {
 		jdbcTemplate.queryForList("SELECT * from user limit 10");
 	}
 
+//	@Test
+//	public void testJdbcTemplate(){
+//		Query q=em.createQuery("select u from User where u.id=?");
+//		q.setParameter(1,1);
+//		q.executeUpdate();
+//	}
+
 	@Test
 	public void testGetCrudModel(){
 		logger.debug("crudmodel:{}",crudService.findOne(1L));
 	}
 
 	@Test
-	public void testFindById() {
+	public void testNamedQuery() throws ExecutionException, InterruptedException {
+		logger.info("userDao.findByN(\"u\"):{}",userDao.findByN("u"));
+	}
+
+	@Test
+	public void testGetUserList() {
+		List<User> users=userService.getUserList("desc",3,0);
+	}
+
+	@Test
+	public void testFindById() throws ExecutionException, InterruptedException {
 		 User user = userService.getUserById(1);
+		 User user2 = userService.getUserById(1);
+		 //会只执行1次sql查询
 		 logger.debug("testFindById - user1:{}",user);
+		 Future<User> fu=userDao.findById(1L);
+		logger.debug("fu.get().getName():{}",fu.get().getName());
+	}
+
+	@Test
+	public void testGetUserByCardNo() {
+		logger.debug("userDao.getUserByCardNo:{}",userDao.getUserByCardNo("1"));
+	}
+
+	@Test
+	public void testFindByNameLike() {
+		logger.debug("userDao.findByNameLike:{}",userDao.findByNameLike("1"));
+		Pageable pr=new PageRequest(0,3,new Sort(new Sort.Order(Sort.Direction.DESC,"id")));
+		logger.debug("userDao.findByNameLike-pr:{}",userDao.findByNameLike("1",pr));
+	}
+
+	@Test
+	public void testFindByNameIgnoreCaseOrderByIdDesc() {
+		logger.debug("userDao.findByNameIgnoreCaseOrderByIdDesc:{}",userDao.findByNameIgnoreCaseOrderByIdDesc("1"));
+	}
+
+
+	@Test
+	public void testUpdate() {
+		User user = userService.getUserById(1);
+		user.getCard().setCardNo("1111111111111111111111");
+		user.getAddresses().iterator().next().setProvince("北京");
+		userService.addUser(user);
 	}
 
 	@Test

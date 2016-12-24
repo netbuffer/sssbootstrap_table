@@ -16,6 +16,8 @@ import org.springframework.format.annotation.NumberFormat;
  *  @Transient注解不需要映射的方法
  * 	@Temporal(TemporalType.DATE/TIME/TIMESTAMP)注解时间类型对应的三种类型精度
  */
+//在dao接口中定义findByN方法后，spring data jpa会自动解析来匹配这个调用的
+@NamedQuery(name = "User.findByN", query = "select u from User u where u.name = ?1")
 @Entity
 @Table(name = "user")
 @XmlRootElement
@@ -66,7 +68,7 @@ public class User implements Serializable {
 	 * address表的user_id字段
 	 * @return
      */
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
 	@JoinColumn(name = "user_id")
 	@Access(AccessType.PROPERTY)//不添加此注解会抛错误:Could not determine type for: java.util.List, at table: user, for columns: [org.hibernate.mapping.Column(addresses)]
 	public List<Address> getAddresses() {
@@ -139,7 +141,7 @@ public class User implements Serializable {
 	 * 使用user表的id字段
 	 * @return
      */
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
 	@JoinColumn(name = "id")
 	@Access(AccessType.PROPERTY)
 	public Card getCard() {
