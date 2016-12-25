@@ -248,13 +248,14 @@
 	}
 
 	function saveUser() {
+	    var sex=$("#user_edit_form input[name='sex']:checked").val();
 	    $.ajax({
 	        url:"user",
 			data:{
             	"id" : $("#waituserid").val(),
 				"name" : $("#user_edit_form input[name='name']").val(),
 				"age":$("#user_edit_form input[name='age']").val(),
-				"sex":$("#user_edit_form input[name='sex']:checked").val(),
+				"sex":sex==""?"男":sex,
 				"adddate":$("#user_edit_form input[name='adddate']").val(),//使用springmvc自定义类型转换器StringToTimestampConverter
 				"_method":"PUT"
             },
@@ -264,7 +265,7 @@
 	            if(data.success){
 					$("#edituc").modal('hide');
 					$(':input','#user_edit_form')
-					.not(':button, :submit, :reset')
+					.not(':button, :submit, :reset,:radio')
 					.val('')
 					.removeAttr('checked')
 					.removeAttr('selected');

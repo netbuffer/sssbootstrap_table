@@ -81,6 +81,11 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 	Future<User> findById(Long id);
 
 	User findByN(String name);
+
+	//直接关联查询出card实体，不再发送额外的sql
+	@Query(value = "select u from User u left join fetch u.card c where u.id=?1")
+	User testJoin(Long id);
+
 	/**
 	 * spring data jpa 方法名示例
 	 */

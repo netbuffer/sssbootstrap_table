@@ -29,6 +29,9 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+/**
+ * jpql规范:http://docs.oracle.com/javaee/6/tutorial/doc/bnbtg.html
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 // 表示继承了SpringJUnit4ClassRunner类
 @ContextConfiguration(locations = { "classpath:spring/spring-context.xml"})
@@ -81,6 +84,12 @@ public class TestSpringDataJpa {
 	@Test
 	public void testGetUserList() {
 		List<User> users=userService.getUserList("desc",3,0);
+	}
+
+	@Test
+	public void testJoin() {
+		User user=userDao.testJoin(1L);
+		logger.info("user.getCard():{}",user.getCard());
 	}
 
 	@Test
