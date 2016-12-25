@@ -2,6 +2,7 @@
 
 ## 技术栈/technology stack
 * spring+springmvc+spring data jpa
+* `freemarker`
 * bootstrap-table1.9
 * `bootstrap-datetimepicker`
 * druid

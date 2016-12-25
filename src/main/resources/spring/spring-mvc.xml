@@ -41,7 +41,7 @@
 		<property name="viewResolvers">
 			<list>
 				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-				<ref bean="jstlview" />
+				<ref bean="freeMarkerViewResolver" />
 			</list>
 		</property>
 		<property name="defaultViews">
@@ -67,13 +67,20 @@
 			</list>
 		</property>
 	</bean>
-	<!-- 上面没匹配到则会使用这个视图解析器 -->
-	<bean id="jstlview" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/" />
-		<property name="suffix" value=".jsp" />
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
+
+	<!-- freemarker视图解配置 -->
+	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/" />
+		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
+	<!-- freemarker视图解析器 -->
+	<bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="suffix" value=".ftl" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<!-- 此变量值为pageContext.request, 页面使用方法：rc.contextPath -->
+		<property name="requestContextAttribute" value="rc" />
+	</bean>
+
 	<!-- <bean class="com.wonders.stpt.bid.controller.JXLExcelView"/> -->
 
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" >

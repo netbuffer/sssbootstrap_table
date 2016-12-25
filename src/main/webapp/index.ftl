@@ -1,19 +1,15 @@
-<!-- 去除jsp导入带来的空行 -->
-<%-- <%@ page trimDirectiveWhitespaces="true"%> --%>
-<%@ page language="java" isErrorPage="true" errorPage="500.jsp"
-	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Hello World</title>
 	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		function test(){
-			$.post('${pageContext.request.contextPath }/test/ajax', function(data) {
-			   alert(data);
-			});
+			<#--$.post('${pageContext.request.contextPath }/test/ajax', function(data) {-->
+			   <#--alert(data);-->
+			<#--});-->
 		}
-		
+
 		function testjsonp(){
 			$.ajax({ 
 				url:"http://localhost:8080/ssmbootstrap_table/jsonp/tj/1.json", 
@@ -54,7 +50,8 @@
 <body>
 	<h2>Hello World!</h2>
 	<a href="user/showUser?id=1">user/showUser</a><hr/>
-	${pageContext.request.scheme }<br/>
+    showTime:${showTime}
+	<#--${pageContext.request.scheme }<br/>
 	${pageContext.request.serverName }<br/>
 	${pageContext.request.serverPort }<br/>
 	${pageContext.request.contextPath }<br/>
@@ -76,6 +73,6 @@
 	</pre>
 	<button onclick="test();">ajax</button>&emsp; <button onclick="testjsonp();">testjsonp</button>
 	<hr/>
-	<a href="${basepath}/metrics">metrics</a>
+	<a href="${basepath}/metrics">metrics</a>-->
 </body>
 </html>
