@@ -205,10 +205,9 @@ public class UserController {
 		}
 		List<User> users =search==null? userService.getUserList(order, limit, offset): userService.getUserList(search,order, limit, offset);
 		long total = search==null?userService.getUserListCount():userService.getUserListCount(search);
-		Map<String, Object> params = new HashMap<String, Object>();
 		model.addAttribute("total", total);
 		model.addAttribute("rows", users);
-		logger.info("结果:{}", params);
+		logger.info("结果:{}", model);
 		long estimatedTime = System.nanoTime() - startTime;
 		logger.debug("userlist execute with:{}ns",estimatedTime);
 		return "userlist";

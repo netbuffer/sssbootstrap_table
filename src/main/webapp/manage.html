@@ -200,6 +200,9 @@
             $("#user_edit_form input[name='name']").val(row.name);
             $("#user_edit_form input[name='age']").attr("placeholder",row.age);
             $("#user_edit_form input[name='age']").val(row.age);
+			if(row.card!=null){
+				$("#user_edit_form input[name='card.cardNo']").val(row.card.cardNo);
+			}
             $("#user_edit_form input[type='radio'][name='sex'][value='"+row.sex+"']").attr("checked",'checked');
             $("#user_edit_form input[name='adddate']").attr("placeholder",moment(moment.unix(row.adddate)).format('YYYY-MM-DD HH:mm:ss'));
 			$("#waituserid").val(row.id);
@@ -256,6 +259,7 @@
 				"name" : $("#user_edit_form input[name='name']").val(),
 				"age":$("#user_edit_form input[name='age']").val(),
 				"sex":sex==""?"男":sex,
+				"card.cardNo":$("#user_edit_form input[name='card.cardNo']").val(),
 				"adddate":$("#user_edit_form input[name='adddate']").val(),//使用springmvc自定义类型转换器StringToTimestampConverter
 				"_method":"PUT"
             },
@@ -456,6 +460,10 @@
 								<label class="radio-inline">
 									<input type="radio" name="sex" id="inlineRadio2" value="女"> 女
 								</label>
+							</div>
+							<div class="form-group">
+								<label for="card.cardNo">卡号</label>
+								<input type="text" class="form-control" name="card.cardNo" id="card.cardNo" placeholder="请输入年龄">
 							</div>
 							<div class="form-group">
 								<label for="user_adddate">添加时间</label>
