@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+	<title>hello</title>
+	<link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<div>
+			<h1>非web环境执行模板渲染</h1>
+			<p th:text="'hello:'+${name}"></p>
+			<div th:text="${#execInfo.templateName}">${#execInfo.templateName}</div>
+			<div th:text="${#execInfo.templateMode}">${#execInfo.templateMode}</div>
+			<div th:text="${#execInfo.processedTemplateName}">${#execInfo.processedTemplateName}</div>
+			<div th:text="${#execInfo.processedTemplateMode}">${#execInfo.processedTemplateMode}</div>
+			<div th:text="${#execInfo.templateStack}">${#execInfo.templateStack}</div>
+		</div>
+	</div>
+</body>
+</html>
