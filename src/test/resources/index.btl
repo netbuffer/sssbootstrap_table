@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello World</title>
+	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		function test(){
+			$.post('/test/ajax', function(data) {
+			   alert(data);
+			});
+		}
+	</script>
+</head>
+<body>
+    <% layout("/layout.btl"){%>传递的内容<% } %>
+	<h2>Hello ${name}</h2>
+	<button onclick="test();">ajax</button>&emsp; <button onclick="testjsonp();">testjsonp</button>
+	<hr/>
+	<%
+        var a = 2;
+        var b = 3;
+        var result = a+b;
+    %>
+    hello 2+3=${result}<hr/>
+    java native方法调用,@users.get(0).toString():${@users.get(0).toString()}
+	<%
+	for(user in users){
+	%>
+	<span>索引:${userLP.index}:</span>hello,${user.name};<br/>
+	<% } %>
+	<hr/>
+	mapdata：${mapdata["name"]} / ${mapdata["age"]}<br/>
+	<%
+		var arr = [1,2,3];
+        //beetl内置的虚拟属性.~size 针对了数组以及集合类型
+		for(var i=0;i<arr.~size;i++){
+			print(arr[i]+"<br/>");
+		}
+	%><br/>
+    ${user.wife.name!"单身"}<br/>
+    date(),dateFormat="yyyy-MM-dd":${date(),dateFormat="yyyy-MM-dd"}
+    <pre>
+        安全输出表达式可以包括
+        字符串常量,如 ${user.count!"无结果"}
+        boolean常量 ${user.count!false}
+        数字常量，仅限于正数，因为如果是负数，则类似减号，容易误用，因此，如果需要表示负数，请用括号，如${user.count!(-1)}
+        class直接调用，如${user.count!@User.DEFAULT_NUM}
+        方法调用，如 ${user.count!getDefault() }
+        属性引用，如 ${user.count!user.maxCount }
+        任何表达式，需要用括号
+    </pre>
+</body>
+</html>

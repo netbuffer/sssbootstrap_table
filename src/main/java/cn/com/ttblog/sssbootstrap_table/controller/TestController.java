@@ -4,11 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -17,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
@@ -600,5 +597,20 @@ public class TestController {
 		m.put("date",new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 		return "custom_view";//需要返回视图bean的id
 //		return "customView";
+	}
+
+	@RequestMapping(value="/session")
+	public String session(HttpSession session,Map m){
+		LOG.debug("get to session.btl");
+		m.put("msession",session);
+		Enumeration<String> es= session.getAttributeNames();
+		List sessionObjs=new ArrayList();
+		while (es.hasMoreElements()){
+			String emk=es.nextElement();
+			Object emv=session.getAttribute(emk);
+			sessionObjs.add(emv);
+		}
+	    LOG.debug("sessionObjs:{}",sessionObjs);
+		return "session";
 	}
 }

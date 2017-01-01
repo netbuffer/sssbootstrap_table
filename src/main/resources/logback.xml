@@ -65,6 +65,7 @@
 	<logger name="jdbc.resultset" level="OFF" />
 	<logger name="jdbc.sqlonly" level="OFF" />
 	<logger name="jdbc.sqltiming" level="INFO" />
+	<logger name="org.beetl" level="DEBUG" />
 	<!--<logger name="log4jdbc.debug" level="DEBUG" />-->
 	<!--<logger name="net.sf.ehcache" level="ALL"/>-->
 	

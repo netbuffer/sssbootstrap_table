@@ -54,7 +54,7 @@
 		<property name="viewResolvers">
 			<list>
 				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-				<ref bean="jstlview" />
+				<ref bean="beetlview" />
 			</list>
 		</property>
 		<property name="defaultViews">
@@ -80,14 +80,30 @@
 			</list>
 		</property>
 	</bean>
-	<!-- 上面没匹配到则会使用这个视图解析器 -->
-	<bean id="jstlview" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/" />
-		<property name="suffix" value=".jsp" />
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
+
+	<!--beetl view-->
+	<bean id="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init">
+		<property name="functions">
+			<map>
+				<!-- 定义SpEL方法 -->
+				<entry key="spel">
+					<bean class="org.beetl.ext.spring.SpELFunction"/>
+				</entry>
+			</map>
+		</property>
+		<property name="functionPackages">
+			<map>
+				<entry key="sputil">
+					<bean class="org.beetl.ext.spring.UtilsFunctionPackage"/>
+				</entry>
+			</map>
+		</property>
 	</bean>
-	<!-- <bean class="com.wonders.stpt.bid.controller.JXLExcelView"/> -->
+	<bean id="beetlview" class="org.beetl.ext.spring.BeetlSpringViewResolver">
+		<property name="suffix" value=".btl"/>
+		<property name="config" ref="beetlConfig"/>
+		<property name="contentType" value="text/html"/>
+	</bean>
 
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" >
 		<property name="converters">

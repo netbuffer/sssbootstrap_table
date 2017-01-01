@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello World</title>
+	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		function test(){
+			$.post('/test/ajax', function(data) {
+			   alert(data);
+			});
+		}
+		function testjsonp(){
+			$.ajax({ 
+				url:"http://localhost:8080/ssmbootstrap_table/jsonp/tj/1.json", 
+				dataType:"jsonp",
+				data:{"productType":"01"}, 
+				jsonp: "callback", 
+				success: function(data) {
+					alert(JSON.stringify(data));
+				}, 
+				error: function(jqXHR){ 
+					console.log(jqXHR); 
+				}
+			});
+			var head = document.head || $('head')[0] || document.documentElement; // code from jquery
+			  var script = $(head).find('script')[0];
+			  script.onerror = function(evt) {
+				alert("网络超时,请稍后再试!");
+			    // do some clean
+			    // delete script node
+			    if (script.parentNode) {
+			      script.parentNode.removeChild(script);
+			    }
+			    // delete jsonCallback global function
+			    var src = script.src || '';
+			    var idx = src.indexOf('callback=');
+			    if (idx != -1) {
+			      var idx2 = src.indexOf('&');
+			      if (idx2 == -1) {
+			        idx2 = src.length;
+			      }
+			      var jsonCallback = src.substring(idx + 13, idx2);
+			      delete window[jsonCallback];
+			    }
+			  };
+		}
+	</script>
+</head>
+<body>
+	<!--
+		http://ibeetl.com/guide/#beetl
+	-->
+	<h2>Hello World!</h2>
+	<a href="user/showUser?id=1">user/showUser</a><hr/>
+	<button onclick="test();">ajax</button>&emsp; <button onclick="testjsonp();">testjsonp</button>
+	<hr/>
+	ctxPath:${ctxPath}<br/>
+	parameter:${parameter}<br/>
+	servlet:${servlet}<br/>
+	request:${request }
+	<!--<a href="/metrics">metrics</a>-->
+	<%
+        var a = 2;
+        var b = 3;
+        var result = a+b;
+    %>
+    <hr>
+	hello 2+3=${result}
+</body>
+</html>

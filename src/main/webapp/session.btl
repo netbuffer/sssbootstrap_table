@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>session属性</title>
+<link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<body>
+	<div class="container">
+		<h1>${echo('hello')}</h1>
+		<div class="">
+			<hr/>
+			<h3>Session attributes:</h3>
+			<div class="table-responsive">
+			  <table class="table table-hover table-bordered table-striped">
+			  	<tr><th>属性名</th><th>属性值</th></tr>
+				  <%
+					  var attrs = @msession.getAttributeNames();
+					  while(@attrs.hasMoreElements()){
+					  var em=@attrs.nextElement();
+				  %>
+				     <tr>
+						 <td>${em}</td>
+						 <td>${@msession.getAttribute(em)}</td>
+					 </tr>
+				  <%
+					  }
+				  %>
+			  </table>
+			</div>
+		</div>
+		tomcat session:${msession}，${@msession.getAttributeNames()}<br/>
+		beetl wrapper session=${session},${@session.getAttributeNames()}
+		<%
+			//jsp session
+			/*
+				for (Enumeration e = session.getAttributeNames(); e
+				.hasMoreElements();) {
+				String attribName = (String) e.nextElement();
+				Object attribValue = session.getAttribute(attribName);
+				%>
+				<tr><td><%=attribName%></td><td><%=attribValue%></td></tr>
+				<%
+				}
+			*/
+		%>
+	</div>
+</body>
+</html>
