@@ -54,7 +54,7 @@
 		<property name="viewResolvers">
 			<list>
 				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-				<ref bean="jstlview" />
+				<ref bean="thymeleafView" />
 			</list>
 		</property>
 		<property name="defaultViews">
@@ -80,14 +80,42 @@
 			</list>
 		</property>
 	</bean>
-	<!-- 上面没匹配到则会使用这个视图解析器 -->
-	<bean id="jstlview" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+	<!--
+		Thymeleaf vs. JSP:http://www.thymeleaf.org/doc/articles/thvsjsp.html
+	-->
+	<!-- SpringResourceTemplateResolver automatically integrates with Spring's own -->
+	<!-- resource resolution infrastructure, which is highly recommended.          -->
+	<bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
 		<property name="prefix" value="/" />
-		<property name="suffix" value=".jsp" />
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="suffix" value=".html" />
+		<!-- HTML is the default value, added here for the sake of clarity.          -->
+		<!--<property name="templateMode" value="HTML" />-->
+		<!-- Template cache is true by default. Set to false if you want             -->
+		<!-- templates to be automatically updated when modified.                    -->
+		<property name="cacheable" value="false" />
+		<!--需要编码来防止乱码-->
+		<property name="characterEncoding" value="UTF-8"/>
 	</bean>
-	<!-- <bean class="com.wonders.stpt.bid.controller.JXLExcelView"/> -->
+	<!-- SpringTemplateEngine automatically applies SpringStandardDialect and      -->
+	<!-- enables Spring's own MessageSource message resolution mechanisms.         -->
+	<bean id="templateEngine"
+		  class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
+		<!-- Enabling the SpringEL compiler with Spring 4.2.4 or newer can speed up  -->
+		<!-- execution in most scenarios, but might be incompatible with specific    -->
+		<!-- cases when expressions in one template are reused across different data -->
+		<!-- ypes, so this flag is "false" by default for safer backwards            -->
+		<!-- compatibility.                                                          -->
+		<property name="enableSpringELCompiler" value="true" />
+	</bean>
+	<bean id="thymeleafView" class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+		<!-- NOTE 'order' and 'viewNames' are optional -->
+		<property name="order" value="1" />
+		<property name="characterEncoding" value="UTF-8" />
+		<property name="contentType" value="text/html" />
+	</bean>
 
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" >
 		<property name="converters">

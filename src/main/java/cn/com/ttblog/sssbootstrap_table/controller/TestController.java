@@ -180,7 +180,7 @@ public class TestController {
 		m.addAttribute("uri", id);
 		m.addAttribute("showTime", System.currentTimeMillis() / 1000);
 		m.addAttribute("test",id);
-		return "index";
+		return "test-index";
 	}
 
 	@RequestMapping(value = { "/getconfig" })
@@ -333,13 +333,13 @@ public class TestController {
 	public String ajax(HttpServletRequest request){
 		logger.debug("request.getHeader(\"X-Requested-With\"):{}",request.getHeader("X-Requested-With"));
 		logger.debug("is ajax:{}",AjaxUtils.isAjaxRequest(request));
-		return "index";
+		return "test-index";
 	}
 	
 	@RequestMapping(value={"/access"})
 	public String access(){
 		loggerAccess.info("access");
-		return "index";
+		return "test-index";
 	}
 	
 	@RequestMapping(value={"/syn"})
@@ -355,7 +355,7 @@ public class TestController {
 			model.put("syn", Thread.currentThread().getName());
 		}
 		logger.warn("{}-执行synchronized操作完成", Thread.currentThread().getName());
-		return "index";
+		return "test-index";
 	}
 
 	@RequestMapping(value={"/syn2"})
@@ -373,7 +373,7 @@ public class TestController {
 		}
 		logger.warn("{}-执行synchronized操作完成2", Thread.currentThread().getName());
 		lock.unlock();
-		return "index";
+		return "test-index";
 	}
 	
 	@RequestMapping(value={"/ue"})
@@ -521,7 +521,7 @@ public class TestController {
 	@RequestMapping(value="/testmodelattr1")
 	public String testmodelattr1(User u){
 		logger.debug("testmodelattr1,u:{}",u);
-		return "index";
+		return "test-index";
 	}
 	
 	/**
@@ -533,7 +533,7 @@ public class TestController {
 	public String testmodelattr2(User u,Model m){
 		logger.debug("testmodelattr2,u:{}",u);
 		m.addAttribute("u", u);
-		return "index";
+		return "test-index";
 	}
 	
 	/**
@@ -544,7 +544,7 @@ public class TestController {
 	@RequestMapping(value="/testmodelattr3")
 	public String testmodelattr3(@ModelAttribute(value="u")User u){
 		logger.debug("testmodelattr3,u:{}",u);
-		return "index";
+		return "test-index";
 	}
 	
 	@RequestMapping(value="/serverip")
@@ -600,5 +600,11 @@ public class TestController {
 		m.put("date",new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 		return "custom_view";//需要返回视图bean的id
 //		return "customView";
+	}
+
+	@RequestMapping(value="/session",method = RequestMethod.GET)
+	public String session(Map m){
+		LOG.debug("get to session.html");
+		return "session";
 	}
 }

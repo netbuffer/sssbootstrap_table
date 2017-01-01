@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Hello World</title>
+	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+        var username = "[[${session.username}]]";
+		console.log("username:%s",username);
+		function test(){
+			$.post('${request.contextPath }/test/ajax', function(data) {
+			   alert(data);
+			});
+		}
+		
+		function testjsonp(){
+			$.ajax({ 
+				url:"http://localhost:8080/ssmbootstrap_table/jsonp/tj/1.json", 
+				dataType:"jsonp",
+				data:{"productType":"01"}, 
+				jsonp: "callback", 
+				success: function(data) {
+					alert(JSON.stringify(data));
+				}, 
+				error: function(jqXHR){ 
+					console.log(jqXHR); 
+				}
+			});
+			var head = document.head || $('head')[0] || document.documentElement; // code from jquery
+			  var script = $(head).find('script')[0];
+			  script.onerror = function(evt) {
+				alert("网络超时,请稍后再试!");
+			    // do some clean
+			    // delete script node
+			    if (script.parentNode) {
+			      script.parentNode.removeChild(script);
+			    }
+			    // delete jsonCallback global function
+			    var src = script.src || '';
+			    var idx = src.indexOf('callback=');
+			    if (idx != -1) {
+			      var idx2 = src.indexOf('&');
+			      if (idx2 == -1) {
+			        idx2 = src.length;
+			      }
+			      var jsonCallback = src.substring(idx + 13, idx2);
+			      delete window[jsonCallback];
+			    }
+			  };
+		}
+	</script>
+</head>
+<body>
+	thymeleaf3使用:http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#variables
+	<h2>Hello World!</h2>
+	<div th:text="${#session}">session</div>
+	<a href="user/showUser?id=1">user/showUser</a><hr/>
+	<p th:text="'Hello,' + ${session.username} + ' with thymeleaf !'" /> <br/>
+	<div th:text="${#request.getContextPath()}"></div>
+	request.getScheme:[[${#request.getScheme()}]]<br/>
+	request.getServerName():[[${#request.getServerName()}]]<br/>
+	request.getServerPort():[[${#request.getServerPort() }]]<br/>
+	request.getContextPath():[[${#request.getContextPath() }]]<br/>
+	<!--通过EL设置basepath-->
+	<!--<c:set var="basepath">-->
+		<!--${request.scheme}://${request.serverName}<c:if test="${request.serverPort!=80 }">:${request.serverPort}</c:if>${request.contextPath }-->
+	<!--</c:set>-->
+	<!--${basepath }<hr/>-->
+	<!--<pre>-->
+	<!--${request.queryString} 取得请求的参数字符串-->
+	<!--${request.requestURL} 取得请求的URL，不包括参数字符串-->
+	<!--${request.contextPath}         服务的web application 的名称-->
+	<!--${request.method}           取得HTTP 的方法(GET、POST)-->
+	<!--${request.protocol}         取得使用的协议(HTTP/1.1、HTTP/1.0)-->
+	<!--${request.remoteUser}         取得用户名称-->
+	<!--${request.remoteAddr }         取得用户的IP 地址-->
+	<!--${session.id}               取得session 的ID-->
+	<!--${servletContext.serverInfo}   取得主机端的服务信息-->
+	</pre>
+	<button onclick="test();">ajax</button>&emsp; <button onclick="testjsonp();">testjsonp</button>
+	<hr/>
+	<a href="${basepath}/metrics">metrics</a>
+</body>
+</html>

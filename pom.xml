@@ -36,9 +36,21 @@
     <itextpdf.version>5.5.9</itextpdf.version>
     <hibernate.version>5.0.3.Final</hibernate.version>
     <spring-data-jpa.version>1.10.1.RELEASE</spring-data-jpa.version>
+    <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.thymeleaf</groupId>
+      <artifactId>thymeleaf</artifactId>
+      <version>${thymeleaf.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring4 -->
+    <dependency>
+      <groupId>org.thymeleaf</groupId>
+      <artifactId>thymeleaf-spring4</artifactId>
+      <version>${thymeleaf.version}</version>
+    </dependency>
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
       <artifactId>jsp-api</artifactId>

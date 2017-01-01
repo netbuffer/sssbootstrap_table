@@ -11,6 +11,7 @@
 * lombok
 * zxing
 * itextpdf
+* [`thymeleaf`](http://www.thymeleaf.org/)
 
 > ## github:[https://github.com/netbuffer/sssbootstrap_table](https://github.com/netbuffer/sssbootstrap_table)
 > ## git@osc:[http://git.oschina.net/netbuffer/sssbootstrap_table](http://git.oschina.net/netbuffer/sssbootstrap_table)
