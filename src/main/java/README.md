@@ -12,6 +12,9 @@
 `@ModelAttribute`从数据库先查询出bean，再组装前端传递的参数到controller中的方法入参
 * ![i18n](../../../src/main/webapp/image/i18.png)
 i18n国际化消息展示
+* 在持久化上下文中的数据，当字段变更后会同步刷新到db中，如果是在controller中发生的改变需要在web.xml
+中配置openentityinview  
+
 
 ---
 #### JPQL(java持久化查询语言)使用整理
