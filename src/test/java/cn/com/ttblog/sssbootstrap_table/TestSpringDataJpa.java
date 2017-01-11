@@ -168,11 +168,11 @@ public class TestSpringDataJpa {
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void testAddUser() {
 		for (int i = 0; i < 10; i++) {
 			User u = new User();
-			u.setAge(i + new Random().nextInt(1));
+			u.setAge(i + new Random().nextInt(1)+1);
 			u.setAdddate((int)(System.currentTimeMillis() / 1000));
 			u.setName("用户:"+i);
 			u.setDeliveryaddress("收货地址");
