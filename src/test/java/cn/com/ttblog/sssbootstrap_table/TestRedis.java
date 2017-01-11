@@ -1,5 +1,7 @@
 package cn.com.ttblog.sssbootstrap_table;
 
+import cn.com.ttblog.sssbootstrap_table.model.User;
+import com.alibaba.fastjson.JSON;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
 import javax.annotation.Resource;
+import java.util.Random;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/spring-context.xml"})
@@ -89,4 +92,18 @@ public class TestRedis {
         LOG.debug("redis add result:{}",result);
     }
 
+    @Test
+    public void testAddUser(){
+        ValueOperations valueOperations=stringRedisTemplate.opsForValue();
+        User u = new User();
+        u.setAge(1 + new Random().nextInt(1));
+        u.setAdddate((int)(System.currentTimeMillis() / 1000));
+        u.setName("batch-add-user:");
+        u.setDeliveryaddress("收货地址");
+        u.setPhone("1324");
+        u.setSex("男");
+        valueOperations.set("user", JSON.toJSONString(u));
+        User user= JSON.parseObject(valueOperations.get("user").toString(),User.class);
+        LOG.debug("user.getName():{}",user.getName());
+    }
 }
