@@ -106,4 +106,14 @@ public class TestRedis {
         User user= JSON.parseObject(valueOperations.get("user").toString(),User.class);
         LOG.debug("user.getName():{}",user.getName());
     }
+
+    @Test
+    public void testincrement(){
+        ValueOperations valueOperations=stringRedisTemplate.opsForValue();
+        valueOperations.increment("fail_error",1);
+        for(int i=0;i<5;i++){
+            valueOperations.increment("fail_error",1);
+        }
+        LOG.info("valueOperations.get(\"fail_error\")：{}",valueOperations.get("fail_error"));
+    }
 }
