@@ -7,12 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements IUserService{
@@ -104,5 +105,18 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public void deleteById(Long id) {
 		userDao.delete(id);
+	}
+
+	@Override
+	public User updateUserWithOptLock(User updateUser) {
+		User user=userDao.selectUserWithOptLock(updateUser.getId());
+		user.setName(updateUser.getName());
+		try {
+			//休眠过程中
+			TimeUnit.SECONDS.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return userDao.save(user);
 	}
 }

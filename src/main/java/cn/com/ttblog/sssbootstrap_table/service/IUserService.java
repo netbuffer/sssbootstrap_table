@@ -22,4 +22,5 @@ public interface IUserService {
 	public void addUM();
 	public void addUMtest() throws IllegalArgumentException;
 	public void deleteById(Long id);
+	User updateUserWithOptLock(User updateUser);
 }

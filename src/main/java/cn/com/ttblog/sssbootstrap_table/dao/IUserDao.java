@@ -86,7 +86,11 @@ public interface IUserDao extends JpaRepository<User,Long>,JpaSpecificationExecu
 	@Query(value = "select u from User u left join fetch u.card c where u.id=?1")
 	User testJoin(Long id);
 
-	/**
+	//乐观锁,基于version字段来控制
+	@Lock(LockModeType.OPTIMISTIC)
+	@Query(value = "select u from User u where id=?1")
+    User selectUserWithOptLock(Long id);
+    /**
 	 * spring data jpa 方法名示例
 	 */
 //	List<Person> findByEmailAddressAndLastname(EmailAddress emailAddress, String lastname);
