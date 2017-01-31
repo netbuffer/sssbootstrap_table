@@ -601,4 +601,41 @@ public class TestController {
 		return "custom_view";//需要返回视图bean的id
 //		return "customView";
 	}
+
+	/**
+	 * 需要在mvc:annotation-driven中启用该功能enable-matrix-variables="true"
+	 * @MatrixVariable使用测试
+	 * 匹配 url :/pets/42;q=11;r=22
+	 * @param petId
+	 * @param q
+	 */
+	@RequestMapping(value = "/pets/{petId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map findPet(@PathVariable String petId,@MatrixVariable(required = false) int q,Map model){
+		LOG.debug("q:{}",q);
+		model.put("q",q);
+		return model;
+	}
+	//匹配:/owners/42;q=11/pets/21;q=22
+	@RequestMapping(value = "/owners/{ownerId}/pets/{petId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Model findPet(@MatrixVariable(value = "q",pathVar="ownerId") int q1,
+						 @MatrixVariable(value = "q",pathVar="petId") int q2,Model model){
+		LOG.debug("q1:{},q2:{}",q1,q2);
+		model.addAttribute("q1",q1);
+		model.addAttribute("q2",q2);
+		return model;
+	}
+	//匹配/ownerss/42;q=11;r=12/pets/21;q=22;s=23
+	@RequestMapping(value = "/ownerss/{ownerId}/pets/{petId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Model findPet(@MatrixVariable Map<String,String> matrixVars,
+						 @MatrixVariable(pathVar = "petId") Map<String,String> petMatrixVars,Model model){
+		model.addAttribute("matrixVars",matrixVars);
+		model.addAttribute("petMatrixVars",petMatrixVars);
+		LOG.debug("model:{}",model);
+		return model;
+	}
+
+
 }
