@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+	<!--
+	 logback变量使用:https://logback.qos.ch/manual/configuration.html#variableSubstitution
+	 properties are looked up in the local scope first, in the context scope second, in the system properties scope third, and in the
+	 OS environment fourth and last.
+	-->
 	<property name="logname" value="sssbootstrap_table" />
 	<property name="logbase" value="${catalina.base}/logs/sssbootstrap_table/" />
 	<jmxConfigurator />

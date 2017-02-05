@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -173,7 +174,16 @@ public class TestController {
 	public @ResponseBody Object getbean(@PathVariable("name") String name) {
 		return applicationContext.getBean(name);
 	}
-	
+
+	/**
+	 * 获取环境信息
+	 * @return
+	 */
+	@RequestMapping(value = {"/env" })
+	public @ResponseBody Environment getEnvironment() {
+		return applicationContext.getEnvironment();
+	}
+
 	@RequestMapping(value = {"/{id}", "/index/{id}" })
 	public String index(@PathVariable("id") int id, ModelMap m) {
 		logger.debug("template id:{}", id);
