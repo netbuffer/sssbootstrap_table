@@ -30,6 +30,7 @@ public class User implements Serializable {
 	 * 用户id
 	 */
 	private Long id;
+	//引用ValidationMessages资源文件中key为username.valid的信息
 	@Size(min = 1, max = 20,message = "{username.valid}")
 	private String name;
 	private String sex;
