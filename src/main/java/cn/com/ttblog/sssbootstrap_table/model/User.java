@@ -2,8 +2,6 @@ package cn.com.ttblog.sssbootstrap_table.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.data.jpa.repository.Lock;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,10 +30,11 @@ public class User implements Serializable {
 	 * 用户id
 	 */
 	private Long id;
-	@Size(min = 1, max = 20, message = "{用户名长度必须在1到20个字符之间}")
+	@Size(min = 1, max = 20,message = "{username.valid}")
 	private String name;
 	private String sex;
-	@NotNull(message = "年龄不能为空并且在1-150之间")
+	@NotNull(message = "年龄不为空")
+	//引用国际化资源文件key为Range.user.age的信息,message = "{Range.user.age}"
 	@Range(min = 1, max = 150)
 //	@NumberFormat() 可以设置时间日期的格式化
 	private Integer age;

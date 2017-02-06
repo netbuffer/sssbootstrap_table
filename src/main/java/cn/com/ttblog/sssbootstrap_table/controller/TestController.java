@@ -448,6 +448,12 @@ public class TestController {
 		logger.debug("二维码解析");
 		return "decodeqr";
 	}
+
+
+	@RequestMapping(value={"/i18n"},method=RequestMethod.GET)
+	public String i18n(){
+		return "test";
+	}
 	
 	@RequestMapping(value={"/decodeqr"},method=RequestMethod.POST)
 	@ResponseBody

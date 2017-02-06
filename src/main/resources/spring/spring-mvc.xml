@@ -188,21 +188,26 @@
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
-		<!--<property name="validationMessageSource" ref="messageSource" />-->
+		<property name="validationMessageSource" ref="messageSource" />
 	</bean>
 	
 	<!-- i18n资源 -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-	    <!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称  -->
-	    <property name="useCodeAsDefaultMessage" value="true" />
+	    <!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称 http://jinnianshilongnian.iteye.com/blog/1879166 -->
+	    <property name="useCodeAsDefaultMessage" value="false" />
 	    <property name="defaultEncoding" value="UTF-8" />
 	    <!-- 国际化信息所在的文件名 -->
 	    <property name="basenames">
 			<list>
-				<value>i18n/message</value>
+				<!--测试发现validator上注解校验的提示信息会从ValidationMessages这个文件中去检索
+					并且该文件需要在classpath根目录下
+				-->
+				<value>ValidationMessages</value>
+				<value>i18n.message</value>
 			</list>
 		</property>
 	</bean>
+
 	<!-- AcceptHeaderLocaleResolver、CookieLocaleResolver、SessionLocaleResolver、LocaleChangeInterceptor这几种国际化方式 -->
 	<!-- 国际化，采用cookie实现 http://kiritor.github.io/2015/09/11/SpringMVC-i18n/ -->
 	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
