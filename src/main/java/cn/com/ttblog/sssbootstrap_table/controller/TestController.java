@@ -1,23 +1,19 @@
 package cn.com.ttblog.sssbootstrap_table.controller;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import cn.com.ttblog.sssbootstrap_table.annotation.Token;
+import cn.com.ttblog.sssbootstrap_table.model.Address;
+import cn.com.ttblog.sssbootstrap_table.model.ExtendUser;
+import cn.com.ttblog.sssbootstrap_table.model.User;
+import cn.com.ttblog.sssbootstrap_table.util.AjaxUtils;
+import com.alibaba.fastjson.JSONObject;
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -27,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,30 +33,21 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.alibaba.fastjson.JSONObject;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Binarizer;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.Result;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.client.j2se.MatrixToImageConfig;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import cn.com.ttblog.sssbootstrap_table.annotation.Token;
-import cn.com.ttblog.sssbootstrap_table.model.Address;
-import cn.com.ttblog.sssbootstrap_table.model.ExtendUser;
-import cn.com.ttblog.sssbootstrap_table.model.User;
-import cn.com.ttblog.sssbootstrap_table.util.AjaxUtils;
-import eu.bitwalker.useragentutils.UserAgent;
+
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Controller
 @RequestMapping("/test")
@@ -173,7 +161,16 @@ public class TestController {
 	public @ResponseBody Object getbean(@PathVariable("name") String name) {
 		return applicationContext.getBean(name);
 	}
-	
+
+	/**
+	 * 获取环境信息
+	 * @return
+	 */
+	@RequestMapping(value = {"/env" })
+	public @ResponseBody Environment getEnvironment() {
+		return applicationContext.getEnvironment();
+	}
+
 	@RequestMapping(value = {"/{id}", "/index/{id}" })
 	public String index(@PathVariable("id") int id, ModelMap m) {
 		logger.debug("template id:{}", id);
@@ -308,6 +305,34 @@ public class TestController {
 		attributes.addAttribute("param", "this is parameter");
 		return "redirect:/test/1";
 	}
+
+	/**
+	 * flash attribute使用:原理就是将模型中的数据复制到会话session中，重定向后再从会话中取出对象放到请求模型中，并且移除会话中数据
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value={"/redirectflashattr"})
+	public String redirectFlashAttr(RedirectAttributes redirectAttributes){
+		logger.debug("redirect2");
+		User user=new User();
+		user.setName("user");
+		user.setAge(22);
+		user.setPhone("13023423423");
+		redirectAttributes.addFlashAttribute("user",user);
+		return "redirect:/test/receiveflashattr";
+	}
+
+	/**
+	 * 取模型中的FlashAttribute
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value={"/receiveflashattr"})
+	@ResponseBody
+	public User redirectFlashAttr(ModelMap model){
+		logger.debug("after redirect get model:{}",model);
+		return (User) model.get("user");
+	}
 	
 	@RequestMapping(value={"/error"})
 	public String error(ModelMap m){
@@ -437,6 +462,12 @@ public class TestController {
 	public String decodeqr(){
 		logger.debug("二维码解析");
 		return "decodeqr";
+	}
+
+
+	@RequestMapping(value={"/i18n"},method=RequestMethod.GET)
+	public String i18n(){
+		return "test";
 	}
 	
 	@RequestMapping(value={"/decodeqr"},method=RequestMethod.POST)
@@ -601,4 +632,41 @@ public class TestController {
 		return "custom_view";//需要返回视图bean的id
 //		return "customView";
 	}
+
+	/**
+	 * 需要在mvc:annotation-driven中启用该功能enable-matrix-variables="true"
+	 * @MatrixVariable使用测试
+	 * 匹配 url :/pets/42;q=11;r=22
+	 * @param petId
+	 * @param q
+	 */
+	@RequestMapping(value = "/pets/{petId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map findPet(@PathVariable String petId,@MatrixVariable(required = false) int q,Map model){
+		LOG.debug("q:{}",q);
+		model.put("q",q);
+		return model;
+	}
+	//匹配:/owners/42;q=11/pets/21;q=22
+	@RequestMapping(value = "/owners/{ownerId}/pets/{petId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Model findPet(@MatrixVariable(value = "q",pathVar="ownerId") int q1,
+						 @MatrixVariable(value = "q",pathVar="petId") int q2,Model model){
+		LOG.debug("q1:{},q2:{}",q1,q2);
+		model.addAttribute("q1",q1);
+		model.addAttribute("q2",q2);
+		return model;
+	}
+	//匹配/ownerss/42;q=11;r=12/pets/21;q=22;s=23
+	@RequestMapping(value = "/ownerss/{ownerId}/pets/{petId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Model findPet(@MatrixVariable Map<String,String> matrixVars,
+						 @MatrixVariable(pathVar = "petId") Map<String,String> petMatrixVars,Model model){
+		model.addAttribute("matrixVars",matrixVars);
+		model.addAttribute("petMatrixVars",petMatrixVars);
+		LOG.debug("model:{}",model);
+		return model;
+	}
+
+
 }

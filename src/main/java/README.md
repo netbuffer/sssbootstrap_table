@@ -22,3 +22,20 @@ i18n国际化消息展示
 > `where... group by ... having... order by `
 
 > 使用idea编译工程需要在maven pom.xml中配置打包xml/properties资源,默认idea不打包,eclipse会打包
+---
+### Redis的操作
+````html
+    Key类型操作
+    ValueOperations 	Redis String/Value 操作
+    ListOperations 	Redis List 操作
+    SetOperations 	Redis Set 操作
+    ZSetOperations 	Redis Sort Set 操作
+    HashOperations 	Redis Hash 操作
+    Value约束操作
+    BoundValueOperations 	Redis String/Value key 约束
+    BoundListOperations 	Redis List key 约束
+    BoundSetOperations 	Redis Set key 约束
+    BoundZSetOperations 	Redis Sort Set key 约束
+    BoundHashOperations 	Redis Hash key 约束
+
+````
