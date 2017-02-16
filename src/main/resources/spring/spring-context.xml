@@ -3,10 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                         http://www.springframework.org/schema/context    
                         http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
                         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	
 	<context:component-scan base-package="cn.com.ttblog.sssbootstrap_table">
@@ -16,14 +18,9 @@
 
 	<bean id="configProperties"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="locations">
-			<list>
-				<value>classpath*:app.properties</value>
-				<value>classpath*:jdbc.properties</value>
-				<value>classpath*:jedis.properties</value>
-			</list>
-		</property>
+		<property name="locations" ref="config_list" />
 	</bean>
+
 	<bean id="config"
 		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
 		<property name="properties" ref="configProperties" />
@@ -52,13 +49,52 @@
 	<!--导入spring-data-jpa配置-->
 	<import resource="spring-data-jpa.xml" />
 	<import resource="spring-data-jedis.xml" />
+	<beans profile="test">
+		<util:list id="config_list" list-class="java.util.ArrayList">
+			<value>
+				classpath*:env/app.test.properties
+			</value>
+			<value>
+				classpath*:env/jdbc.test.properties
+			</value>
+			<value>
+				classpath*:env/jedis.test.properties
+			</value>
+		</util:list>
+		<bean id="userFromSpring" class="cn.com.ttblog.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
+			<property name="id" value="1" />
+			<property name="name" value="test-user" />
+		</bean>
+	</beans>
 	<beans profile="develop">
+		<util:list id="config_list" list-class="java.util.ArrayList">
+			<value>
+				classpath*:env/app.develop.properties
+			</value>
+			<value>
+				classpath*:env/jdbc.develop.properties
+			</value>
+			<value>
+				classpath*:env/jedis.develop.properties
+			</value>
+		</util:list>
 		<bean id="userFromSpring" class="cn.com.ttblog.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
 			 <property name="id" value="1" />
              <property name="name" value="develop-user" />
 		</bean>
 	</beans>
 	<beans profile="production">
+		<util:list id="config_list" list-class="java.util.ArrayList">
+			<value>
+				classpath*:env/app.production.properties
+			</value>
+			<value>
+				classpath*:env/jdbc.production.properties
+			</value>
+			<value>
+				classpath*:env/jedis.production.properties
+			</value>
+		</util:list>
 		<bean id="userFromSpring" class="cn.com.ttblog.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
 			 <property name="id" value="2" />
              <property name="name" value="production-user" />
