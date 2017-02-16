@@ -21,6 +21,25 @@
 		<property name="locations" ref="config_list" />
 	</bean>
 
+	<!--创建list、map-->
+	<!--<bean id="list" class="java.util.ArrayList">-->
+		<!--<constructor-arg index="0">-->
+			<!--<list>-->
+				<!--<value>abc</value>-->
+				<!--<value>def</value>-->
+			<!--</list>-->
+		<!--</constructor-arg>-->
+	<!--</bean>-->
+	<!--<bean id="map" class="java.util.HashMap" depends-on="list">-->
+		<!--<constructor-arg index="0">-->
+			<!--<map>-->
+				<!--<entry key="a">-->
+					<!--<ref bean="list" />-->
+				<!--</entry>-->
+			<!--</map>-->
+		<!--</constructor-arg>-->
+	<!--</bean>-->
+
 	<bean id="config"
 		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
 		<property name="properties" ref="configProperties" />
