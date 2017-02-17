@@ -195,11 +195,15 @@
 			console.log(value, row, index);
 		},
 		'click .edit' : function(e, value, row, index) {
-		    console.log("row:%o",row);
+			clear_user_form();
+			console.log("row:%o",row);
 		    $("#user_edit_form input[name='name']").attr("placeholder",row.name);
             $("#user_edit_form input[name='name']").val(row.name);
             $("#user_edit_form input[name='age']").attr("placeholder",row.age);
             $("#user_edit_form input[name='age']").val(row.age);
+			if(row.card!=null){
+				$("#user_edit_form input[name='card.cardNo']").val(row.card.cardNo);
+			}
             $("#user_edit_form input[type='radio'][name='sex'][value='"+row.sex+"']").attr("checked",'checked');
             $("#user_edit_form input[name='adddate']").attr("placeholder",moment(moment.unix(row.adddate)).format('YYYY-MM-DD HH:mm:ss'));
 			$("#waituserid").val(row.id);
@@ -256,6 +260,8 @@
 				"name" : $("#user_edit_form input[name='name']").val(),
 				"age":$("#user_edit_form input[name='age']").val(),
 				"sex":sex==""?"男":sex,
+				"card.userId":$("#waituserid").val(),
+				"card.cardNo":$("#user_edit_form input[name='card.cardNo']").val(),
 				"adddate":$("#user_edit_form input[name='adddate']").val(),//使用springmvc自定义类型转换器StringToTimestampConverter
 				"_method":"PUT"
             },
@@ -264,17 +270,21 @@
 			success:function (data) {
 	            if(data.success){
 					$("#edituc").modal('hide');
-					$(':input','#user_edit_form')
-					.not(':button, :submit, :reset,:radio')
-					.val('')
-					.removeAttr('checked')
-					.removeAttr('selected');
+					clear_user_form();
 					refreshTable();
 				}else {
                     bootbox.alert(JSON.stringify(data));
 				}
             }
 		});
+	}
+
+	function clear_user_form() {
+		$(':input','#user_edit_form')
+		.not(':button, :submit, :reset,:radio')
+		.val('')
+		.removeAttr('checked')
+		.removeAttr('selected');
 	}
 
 	function checkToday() {
@@ -399,7 +409,7 @@
 		<button type="button" class="btn btn-default" onclick="exporyAll();">
 			<span class="glyphicon glyphicon-arrow-down"></span> 导出历史数据到excel
 		</button>
-		<p class="text-center text-success">支持中文首字母查询</p>
+		<!--<p class="text-center text-success">支持中文首字母查询</p>-->
 		<!-- data-page-size设定分页大小 -->
 		<table id="dtb" data-toggle="table"
 			data-url="user/userlist.json" class="table table-hover"
@@ -456,6 +466,10 @@
 								<label class="radio-inline">
 									<input type="radio" name="sex" id="inlineRadio2" value="女"> 女
 								</label>
+							</div>
+							<div class="form-group">
+								<label for="card.cardNo">卡号</label>
+								<input type="text" class="form-control" name="card.cardNo" id="card.cardNo" placeholder="请输入卡号">
 							</div>
 							<div class="form-group">
 								<label for="user_adddate">添加时间</label>

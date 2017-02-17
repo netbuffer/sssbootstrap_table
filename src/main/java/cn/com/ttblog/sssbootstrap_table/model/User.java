@@ -1,15 +1,14 @@
 package cn.com.ttblog.sssbootstrap_table.model;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.Range;
-import org.springframework.format.annotation.NumberFormat;
+import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  *  jpa注解标记在get方法上,get方法上没有加注解标识默认为@Basic注解映射
@@ -31,10 +30,12 @@ public class User implements Serializable {
 	 * 用户id
 	 */
 	private Long id;
-	@Size(min = 1, max = 20, message = "{用户名长度必须在1到20个字符之间}")
+	//引用ValidationMessages资源文件中key为username.valid的信息
+	@Size(min = 1, max = 20,message = "{username.valid}")
 	private String name;
 	private String sex;
-	@NotNull(message = "年龄不能为空并且在1-150之间")
+	@NotNull(message = "年龄不为空")
+	//引用国际化资源文件key为Range.user.age的信息,message = "{Range.user.age}"
 	@Range(min = 1, max = 150)
 //	@NumberFormat() 可以设置时间日期的格式化
 	private Integer age;
@@ -45,6 +46,9 @@ public class User implements Serializable {
 	private transient String comments;
 	// 用户使用的地址
 	private List<Address> addresses;
+	//jpa框架会维护version版本号字段 update ... where version=.. 当version字段被变更和之前读到的记录不符合，执行update就会出错
+	private Integer version;
+
 //	private String[] img;
 //
 //	public String[] getImg() {
@@ -165,6 +169,19 @@ public class User implements Serializable {
 	}
 
 	public User(String name, String sex, Integer age, String phone, String deliveryaddress, Integer adddate,
+				String comments,int version) {
+		super();
+		this.name = name;
+		this.sex = sex;
+		this.age = age;
+		this.phone = phone;
+		this.deliveryaddress = deliveryaddress;
+		this.adddate = adddate;
+		this.comments = comments;
+		this.version=version;
+	}
+
+	public User(String name, String sex, Integer age, String phone, String deliveryaddress, Integer adddate,
 			String comments, List<Address> addresses, Card card) {
 		super();
 		this.name = name;
@@ -218,6 +235,16 @@ public class User implements Serializable {
 	@Transient
 	public String getUserInfo(){
 		return "用户名:"+this.name;
+	}
+
+	@Version
+	@Column(name = "version")
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version=version;
 	}
 
 	public String toString() {

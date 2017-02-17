@@ -128,6 +128,15 @@ public class TestSpringDataJpa {
 		userService.addUser(user);
 	}
 
+	//乐观锁测试
+	@Test
+	public void testUpdateUserWithOptLock() {
+//		如果version字段被修改过会抛出org.springframework.orm.ObjectOptimisticLockingFailureException错误
+	    User u=new User("aaa","男",22,"13288383832","收获地址",(int)(System.currentTimeMillis()/1000),"remark",1);
+	    u.setId(19459L);
+	    userService.updateUserWithOptLock(u);
+	}
+
 	@Test
 	public void testFindByName() {
 		User user = userService.getUserByName("2");
@@ -148,10 +157,16 @@ public class TestSpringDataJpa {
 
 	@Test
 	public void testSaveUser() {
-		User u=new User("图图","男",22,"13288383832","收获地址",(int)System.currentTimeMillis()/1000,"remark");
+		User u=new User("图图","男",22,"13288383832","收获地址",(int)(System.currentTimeMillis()/1000),"remark");
 		userService.addUser(u);
 //		userDao.save(u);
 	}
+
+    @Test
+    public void testSaveUserVersion() {
+        User u=new User("test","男",22,"13288383832","收获地址",(int)(System.currentTimeMillis()/1000),"remark",1);
+        userService.addUser(u);
+    }
 
 	@Test
 	public void testUpdateUser(){
@@ -168,11 +183,11 @@ public class TestSpringDataJpa {
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void testAddUser() {
 		for (int i = 0; i < 10; i++) {
 			User u = new User();
-			u.setAge(i + new Random().nextInt(1));
+			u.setAge(i + new Random().nextInt(1)+1);
 			u.setAdddate((int)(System.currentTimeMillis() / 1000));
 			u.setName("用户:"+i);
 			u.setDeliveryaddress("收货地址");

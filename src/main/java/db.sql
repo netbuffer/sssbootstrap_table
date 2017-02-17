@@ -113,3 +113,6 @@ CREATE TABLE `t_crud_demosub` (
   `id` bigint(20) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `user`
+ADD COLUMN `version`  int UNSIGNED NULL comment "乐观锁版本控制用" AFTER `comments`;
