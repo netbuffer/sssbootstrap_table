@@ -23,7 +23,25 @@
         <property name="defaultAutoCommit" value="false" />
         <property name="timeBetweenEvictionRunsMillis" value="3600000" />
         <property name="minEvictableIdleTimeMillis" value="3600000" />
+        <!--sql监控、防火墙监控-->
+        <property name="filters" value="stat,wall" />
     </bean>
+
+    <!--druid spring监控-->
+    <bean id="druid-stat-interceptor"
+          class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+    </bean>
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut"
+          scope="prototype">
+        <property name="patterns">
+            <list>
+                <value>cn.com.ttblog.sssbootstrap_table.service.*</value>
+            </list>
+        </property>
+    </bean>
+    <aop:config>
+        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+    </aop:config>
 
     <!--  log4jdbc-log4j2 -->
     <bean id="dataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
