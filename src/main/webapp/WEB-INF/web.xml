@@ -25,6 +25,32 @@
         </param-value>
     </context-param>
 
+    <!--启用http basic认证-->
+    <filter>
+        <filter-name>httpBasicOauthFilter</filter-name>
+        <filter-class>cn.com.ttblog.sssbootstrap_table.filter.HttpBasicOauthFilter</filter-class>
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>enable</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>authPath</param-name>
+            <param-value>
+                /*/restapi/**
+            </param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>httpBasicOauthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>ASYNC</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -77,6 +103,7 @@
                 /*/image/**
                 /*/jsonp/**
                 /*/cxf/**
+                /*/restapi/**
             </param-value>
         </init-param>
     </filter>
