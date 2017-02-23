@@ -668,5 +668,22 @@ public class TestController {
 		return model;
 	}
 
-
+	/**
+	 * spring form标签使用
+	 * @param user
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/spring-form")
+	public String findPet(User user,Model model){
+		LOG.debug("user:{},model:{}",user,model);
+		Map<Integer, String> ballMap = new HashMap<Integer, String>();
+		ballMap.put(1, "篮球");
+		ballMap.put(2, "足球");
+		ballMap.put(3, "乒乓球");
+		ballMap.put(4, "羽毛球");
+		ballMap.put(5, "排球");
+		model.addAttribute("ballMap",ballMap);
+		return "spring-form";
+	}
 }
