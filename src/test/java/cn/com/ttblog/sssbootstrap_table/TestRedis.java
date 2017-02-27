@@ -11,8 +11,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
@@ -20,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.Random;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 @ContextConfiguration(locations = { "classpath:spring/spring-context.xml"})
 public class TestRedis {
 
@@ -56,6 +59,7 @@ public class TestRedis {
         long size = lop.size(key); // rt.boundListOps(key).size();
         Assert.assertEquals(2, size);
     }
+
     @Test
     public void testStringRedisTemplate() {
         LOG.debug("stringRedisTemplate.isExposeConnection():{}",stringRedisTemplate.isExposeConnection());
@@ -105,6 +109,85 @@ public class TestRedis {
         valueOperations.set("user", JSON.toJSONString(u));
         User user= JSON.parseObject(valueOperations.get("user").toString(),User.class);
         LOG.debug("user.getName():{}",user.getName());
+    }
+
+    /**
+     * test ValueOperations
+     */
+    @Test
+    public void testOpsForValue(){
+        ValueOperations valueOperations=redisTemplate.opsForValue();
+        User u = new User();
+        u.setAge(1 + new Random().nextInt(1));
+        u.setAdddate((int)(System.currentTimeMillis() / 1000));
+        u.setName("value-Operations");
+        u.setDeliveryaddress("收货地址");
+        u.setPhone("1324");
+        u.setSex("男");
+        valueOperations.set(u.getName(),u);
+        LOG.debug("valueOperations.size(u.getName()):{}",valueOperations.size(u.getName()));
+        LOG.debug("valueOperations.get(u.getName()):{}",valueOperations.get(u.getName()));
+    }
+
+    /**
+     * test ListOperations/BoundListOperations
+     */
+    @Test
+    public void testOpsForList(){
+        ListOperations listOperations=redisTemplate.opsForList();
+        User u = new User();
+        u.setAge(1 + new Random().nextInt(1));
+        u.setAdddate((int)(System.currentTimeMillis() / 1000));
+        u.setName("userlist-Operations");
+        u.setDeliveryaddress("收货地址");
+        u.setPhone("1324");
+        u.setSex("男");
+        listOperations.rightPush("userlist",u);
+        LOG.debug("listOperations.size(\"userlist\"):{}",listOperations.size("userlist"));
+        LOG.debug("listOperations.range(\"userlist\",0,2):{}",listOperations.range("userlist",0,2));
+        LOG.debug("listOperations.rightPop(\"userlist\"):{}",listOperations.rightPop("userlist"));
+        BoundListOperations boundListOperations=redisTemplate.boundListOps("userlist");
+        LOG.debug("boundListOperations.rightPop():{}",boundListOperations.rightPop());
+        LOG.debug("boundListOperations.rightPushAll(\"test1\",\"test2\",\"test3\"):{}",boundListOperations.rightPushAll("test1","test2","test3"));
+        LOG.debug("boundListOperations.size():{}",boundListOperations.size());
+        LOG.debug("boundListOperations.range(0,boundListOperations.size()+1):{}",boundListOperations.range(0,boundListOperations.size()+1));
+    }
+
+    /**
+     * test SetOperations
+     */
+    @Test
+    public void testOpsForSet(){
+        SetOperations setOperations=redisTemplate.opsForSet();
+        User u = new User();
+        u.setAge(1 + new Random().nextInt(1));
+        u.setAdddate((int)(System.currentTimeMillis() / 1000));
+        u.setName("userset-Operations");
+        u.setDeliveryaddress("收货地址");
+        u.setPhone("1324");
+        u.setSex("男");
+        setOperations.add("userset",u);
+        setOperations.add("userset",u);
+        LOG.debug("setOperations.size(\"userset\"):{}",setOperations.size("userset"));
+        LOG.debug("setOperations.members(\"userset\"):{}",setOperations.members("userset"));
+        LOG.debug("setOperations.randomMember(\"userset\"):{}",setOperations.randomMember("userset"));
+    }
+
+    /**
+     *  test setKeySerializer/setValueSerializer
+     */
+    @Test
+    public void testSerialize(){
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<User>(User.class));
+        User u = new User();
+        u.setAge(1 + new Random().nextInt(1));
+        u.setAdddate((int)(System.currentTimeMillis() / 1000));
+        u.setName("userset-Operations");
+        u.setDeliveryaddress("收货地址");
+        u.setPhone("1324");
+        u.setSex("男");
+        redisTemplate.opsForValue().set("user-ser",u);
     }
 
     @Test
