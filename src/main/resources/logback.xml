@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<!--
+	Logback-classic can scan for changes in its configuration file and automatically reconfigure itself when the configuration file changes.
+-->
+<configuration  scan="true" scanPeriod="5 seconds">
 	<!--
 	 logback变量使用:https://logback.qos.ch/manual/configuration.html#variableSubstitution
 	 properties are looked up in the local scope first, in the context scope second, in the system properties scope third, and in the
