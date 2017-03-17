@@ -287,6 +287,29 @@ public class TestRedis {
         for (Object item : results) {
             System.out.println(item.toString());
         }
+    }
 
+    @Test
+    public void testJdkSerialize(){
+        ValueOperations valueOperations=redisTemplate.opsForValue();
+        User u = new User();
+        u.setAge(1 + new Random().nextInt(1));
+        u.setAdddate((int) (System.currentTimeMillis() / 1000));
+        u.setName("batch-add-user:");
+        u.setDeliveryaddress("收货地址");
+        u.setPhone("1324");
+        u.setSex("男");
+        valueOperations.set("userserialize",u);
+    }
+
+    /**
+     * 反序列化如果bean中的serialVersionUID指定了，即使bean字段修改也可反序列化回来
+     * 如果没有指定serialVersionUID，又修改了bean字段，可能会造成无法反序列化
+     */
+    @Test
+    public void testJdkUnSerialize(){
+        ValueOperations valueOperations=redisTemplate.opsForValue();
+        User u = (User) valueOperations.get("userserialize");
+        System.out.println("user:"+u);
     }
 }
