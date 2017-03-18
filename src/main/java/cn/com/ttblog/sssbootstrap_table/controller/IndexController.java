@@ -6,18 +6,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -34,7 +28,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.alibaba.fastjson.JSONArray;
 
 //import com.codahale.metrics.annotation.Timed;
@@ -43,6 +36,7 @@ import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
 import cn.com.ttblog.sssbootstrap_table.util.BeanMapUtil;
 import cn.com.ttblog.sssbootstrap_table.util.POIExcelUtil;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
  * index
@@ -59,8 +53,21 @@ public class IndexController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired  
-    private ApplicationContext applicationContext;  
-	
+    private ApplicationContext applicationContext;
+	@Resource
+	private RequestMappingHandlerMapping handlerMapping;
+
+	/**
+	 * 查看spring mvc所有映射的url
+	 * @return
+	 */
+	@RequestMapping("/mappings")
+	public String mappings(Model model){
+		logger.info("查看springmvc映射");
+		model.addAttribute("handlerMappings",handlerMapping.getHandlerMethods());
+		return "mappings";
+	}
+
 	@RequestMapping("/login")
 	public String login(HttpSession session, HttpServletRequest request,
 			HttpServletResponse response, String username, String password,@RequestParam(value="requri",required=false) String requri) {
