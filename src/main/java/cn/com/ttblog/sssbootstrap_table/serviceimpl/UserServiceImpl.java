@@ -3,6 +3,7 @@ package cn.com.ttblog.sssbootstrap_table.serviceimpl;
 import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,19 @@ public class UserServiceImpl implements IUserService{
 		return userDao.findByNameContaining(userName,page);
 	}
 
+	/**
+	 * 1.mysql指定transaction-isolation=SERIALIZABLE级别，方法无需加synchronized也能保证name不会重复( PROPAGATION_REQUIRES_NEW,ISOLATION_DEFAULT)
+	 * 2.spring 中指定 isolation="SERIALIZABLE" 隔离级别，方法无需加synchronized也能保证name不会重复
+	 * @param user
+	 */
 	@Override
-	public void addUser(User user) {
-		userDao.save(user);
+	public  void addUser(User user) {
+		User exist=userDao.findByName(user.getName());
+		if(exist!=null&&exist.getId()>0){
+			return;
+		}
+		user.setDeliveryaddress("thread:"+Thread.currentThread().getName()+",time:"+new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+		userDao.saveAndFlush(user);
 		//事务测试
 //		int i=1/0;
 	}
