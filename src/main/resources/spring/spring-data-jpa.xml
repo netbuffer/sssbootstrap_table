@@ -89,8 +89,8 @@
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="save*" propagation="REQUIRED" rollback-for="exception" />
-            <!--开启新的事务执行-->
-            <tx:method name="add*" propagation="REQUIRED" rollback-for="exception" isolation="SERIALIZABLE" />
+            <!--设置事务传播行为与隔离级别isolation="DEFAULT"-->
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="exception"  />
             <tx:method name="del*" propagation="REQUIRED" rollback-for="exception" />
             <tx:method name="insert*" propagation="REQUIRED" rollback-for="exception" />
             <tx:method name="update*" propagation="REQUIRED" rollback-for="exception" />

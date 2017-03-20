@@ -41,16 +41,22 @@ public class UserServiceImpl implements IUserService{
 	/**
 	 * 1.mysql指定transaction-isolation=SERIALIZABLE级别，方法无需加synchronized也能保证name不会重复( PROPAGATION_REQUIRES_NEW,ISOLATION_DEFAULT)
 	 * 2.spring 中指定 isolation="SERIALIZABLE" 隔离级别，方法无需加synchronized也能保证name不会重复
+	 * 3.spring 中指定  isolation="READ_COMMITTED" ,方法加锁可以保证name不重复
+	 * 4.spring不指定isolation，使用mysql默认的隔离级别，方法加锁，也可以保证name不重复
 	 * @param user
 	 */
 	@Override
-	public  void addUser(User user) {
-		User exist=userDao.findByName(user.getName());
-		if(exist!=null&&exist.getId()>0){
-			return;
+	public void addUser(User user) {
+		//锁定当前用户名的请求
+		synchronized (user.getName().intern()){
+//		synchronized (user.getName()){
+			User exist=userDao.findByName(user.getName());
+			if(exist!=null&&exist.getId()>0){
+				return;
+			}
+			user.setDeliveryaddress("thread:"+Thread.currentThread().getName()+",time:"+new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+			userDao.saveAndFlush(user);
 		}
-		user.setDeliveryaddress("thread:"+Thread.currentThread().getName()+",time:"+new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-		userDao.saveAndFlush(user);
 		//事务测试
 //		int i=1/0;
 	}
