@@ -686,4 +686,11 @@ public class TestController {
 		model.addAttribute("ballMap",ballMap);
 		return "spring-form";
 	}
+
+	@RequestMapping(value = "/path/{path}")
+	public String findPet(@PathVariable("path") String path){
+		LOG.info("path路径变量:{}",path);
+		//url路径变量会自动添加到request作用域中
+		return "path";
+	}
 }
