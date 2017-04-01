@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 
+/**
+ * redis发布订阅机制测试
+ */
 @RestController
 @RequestMapping("/redis")
 public class RedisController {
