@@ -100,7 +100,9 @@
         </tx:attributes>
     </tx:advice>
     <aop:config>
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />
+        <!--排除redisservice层切面写法-->
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..)) and !execution(* cn.com.ttblog.sssbootstrap_table.service.RedisService.*(..))" />
+        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />-->
     </aop:config>
 
 </beans>
