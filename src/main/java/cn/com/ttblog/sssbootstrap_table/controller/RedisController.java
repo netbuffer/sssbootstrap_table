@@ -4,6 +4,7 @@ import cn.com.ttblog.sssbootstrap_table.service.RedisService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * redis发布订阅机制测试
@@ -46,6 +48,18 @@ public class RedisController {
     }
 
     /**
+     * 检测key是否存在
+     * @param key
+     * @return
+     */
+    @RequestMapping(value = "key/exist/{key}",method = RequestMethod.GET)
+    public Set<String> key(@PathVariable(value = "key") String key){
+        Set<String> keys=stringRedisTemplate.keys(key);
+        LOGGER.info("检测key:{},",key,keys);
+        return keys;
+    }
+
+    /**
      * 创建key/value测试
      * @param key
      * @param length
@@ -70,10 +84,10 @@ public class RedisController {
      */
     @RequestMapping(value = "list/pop/{key}",method = RequestMethod.GET)
     public List popList(@PathVariable(value = "key") String key,@RequestParam(value = "length",required = false,defaultValue = "10") Integer length){
-        ListOperations list=stringRedisTemplate.opsForList();
+        BoundListOperations list=stringRedisTemplate.boundListOps(key);
         List result=new ArrayList();
         for (int i=0;i<length;i++){
-            result.add(list.rightPop(key));
+            result.add(list.rightPop());
         }
         LOGGER.info("pop key:{},长度:{},数据:{}",key,result.size(),result);
         //多线程并发访问不能保证result一定达到10条记录
