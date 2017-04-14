@@ -43,6 +43,48 @@ public class RedisService {
         return null;
     }
 
+    //测试也能取到指定条数
+//    public List<Object> get(final String key,final Integer length){
+//        LOG.info("get key{},length:{}",key,length);
+//        try {
+//            return stringRedisTemplate.execute(new SessionCallback<List<Object>>() {
+//                @Override
+//                public List execute(RedisOperations redisOperations) throws DataAccessException {
+//                    List result=new ArrayList();
+//                    BoundListOperations boundListOperations=redisOperations.boundListOps(key);
+//                    for(int i=0;i<length;i++){
+//                        result.add(boundListOperations.rightPop());
+//                    }
+//                    return result;
+//                }
+//            });
+//        }catch (Exception e){
+//            LOG.error("获取redis-key[{}]对应的数据出错:",key,e.getMessage());
+//        }
+//        return null;
+//    }
+
+    //使用pipelined的方式来批量执行操作，不用启用事务也能保证取到的条数
+//    public List<Object> get(final String key,final Integer length){
+//        LOG.info("get key{},length:{}",key,length);
+//        try {
+//            return stringRedisTemplate.executePipelined(new SessionCallback<Object>() {
+//                @Override
+//                public Object execute(RedisOperations redisOperations) throws DataAccessException {
+//                    redisOperations.watch(key);
+//                    BoundListOperations boundListOperations=redisOperations.boundListOps(key);
+//                    for(int i=0;i<length;i++){
+//                        boundListOperations.rightPop();
+//                    }
+//                    return null;
+//                }
+//            });
+//        }catch (Exception e){
+//            LOG.error("获取redis-key[{}]对应的数据出错:",key,e.getMessage());
+//        }
+//        return null;
+//    }
+
     //方式二，使用RedisCallback执行事务操作
 //    public List get(final String key,final Integer length){
 //        try {

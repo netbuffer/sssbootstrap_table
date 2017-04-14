@@ -103,7 +103,7 @@ public class RedisController {
     @RequestMapping(value = "list/pop/{key}/tran",method = RequestMethod.GET)
     public List popListWithTran(@PathVariable(value = "key") String key,@RequestParam(value = "length",required = false,defaultValue = "10") Integer length){
         List list=redisService.get(key,length);
-        LOGGER.info("pop:{}的{}条数据:{}",key,length,list);
+        LOGGER.info("pop:{}的{}条数据:{},list size:{}",key,length,list,list.size());
         return list;
     }
 }
