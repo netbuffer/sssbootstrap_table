@@ -45,12 +45,19 @@
 			    }
 			  };
 		}
+		
+		function rewrite_doc() {
+			$.get("/sss/restapi/html?view=test",function (html) {
+				document.write(html);
+            })
+        }
 	</script>
 </head>
 <body>
 	<h2>Hello World!</h2>
 	<a href="user/showUser?id=1">user/showUser</a><hr/>
-    showTime:${showTime}
+    showTime:${showTime}<hr/>
+	<button onclick="rewrite_doc();">重写网页</button>
 	<#--${pageContext.request.scheme }<br/>
 	${pageContext.request.serverName }<br/>
 	${pageContext.request.serverPort }<br/>
