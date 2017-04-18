@@ -693,4 +693,23 @@ public class TestController {
 		//url路径变量会自动添加到request作用域中
 		return "path";
 	}
+
+	/**
+	 * 测试接收map参数
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = "/receive/mapparam")
+	@ResponseBody
+	public Map receiveMap(@RequestParam Map map){
+		LOG.debug("receive map param:{}",map);
+		return map;
+	}
+
+	@RequestMapping(value = "/receive/mapparam2")
+	@ResponseBody
+	public Map receiveMap(@RequestParam Map map,@RequestParam(value = "a",required = false) String a){
+		LOG.debug("receive map param:{},a:{}",map,a);
+		return map;
+	}
 }
