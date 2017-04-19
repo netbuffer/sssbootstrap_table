@@ -15,6 +15,8 @@
         <property name="maxIdle" value="${redis.maxIdle}" />
         <property name="maxTotal" value="${redis.maxTotal}" />
         <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+        <property name="testOnReturn" value="${redis.testOnReturn}" />
     </bean>
     <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="hostName" value="${redis.host}" />
