@@ -39,6 +39,7 @@
         <jedis.version>2.9.0</jedis.version>
         <spring-data-redis.version>1.7.5.RELEASE</spring-data-redis.version>
         <druid.version>1.0.29</druid.version>
+        <guava.version>19.0</guava.version>
     </properties>
 
     <dependencies>
@@ -294,6 +295,11 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>fluent-hc</artifactId>
             <version>4.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
     </dependencies>
     <build>
