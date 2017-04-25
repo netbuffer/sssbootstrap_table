@@ -8,8 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +78,26 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public List<User> getUserList(String search, String order, int limit, int offset) {
 		return userDao.getUserListQueryByName(search,order,limit,offset);
+	}
+
+	/**
+	 *  使用Specification来查询,一对多属性
+	 * @param page
+	 * @param size
+	 * @param sort
+	 * @param param
+	 * @return
+	 */
+	public Page<User> getUserList(final int page, int size, Sort sort, final Map param) {
+		Pageable pageable= new PageRequest(page,size,sort);
+		return userDao.findAll(new Specification<User>() {
+			@Override
+			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+				Predicate ageSearch=criteriaBuilder.greaterThanOrEqualTo(root.get("age").as(Integer.class),Integer.parseInt(param.get("age")==null?"10":param.get("age").toString()));
+				Predicate addressSearch=criteriaBuilder.like(root.join("addresses", JoinType.LEFT).get("province").as(String.class),"%"+param.get("province")+"%");
+				return criteriaBuilder.or(addressSearch,ageSearch);
+			}
+		},pageable);
 	}
 
 	@Override

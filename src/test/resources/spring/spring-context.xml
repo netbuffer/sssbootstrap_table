@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xmlns:util="http://www.springframework.org/schema/util"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd
                         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
                         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<context:component-scan base-package="cn.com.ttblog.sssbootstrap_table">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController" />
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+		<context:exclude-filter type="regex" expression="cn.com.ttblog.sssbootstrap_table.testpackage.*" />
+	</context:component-scan>
 
 	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="locations" ref="config_list" />
@@ -20,6 +30,7 @@
 	<!-- 启用aop -->
 	<aop:aspectj-autoproxy />
 
+	<import resource="spring-data-jpa.xml" />
 	<import resource="spring-data-jedis.xml" />
 	<beans profile="test">
 		<util:list id="config_list" list-class="java.util.ArrayList">

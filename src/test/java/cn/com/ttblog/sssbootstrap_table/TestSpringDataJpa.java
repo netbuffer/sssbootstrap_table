@@ -18,12 +18,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -35,6 +37,7 @@ import java.util.concurrent.Future;
 @RunWith(SpringJUnit4ClassRunner.class)
 // 表示继承了SpringJUnit4ClassRunner类
 @ContextConfiguration(locations = { "classpath:spring/spring-context.xml"})
+@ActiveProfiles(value = "test")
 public class TestSpringDataJpa {
 
 	private static Logger logger = LoggerFactory.getLogger(TestSpringDataJpa.class);
@@ -325,6 +328,14 @@ public class TestSpringDataJpa {
 	@Test
 	public void testCustomDaoMethod(){
 		logger.debug("通过自定义方法查询记录数:{}",crudDao.getTotal());
+	}
+
+	@Test
+	public void testFindUserListBySpecs(){
+		HashMap param=new HashMap();
+		param.put("province","a");
+		param.put("age","2");
+		logger.debug("testGetUserSum:{}",userService.getUserList(1,5,new Sort(Sort.Direction.DESC,"adddate"),param));
 	}
 //	@Modifying +jpql修改数据
 }

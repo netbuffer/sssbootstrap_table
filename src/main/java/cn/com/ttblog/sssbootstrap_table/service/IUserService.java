@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 public interface IUserService {
 	public User getUserById(long userId);
@@ -23,4 +24,5 @@ public interface IUserService {
 	public void addUMtest() throws IllegalArgumentException;
 	public void deleteById(Long id);
 	User updateUserWithOptLock(User updateUser);
+	Page<User> getUserList(final int page, int size, Sort sort, final Map param);
 }
