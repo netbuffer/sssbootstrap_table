@@ -49,6 +49,7 @@ public class UserController {
 		logger.debug("async save user:{}",user);
 //		userService.saveUserAsync(user);
         userService.saveUserAsyncReturnVoid(user);
+        //直接返回，不会在saveUserAsyncReturnVoid方法阻塞
 		return "OK";
 	}
 

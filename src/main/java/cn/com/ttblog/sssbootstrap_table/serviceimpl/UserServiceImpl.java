@@ -185,6 +185,10 @@ public class UserServiceImpl implements IUserService{
 		return new AsyncResult<User>(savedUser);
 	}
 
+	/**
+	 * @Async 会去spring容器中找默认的task:annotation-driven配置的executor来执行
+	 * @param user
+	 */
     @Override
     @Async
     public void saveUserAsyncReturnVoid(User user) {
