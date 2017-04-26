@@ -139,6 +139,7 @@
     <filter>
         <filter-name>HiddenHttpMethodFilter</filter-name>
         <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>HiddenHttpMethodFilter</filter-name>
@@ -154,6 +155,7 @@
     <filter>
         <filter-name>openEntityManagerInViewFilter</filter-name>
         <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>openEntityManagerInViewFilter</filter-name>
@@ -187,6 +189,7 @@
         </init-param>
         <!-- <init-param> <param-name>deny</param-name> <param-value>128.242.127.4</param-value>
             </init-param> -->
+        <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
         <servlet-name>druidstat</servlet-name>

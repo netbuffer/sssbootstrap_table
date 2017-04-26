@@ -8,17 +8,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.BindingResultUtils;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
@@ -39,6 +34,23 @@ public class UserController {
 //	@InitBinder
 //	public void initBinder(WebDataBinder binder){
 //	}
+
+	/**
+	 * 保存用户信息 使用异步方式
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/save/async",method=RequestMethod.GET)
+	@ResponseBody
+	public String asyncSave(User user){
+		if(user.getAdddate()==null){
+			user.setAdddate((int)(System.currentTimeMillis()/1000));
+		}
+		logger.debug("async save user:{}",user);
+//		userService.saveUserAsync(user);
+        userService.saveUserAsyncReturnVoid(user);
+		return "OK";
+	}
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String add(Map m){

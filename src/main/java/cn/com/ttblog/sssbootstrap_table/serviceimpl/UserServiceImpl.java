@@ -12,13 +12,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -100,6 +102,7 @@ public class UserServiceImpl implements IUserService{
 		},pageable);
 	}
 
+
 	@Override
 	public long getUserListCount() {
 		return userDao.getUserListCount();
@@ -161,4 +164,42 @@ public class UserServiceImpl implements IUserService{
 		}
 		return userDao.save(user);
 	}
+
+	/**
+	 * @Async 异步保存用户
+	 * @param user
+	 * @return
+	 */
+	@Override
+	@Async
+	public Future<User> saveUserAsync(User user) {
+		LOG.info("start execute save");
+		try {
+			TimeUnit.SECONDS.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		User savedUser=userDao.save(user);
+		LOG.info("execute save success");
+//		int i=1/0;
+		return new AsyncResult<User>(savedUser);
+	}
+
+    @Override
+    @Async
+    public void saveUserAsyncReturnVoid(User user) {
+        LOG.info("start execute save");
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        userDao.save(user);
+		//测试出错，事务情况
+        if(user.getComments()!=null&&user.getComments().equals("-1")){
+			int i=1/0;
+		}
+        LOG.info("execute save success");
+    }
+
 }
