@@ -39,6 +39,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -711,5 +712,32 @@ public class TestController {
 	public Map receiveMap(@RequestParam Map map,@RequestParam(value = "a",required = false) String a){
 		LOG.debug("receive map param:{},a:{}",map,a);
 		return map;
+	}
+
+	/**
+	 *
+	 * @param request
+	 * @param type
+	 * @return
+	 */
+	@RequestMapping(value = "/session")
+	@ResponseBody
+	public User sessionVal(HttpServletRequest request,@RequestParam(value = "type",required = false) String type){
+		HttpSession session=request.getSession();
+		switch (type){
+			case "c":
+				User user=new User();
+				user.setName("test");
+				user.setAge(20);
+				session.setAttribute("user",user);
+				break;
+			case "u":
+				//获取的是对象的引用，修改对象属性，session中数据也就变了
+				User u= (User) session.getAttribute("user");
+				u.setName(u.getName()+"-update");
+				logger.info("u.getClass().getName():{},u:{},u.gethash:{}",u.getClass().getName(),u,u.getClass().hashCode());
+				break;
+		}
+		return (User) session.getAttribute("user");
 	}
 }
