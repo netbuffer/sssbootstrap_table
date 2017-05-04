@@ -1,5 +1,6 @@
 package cn.com.ttblog.sssbootstrap_table.controller;
 
+import cn.com.ttblog.sssbootstrap_table.annotation.EnableLog;
 import cn.com.ttblog.sssbootstrap_table.annotation.Token;
 import cn.com.ttblog.sssbootstrap_table.model.Address;
 import cn.com.ttblog.sssbootstrap_table.model.ExtendUser;
@@ -58,7 +59,9 @@ public class TestController {
 	private Logger loggerAccess = LoggerFactory.getLogger("access");
 //	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Logger logger = loggerAccess;
-	
+	@EnableLog
+	private Logger INJECTLOG = null;
+
 	@Autowired  
 	private ApplicationContext applicationContext;
 	
@@ -98,6 +101,12 @@ public class TestController {
 		LOG.error("控制器发生RunTime级异常:{}",e.getMessage());
 		modelAndView.addObject("errMsg",e.getMessage());
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "injectlog",method = RequestMethod.GET)
+	public String injectLog(){
+		INJECTLOG.warn("INJECTLOG");
+		return 	"test";
 	}
 
 	@RequestMapping(value = "divide",method = RequestMethod.GET)
