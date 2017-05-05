@@ -8,10 +8,11 @@
 * fastjson
 * log4jdbc-log4j2(show sql)
 * hibernate-validator
-* lombok
+* lombok[https://projectlombok.org/](https://projectlombok.org/)
 * zxing
 * itextpdf
 * jedis([spring-data-redis](http://docs.spring.io/spring-data/redis/docs/1.7.6.RELEASE/reference/html/))
+* java-jwt[https://github.com/auth0/java-jwt](https://github.com/auth0/java-jwt)
 
 > ## github:[https://github.com/netbuffer/sssbootstrap_table](https://github.com/netbuffer/sssbootstrap_table)
 > ## git@osc:[http://git.oschina.net/netbuffer/sssbootstrap_table](http://git.oschina.net/netbuffer/sssbootstrap_table)
