@@ -1,4 +1,4 @@
-#sssbootstrap_table demo
+# sssbootstrap_table demo
 
 ## 技术栈/technology stack
 * spring+springmvc+spring data jpa
@@ -25,5 +25,8 @@ The project constructed by `maven`, please execute under the `src/main/java` `SQ
 git->clone;eclipse->File->Import->Existing Maven projects，导入到eclipse后，等maven依赖下载完，右键项目，run as->maven build->tomcat7:run
 
 ---
-> 
->   * develop开发分支
+* `develop`开发分支  
+* `jwt` json web token测试分支
+* `beetl` beetl模板渲染测试分支
+* `thymeleaf` thymeleaf模板渲染测试分支
+* `freemarker` freemarker模板渲染测试分支
