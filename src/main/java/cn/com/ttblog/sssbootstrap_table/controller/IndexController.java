@@ -12,7 +12,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import cn.com.ttblog.sssbootstrap_table.Constant.ConfigConstant;
+import cn.com.ttblog.sssbootstrap_table.util.JWTUtil;
+import com.github.jscookie.javacookie.*;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -29,7 +34,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONArray;
-
 //import com.codahale.metrics.annotation.Timed;
 import cn.com.ttblog.sssbootstrap_table.event.LoginEvent;
 import cn.com.ttblog.sssbootstrap_table.model.User;
@@ -77,9 +81,20 @@ public class IndexController {
 				&& password.equals(ConfigConstant.VAL_PWD)) {
 			session.setAttribute(ConfigConstant.ISLOGIN, true);
 			session.setAttribute(ConfigConstant.USERNAME, username);
-			Cookie c = new Cookie(ConfigConstant.USERNAME, username);
-			c.setMaxAge(86400);
-			response.addCookie(c);
+			Cookies cookies=Cookies.initFromServlet(request,response);
+			DateTime dateTime=new DateTime();
+			Cookies.Attributes attributes=Cookies.Attributes.empty();
+			Date expire=dateTime.plusDays(7).toDate();
+			attributes.expires(Expiration.date(expire));
+			cookies.set(ConfigConstant.USERNAME,username,attributes);
+			Map tokenParam=new HashedMap();
+			tokenParam.put("sub","token");
+			tokenParam.put("issuer","https://github.com/netbuffer/sssbootstrap_table.git");
+			tokenParam.put("expire",expire);
+			Map claims=new HashedMap();
+			tokenParam.put("claims",claims);
+			String token=JWTUtil.createToken(tokenParam,ConfigConstant.JWT_SIGN_KEY);
+			cookies.set("token",token,Cookies.Attributes.empty().expires(Expiration.date(expire)).httpOnly(true));
 			Map<String, String> param=new HashMap<String,String>();
 			param.put("loginname", username);
 			param.put("logintime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
