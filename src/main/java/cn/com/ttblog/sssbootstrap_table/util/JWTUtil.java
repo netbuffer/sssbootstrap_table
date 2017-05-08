@@ -11,6 +11,9 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * 注意加密算法的signKey一定不能泄露，泄露会导致可以随便造有效的jwt了
+ */
 public class JWTUtil {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(JWTUtil.class);
