@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * 注意加密算法的signKey一定不能泄露，泄露会导致可以随便造有效的jwt了
+ * 服务器端没有必要存储生成的token，只要校验token合法有效
  */
 public class JWTUtil {
 
