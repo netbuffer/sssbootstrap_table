@@ -1,6 +1,6 @@
 package cn.com.ttblog.sssbootstrap_table.filter;
 
-import cn.com.ttblog.sssbootstrap_table.controller.ConfigConstant;
+import cn.com.ttblog.sssbootstrap_table.Constant.ConfigConstant;
 import cn.com.ttblog.sssbootstrap_table.util.AntPathMatcherUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
