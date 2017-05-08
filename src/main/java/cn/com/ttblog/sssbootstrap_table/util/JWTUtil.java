@@ -42,6 +42,8 @@ public class JWTUtil {
     }
 
     public static Jws<Claims> parseToken(String token, String signKey){
+        //密钥错误会抛出SignatureException，说明该token是伪造的
+        //如果过期时间exp字段已经早于当前时间，会抛出ExpiredJwtException，说明token已经失效
         return Jwts.parser().setSigningKey(signKey).parseClaimsJws(token);
     }
 }
