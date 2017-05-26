@@ -3,9 +3,12 @@ package cn.com.ttblog.sssbootstrap_table;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -17,6 +20,7 @@ import cn.com.ttblog.sssbootstrap_table.util.JodaTimeUtil;
 public class TestJodaTime {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	private final static  String FORMAT="yyyy-MM-dd";
+	private final static  String DATE_TIME_FORMAT="yyyy-MM-dd HH:mm:ss";
 
 	@Test
 	@Ignore
@@ -120,5 +124,18 @@ public class TestJodaTime {
 	@Test
 	public void getTimeStamp(){
 		System.out.println("timestamp:"+System.currentTimeMillis());
+	}
+
+	@Test
+	public void parseDateTime(){
+		String dateStr="2017-05-23 02:21:30";
+		try {
+			System.out.printf("new DateTime(\"%s\"):&s",dateStr,new DateTime(dateStr).toDate());
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		DateTimeFormatter formatter = DateTimeFormat.forPattern(DATE_TIME_FORMAT).withLocale(Locale.CHINA);
+		DateTime dt = formatter.parseDateTime(dateStr);
+		System.out.printf("date time:%s\n",dt.toString(DATE_TIME_FORMAT));
 	}
 }
