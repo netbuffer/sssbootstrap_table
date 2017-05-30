@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>angular1-渲染userlist</title>
+    <link href="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular-animate.min.js"></script>
+</head>
+<body>
+<div class="container-fluid" ng-app="myApp" ng-controller="myCtrl">
+    <table ng-show="users.length>0" class="table table-hover">
+        <caption>用户数据列表渲染</caption>
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>手机</th>
+            <th>年龄</th>
+            <th>添加时间</th>
+            <th>收获地址</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in users">
+            <td>{{user.name}}</td>
+            <td>{{user.sex}}</td>
+            <td>{{user.phone}}</td>
+            <td>{{user.age}}</td>
+            <td>{{user.adddate}}</td>
+            <td>{{user.deliveryaddress}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    limit({{limit}}):<input class="form-control" name="limit" ng-model="limit"/>
+                </div>
+                <div class="col-md-6">
+                    offset({{offset}}):<input class="form-control" name="offset" ng-model="offset"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = angular.module('myApp', ['ngAnimate','angular-loading-bar']);
+        app.constant("projectRootPath", "/sssbootstrap_table");
+        app.value("page", {limit:10,offset:0});
+        app.service('userService', function($http,projectRootPath) {
+            this.loadUserList = function (limit,offset) {
+                return $http({
+                    method: 'GET',
+                    url: projectRootPath+'/user/userlist.json',
+                    params : {limit:limit,offset:offset}
+                });
+            }
+        });
+
+        app.controller('myCtrl', function($scope,$rootScope,$location,$http,projectRootPath,page,userService) {
+            $scope.limit=page.limit;
+            $scope.offset=page.offset;
+            console.log("page:%o,limit:%s,offset:%s",page,$scope.limit,$scope.offset);
+            userService.loadUserList($scope.limit,$scope.offset)
+            .then(function successCallback(response) {
+                $scope.users=response.data.rows;
+                console.log("success response:%o",response.data);
+            }, function errorCallback(response) {
+                // 请求失败执行代码
+                console.log("error response:%o",response);
+            });
+            $scope.$watch('limit',function(newValue,oldValue){
+                if(newValue!=oldValue){
+                    userService.loadUserList($scope.limit,$scope.offset).then(function successCallback(response) {
+                        $scope.users=response.data.rows;
+                        console.log("success response:%o",response);
+                    }, function errorCallback(response) {
+                        // 请求失败执行代码
+                        console.log("error response:%o",response);
+                    });
+                }
+            });
+            $scope.$watch('offset',function(newValue,oldValue){
+                if(newValue!=oldValue){
+                    userService.loadUserList($scope.limit,$scope.offset).then(function successCallback(response) {
+                        $scope.users=response.data.rows;
+                        console.log("success response:%o",response);
+                    }, function errorCallback(response) {
+                        // 请求失败执行代码
+                        console.log("error response:%o",response);
+                    });;
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
