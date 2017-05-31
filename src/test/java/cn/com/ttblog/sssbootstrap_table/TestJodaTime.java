@@ -4,9 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Ignore;
@@ -110,6 +110,8 @@ public class TestJodaTime {
 			}
 			System.out.println("******limit:"+new DateTime(limit).toString("yyyy-MM-dd HH:mm:ss")+",current:"+new DateTime(current).toString("yyyy-MM-dd HH:mm:ss"));
 		}
+		System.out.printf("new LocalDate().toString(FORMAT):%s\n",new LocalDate().toString(DATE_TIME_FORMAT));
+		System.out.printf("new LocalTime(0,0,0,0).toDateTimeToday().toDate():%s\n",new LocalTime(0,0,0,0).toDateTimeToday().toDate());
 	}
 	
 	@Test
@@ -137,5 +139,11 @@ public class TestJodaTime {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern(DATE_TIME_FORMAT).withLocale(Locale.CHINA);
 		DateTime dt = formatter.parseDateTime(dateStr);
 		System.out.printf("date time:%s\n",dt.toString(DATE_TIME_FORMAT));
+		try {
+			DateTimeFormatter format = DateTimeFormat.forPattern(FORMAT).withLocale(Locale.CHINA);
+			System.out.printf("format.parseDateTime(dateStr):%s",format.parseDateTime(dateStr));
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 }
