@@ -1,10 +1,8 @@
 package cn.com.ttblog.sssbootstrap_table;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import cn.com.ttblog.sssbootstrap_table.util.JodaTimeUtil;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
@@ -14,7 +12,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.com.ttblog.sssbootstrap_table.util.JodaTimeUtil;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 //@Ignore
 public class TestJodaTime {
@@ -62,13 +63,7 @@ public class TestJodaTime {
 	public void testYearEnd(){
 		log.debug("本年度结束时间:{}",JodaTimeUtil.getYearEnd(new DateTime()).toString(FORMAT));
 	}
-	@Test
-	@Ignore
-	public void t(){
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		System.out.println(fmt.format(new Date((long)System.currentTimeMillis())));
-		System.out.println(fmt.format(new Date(new Date().getTime())));
-	}
+
 	@Test
 	@Ignore
 	public void testCompare(){
@@ -82,6 +77,9 @@ public class TestJodaTime {
 	@Ignore
 	public void testFormat(){
 		System.out.println("-----------------------------------");
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println(fmt.format(new Date((long)System.currentTimeMillis())));
+		System.out.println(fmt.format(new Date(new Date().getTime())));
 		String yDate="2016-07-15";
 //		String date="2";
 //		int flag=1;
@@ -115,15 +113,6 @@ public class TestJodaTime {
 	}
 	
 	@Test
-	public void parse(){
-		Integer time=1469151612;
-		System.out.println("日期:"+new DateTime(new Date(time*1000L)).toString("yyyy-MM-dd HH:mm:ss"));
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String date = sdf.format(new Date(time*1000L));
-		System.out.println(date); 
-	}
-	
-	@Test
 	public void getTimeStamp(){
 		System.out.println("timestamp:"+System.currentTimeMillis());
 	}
@@ -144,6 +133,34 @@ public class TestJodaTime {
 			System.out.printf("format.parseDateTime(dateStr):%s",format.parseDateTime(dateStr));
 		}catch (Exception e){
 			e.printStackTrace();
+		}
+		Integer time=1469151612;
+		System.out.println("日期:"+new DateTime(new Date(time*1000L)).toString("yyyy-MM-dd HH:mm:ss"));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String date = sdf.format(new Date(time*1000L));
+		System.out.println(date);
+		System.out.printf("new DateTime(new Date()).toString(DATE_TIME_FORMAT):%s",new DateTime(new Date()).toString(DATE_TIME_FORMAT));
+	}
+
+	@Test
+	public void testDayOfWeek(){
+		DateTime dateTime=new DateTime();
+		switch (dateTime.getDayOfWeek()){
+			case DateTimeConstants.MONDAY:
+				System.out.printf("DateTimeConstants.MONDAY");
+				break;
+			case DateTimeConstants.TUESDAY:
+				System.out.printf("Tuesday");
+				break;
+			case DateTimeConstants.WEDNESDAY:
+				System.out.printf("wed");
+				break;
+			case DateTimeConstants.THURSDAY:
+				System.out.printf("thus");
+				break;
+			case DateTimeConstants.FRIDAY:
+				System.out.printf("FRIDAY");
+				break;
 		}
 	}
 }
