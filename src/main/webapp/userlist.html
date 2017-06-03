@@ -2,15 +2,37 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>angular1-渲染userlist</title>
+    <title>angular1-单页面应用测试</title>
     <link href="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular-route.min.js"></script>
     <script src="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
     <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular-animate.min.js"></script>
 </head>
-<body>
-<div class="container-fluid" ng-app="myApp" ng-controller="myCtrl">
+<body ng-app="myApp">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Angular单页面应用</a>
+        </div>
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#/">首页</a></li>
+                <li><a href="#add">添加</a></li>
+            </ul>
+        </div>
+    </div>
+</nav><br/><br/><br/>
+<div class="container-fluid" ng-view></div>
+<script type="text/html" id="userlist_view_tpl">
     <div class="row">
         <div class="col-md-6"></div>
         <div class="col-md-6"><a href="add.html" class="pull-right btn btn-sm btn-default">添加</a></div>
@@ -51,56 +73,136 @@
             </div>
         </div>
     </div>
-    <script>
-        var app = angular.module('myApp', ['ngAnimate','angular-loading-bar']);
-        app.constant("projectRootPath", "/sss");
-        app.value("page", {limit:10,offset:0});
-        app.service('userService', function($http,projectRootPath) {
-            this.loadUserList = function (limit,offset) {
-                return $http({
-                    method: 'GET',
-                    url: projectRootPath+'/user/userlist.json',
-                    params : {limit:limit,offset:offset}
+</script>
+<script type="text/html" id="add_user_view_tpl">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form>
+                <div class="form-group">
+                    <label for="user.name">用户名</label>
+                    <input type="text" class="form-control" id="user.name" ng-model="user.name" name="user.name"
+                           placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label for="user.sex">性別</label>
+                    <input type="text" class="form-control" id="user.sex" ng-model="user.sex" placeholder="请输入性別">
+                </div>
+                <div class="form-group">
+                    <label for="user.phone">手机号</label>
+                    <input type="text" class="form-control" id="user.phone" ng-model="user.phone" placeholder="请输入手机号">
+                </div>
+                <div class="form-group">
+                    <label for="user.age">年龄</label>
+                    <input type="number" class="form-control" id="user.age" ng-model="user.age" placeholder="请输入年龄">
+                </div>
+                <div class="form-group">
+                    <label for="user.adddate">日期</label>
+                    <input type="text" class="form-control" id="user.adddate" ng-model="user.adddate" placeholder="日期">
+                </div>
+                <div class="form-group">
+                    <label for="user.deliveryaddress">收获地址</label>
+                    <textarea class="form-control" id="user.deliveryaddress" ng-model="user.deliveryaddress" placeholder="请输入收获地址"></textarea>
+                </div>
+                <!--<div class="checkbox">-->
+                <!--<label>-->
+                <!--<input type="checkbox"> Check me out-->
+                <!--</label>-->
+                <!--</div>-->
+                <button class="btn btn-default" ng-click="save();">保存</button>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</script>
+<script>
+    function get_context_path() {
+        var pathName = document.location.pathname;
+        var index = pathName.substr(1).indexOf("/");
+        var result = pathName.substr(0, index + 1);
+        return result;
+    }
+    var app = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angular-loading-bar']);
+    app.constant("projectRootPath", get_context_path());
+    app.value("page", {limit: 10, offset: 0});
+    app.service('userService', function ($http, projectRootPath) {
+        this.loadUserList = function (limit, offset) {
+            return $http({
+                method: 'GET',
+                url: projectRootPath + '/user/userlist.json',
+                params: {limit: limit, offset: offset}
+            });
+        }
+        this.save = function (user) {
+            console.log("user:%s",angular.toJson(user));
+            return $http({
+                method: 'POST',
+                url: projectRootPath+'/user',
+                params : user
+            });
+        }
+    });
+
+    app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+        $locationProvider.hashPrefix('');
+        $routeProvider
+            .when('/', {
+                template: document.getElementById("userlist_view_tpl").innerHTML,
+                controller: "userlist_controller"
+            })
+            .when('/add', {
+                template: document.getElementById("add_user_view_tpl").innerHTML,
+                controller: "add_user_controller"
+            })
+            .otherwise({redirectTo: '/'});
+    }]);
+    app.controller('userlist_controller', function ($scope, $rootScope, $location, $http, projectRootPath, page, userService) {
+        $scope.limit = page.limit;
+        $scope.offset = page.offset;
+        console.log("page:%o,limit:%s,offset:%s", page, $scope.limit, $scope.offset);
+        userService.loadUserList($scope.limit, $scope.offset)
+            .then(function successCallback(response) {
+                $scope.users = response.data.rows;
+                console.log("success response:%o", response.data);
+            }, function errorCallback(response) {
+                // 请求失败执行代码
+                console.log("error response:%o", response);
+            });
+        $scope.$watch('limit', function (newValue, oldValue) {
+            if (newValue != oldValue) {
+                userService.loadUserList($scope.limit, $scope.offset).then(function successCallback(response) {
+                    $scope.users = response.data.rows;
+                    console.log("success response:%o", response);
+                }, function errorCallback(response) {
+                    // 请求失败执行代码
+                    console.log("error response:%o", response);
                 });
             }
         });
+        $scope.$watch('offset', function (newValue, oldValue) {
+            if (newValue != oldValue) {
+                userService.loadUserList($scope.limit, $scope.offset).then(function successCallback(response) {
+                    $scope.users = response.data.rows;
+                    console.log("success response:%o", response);
+                }, function errorCallback(response) {
+                    // 请求失败执行代码
+                    console.log("error response:%o", response);
+                });
+                ;
+            }
+        });
+    });
 
-        app.controller('myCtrl', function($scope,$rootScope,$location,$http,projectRootPath,page,userService) {
-            $scope.limit=page.limit;
-            $scope.offset=page.offset;
-            console.log("page:%o,limit:%s,offset:%s",page,$scope.limit,$scope.offset);
-            userService.loadUserList($scope.limit,$scope.offset)
-            .then(function successCallback(response) {
-                $scope.users=response.data.rows;
-                console.log("success response:%o",response.data);
-            }, function errorCallback(response) {
-                // 请求失败执行代码
+    app.controller('add_user_controller', function($scope,$rootScope,$location,$http,projectRootPath,userService) {
+        $scope.save=function(){
+            var promise=userService.save($scope.user);
+            promise.then(function (response) {
+                console.log("success response:%o",response);
+            },function(response){
                 console.log("error response:%o",response);
             });
-            $scope.$watch('limit',function(newValue,oldValue){
-                if(newValue!=oldValue){
-                    userService.loadUserList($scope.limit,$scope.offset).then(function successCallback(response) {
-                        $scope.users=response.data.rows;
-                        console.log("success response:%o",response);
-                    }, function errorCallback(response) {
-                        // 请求失败执行代码
-                        console.log("error response:%o",response);
-                    });
-                }
-            });
-            $scope.$watch('offset',function(newValue,oldValue){
-                if(newValue!=oldValue){
-                    userService.loadUserList($scope.limit,$scope.offset).then(function successCallback(response) {
-                        $scope.users=response.data.rows;
-                        console.log("success response:%o",response);
-                    }, function errorCallback(response) {
-                        // 请求失败执行代码
-                        console.log("error response:%o",response);
-                    });;
-                }
-            });
-        });
-    </script>
-</div>
+        };
+    });
+</script>
 </body>
 </html>
