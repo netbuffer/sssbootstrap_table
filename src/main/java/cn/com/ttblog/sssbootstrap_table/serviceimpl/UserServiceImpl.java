@@ -53,16 +53,16 @@ public class UserServiceImpl implements IUserService{
 	 * @param user
 	 */
 	@Override
-	public void addUser(User user) {
+	public User addUser(User user) {
 		//锁定当前用户名的请求
 		synchronized (user.getName().intern()){
 //		synchronized (user.getName()){
 			User exist=userDao.findByName(user.getName());
 			if(exist!=null&&exist.getId()>0){
-				return;
+				return exist;
 			}
 			user.setDeliveryaddress("thread:"+Thread.currentThread().getName()+",time:"+new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-			userDao.saveAndFlush(user);
+			return userDao.saveAndFlush(user);
 		}
 		//事务测试
 //		int i=1/0;

@@ -37,10 +37,6 @@
 </nav><br/><br/><br/>
 <div class="container-fluid" ng-view></div>
 <script type="text/html" id="userlist_view_tpl">
-    <div class="row">
-        <div class="col-md-6"></div>
-        <div class="col-md-6"><a href="add.html" class="pull-right btn btn-sm btn-default">添加</a></div>
-    </div>
     <table ng-show="users.length>0" class="table table-hover">
         <caption>用户数据列表渲染</caption>
         <thead>
@@ -82,38 +78,43 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <form>
+            <form name="Form">
                 <div class="form-group">
                     <label for="user.name">用户名</label>
-                    <input type="text" class="form-control" id="user.name" ng-model="user.name" name="user.name"
-                           placeholder="请输入用户名">
+                    <input type="text" class="form-control" id="user.name" ng-model="user.name" name="username"
+                           placeholder="请输入用户名" validator="required">
                 </div>
                 <div class="form-group">
                     <label for="user.sex">性別</label>
-                    <input type="text" class="form-control" id="user.sex" ng-model="user.sex" placeholder="请输入性別">
+                    <input type="text" class="form-control" id="user.sex" ng-model="user.sex" placeholder="请输入性別" >
                 </div>
                 <div class="form-group">
                     <label for="user.phone">手机号</label>
-                    <input type="text" class="form-control" id="user.phone" ng-model="user.phone" placeholder="请输入手机号">
+                    <input type="text" class="form-control" id="user.phone" ng-model="user.phone" placeholder="请输入手机号" >
                 </div>
                 <div class="form-group">
-                    <label for="user.age">年龄</label>
-                    <input type="number" class="form-control" id="user.age" ng-model="user.age" placeholder="请输入年龄">
+                    <label for="user.age" ng-show="!Form.userage.$invalid">年龄</label>
+                    <label class="label label-danger" for="user.age" ng-show="Form.userage.$dirty && Form.userage.$invalid">年龄错误</label>
+                    <!--<input type="range" class="form-control" id="user.age" ng-model="user.age" name="userage" placeholder="请输入年龄" min="1"  max="150">-->
+                    <input type="number" class="form-control" id="user.age" ng-model="user.age" name="userage" placeholder="请输入年龄"/>
                 </div>
                 <div class="form-group" ng-show="false">
                     <label for="user.adddate">日期</label>
-                    <input type="text" class="form-control" id="user.adddate" moment-picker="user.adddate" format="YYYY-MM-DD" ng-model="user.adddate" placeholder="日期">
+                    <input type="text" class="form-control" id="user.adddate" moment-picker="user.adddate" format="YYYY-MM-DD" ng-model="user.adddate" placeholder="日期" />
                 </div>
                 <div class="form-group">
                     <label for="user.deliveryaddress">收获地址</label>
-                    <textarea class="form-control" id="user.deliveryaddress" ng-model="user.deliveryaddress" placeholder="请输入收获地址"></textarea>
+                    <textarea class="form-control" id="user.deliveryaddress" ng-model="user.deliveryaddress" placeholder="请输入收获地址" ></textarea>
                 </div>
                 <!--<div class="checkbox">-->
                 <!--<label>-->
                 <!--<input type="checkbox"> Check me out-->
                 <!--</label>-->
                 <!--</div>-->
-                <button class="btn btn-default" ng-click="save();">保存</button>
+                <!--
+                    注意Form.userage用的是表单的name值来获取错误信息而不是ng-model设置的值
+                -->
+                <button class="btn btn-default" validation-submit="Form" ng-click="save();" ng-disabled="Form.userage.$dirty && Form.userage.$invalid">保存</button>
             </form>
         </div>
         <div class="col-md-2"></div>
@@ -233,6 +234,8 @@
 
     app.controller('add_user_controller', function($scope,$rootScope,$location,$http,projectRootPath,userService) {
         $scope.save=function(){
+            alert(JSON.stringify(Form));
+            console.log("form:%o",Form.$error);
             var promise=userService.save($scope.user);
             promise.then(function (response) {
                 console.log("success response:%o",response);

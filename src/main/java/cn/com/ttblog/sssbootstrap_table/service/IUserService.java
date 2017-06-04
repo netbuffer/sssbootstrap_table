@@ -12,7 +12,7 @@ public interface IUserService {
 	User getUserById(long userId);
 	User getUserByName(String userName);
 	Page<User> getUserByName(String userName, Pageable page);
-	void addUser(User user);
+	User addUser(User user);
 	List<User> getUserList(String order, int limit, int offset);
 	//带有查询条件
 	List<User> getUserList(String search, String order, int limit,int offset);
