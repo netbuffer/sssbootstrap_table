@@ -4,11 +4,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>angular1-单页面应用测试</title>
     <link href="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/angular-moment-picker/0.10.1/angular-moment-picker.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular.min.js"></script>
     <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular-route.min.js"></script>
     <script src="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
     <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular-animate.min.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular-moment-picker/0.10.1/angular-moment-picker.min.js"></script>
 </head>
 <body ng-app="myApp">
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -55,7 +59,7 @@
             <td>{{user.sex}}</td>
             <td>{{user.phone}}</td>
             <td>{{user.age}}</td>
-            <td>{{user.adddate}}</td>
+            <td>{{user.adddate|parsedate}}</td>
             <td>{{user.deliveryaddress}}</td>
         </tr>
         </tbody>
@@ -96,9 +100,9 @@
                     <label for="user.age">年龄</label>
                     <input type="number" class="form-control" id="user.age" ng-model="user.age" placeholder="请输入年龄">
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-show="false">
                     <label for="user.adddate">日期</label>
-                    <input type="text" class="form-control" id="user.adddate" ng-model="user.adddate" placeholder="日期">
+                    <input type="text" class="form-control" id="user.adddate" moment-picker="user.adddate" format="YYYY-MM-DD" ng-model="user.adddate" placeholder="日期">
                 </div>
                 <div class="form-group">
                     <label for="user.deliveryaddress">收获地址</label>
@@ -122,7 +126,29 @@
         var result = pathName.substr(0, index + 1);
         return result;
     }
-    var app = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angular-loading-bar']);
+    function serializeData( data ) {
+        // If this is not an object, defer to native stringification.
+        if ( ! angular.isObject( data ) ) {
+            return( ( data == null ) ? "" : data.toString() );
+        }
+        var buffer = [];
+        // Serialize each key in the object.
+        for ( var name in data ) {
+            if ( ! data.hasOwnProperty( name ) ) {
+                continue;
+            }
+            var value = data[ name ];
+            buffer.push(
+                encodeURIComponent( name ) + "=" + encodeURIComponent( ( value == null ) ? "" : value )
+            );
+        }
+        // Serialize the buffer and clean it up for transportation.
+        var source = buffer.join( "&" ).replace( /%20/g, "+" );
+        return( source );
+    }
+    var app = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angular-loading-bar','moment-picker']);
+    app.run(function() {
+    });
     app.constant("projectRootPath", get_context_path());
     app.value("page", {limit: 10, offset: 0});
     app.service('userService', function ($http, projectRootPath) {
@@ -135,15 +161,17 @@
         }
         this.save = function (user) {
             console.log("user:%s",angular.toJson(user));
+            //post表单数据
             return $http({
                 method: 'POST',
-                url: projectRootPath+'/user',
-                params : user
+                url: projectRootPath+'/user.json',
+                headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
+                data : serializeData(user)
             });
         }
     });
 
-    app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+    app.config(['$locationProvider', '$routeProvider','momentPickerProvider', function ($locationProvider, $routeProvider,momentPickerProvider) {
         $locationProvider.hashPrefix('');
         $routeProvider
             .when('/', {
@@ -155,7 +183,17 @@
                 controller: "add_user_controller"
             })
             .otherwise({redirectTo: '/'});
+        momentPickerProvider.options({
+            locale:"zh-cn",
+            format:"YYYY-MM-DD HH:mm:ss",
+            "min-view":"minute"
+        });
     }]);
+    app.filter('parsedate', function() {
+        return function(text) {
+            return moment.unix(text).format("YYYY-MM-DD hh:mm:ss a");
+        }
+    });
     app.controller('userlist_controller', function ($scope, $rootScope, $location, $http, projectRootPath, page, userService) {
         $scope.limit = page.limit;
         $scope.offset = page.offset;
