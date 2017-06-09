@@ -80,6 +80,16 @@ public class UserController {
 		return "redirect:user";
 	}
 
+	//增
+	@RequestMapping(value="/save",method=RequestMethod.POST)
+	public User saveUser(@Valid User user){
+		logger.debug("save user:{}",user);
+		if(user.getAdddate()==null){
+			user.setAdddate((int)(System.currentTimeMillis() / 1000));
+		}
+		return userService.save(user);
+	}
+
 	//删
 	@RequestMapping(method=RequestMethod.DELETE)
 	@ResponseBody
@@ -203,7 +213,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/userlist")
-	public String userlist(@RequestParam(value="search",required=false)String search,String order, int limit, int offset, Model model) {
+	public String userlist(@RequestParam(value="search",required=false)String search,@RequestParam(value = "order",required = false,defaultValue = "desc") String order, int limit, int offset, Model model) {
 		long startTime = System.nanoTime();
 		logger.info("参数:{},{},{}", order, limit, offset);
 		if(search!=null){

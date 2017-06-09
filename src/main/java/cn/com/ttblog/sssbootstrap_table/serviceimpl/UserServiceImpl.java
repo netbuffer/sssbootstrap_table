@@ -68,6 +68,10 @@ public class UserServiceImpl implements IUserService{
 //		int i=1/0;
 	}
 
+	public User save(User user) {
+		return userDao.save(user);
+	}
+
 	@Override
 	public List<User> getUserList(String order, int limit, int offset) {
 //		if (order!=null&&order.equals("desc")){

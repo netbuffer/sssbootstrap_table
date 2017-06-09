@@ -47,6 +47,7 @@
             <th>年龄</th>
             <th>添加时间</th>
             <th>收获地址</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -57,6 +58,12 @@
             <td>{{user.age}}</td>
             <td>{{user.adddate|parsedate}}</td>
             <td>{{user.deliveryaddress}}</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="update_user(user);">修改</button>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="delete_user(user.id);">删除</button>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -159,17 +166,35 @@
                 url: projectRootPath + '/user/userlist.json',
                 params: {limit: limit, offset: offset}
             });
-        }
+        };
         this.save = function (user) {
-            console.log("user:%s",angular.toJson(user));
+            console.log("save user:%s",angular.toJson(user));
             //post表单数据
             return $http({
                 method: 'POST',
-                url: projectRootPath+'/user.json',
+                url: projectRootPath+'/user/save',
                 headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
                 data : serializeData(user)
             });
-        }
+        };
+        this.update = function (user) {
+            console.log("update user:%s",angular.toJson(user));
+            //post表单数据
+            return $http({
+                method: 'PUT',
+                url: projectRootPath+'/user',
+                headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
+                data : serializeData(user)
+            });
+        };
+        this.delete = function (id) {
+            return $http({
+                method: 'DELETE',
+                url: projectRootPath+'/user',
+                params:{"id":id}
+            });
+        };
+
     });
 
     app.config(['$locationProvider', '$routeProvider','momentPickerProvider', function ($locationProvider, $routeProvider,momentPickerProvider) {
@@ -200,13 +225,34 @@
         $scope.offset = page.offset;
         console.log("page:%o,limit:%s,offset:%s", page, $scope.limit, $scope.offset);
         userService.loadUserList($scope.limit, $scope.offset)
-            .then(function successCallback(response) {
-                $scope.users = response.data.rows;
-                console.log("success response:%o", response.data);
-            }, function errorCallback(response) {
-                // 请求失败执行代码
-                console.log("error response:%o", response);
-            });
+        .then(function successCallback(response) {
+            $scope.users = response.data.rows;
+            console.log("success response:%o", response.data);
+        }, function errorCallback(response) {
+            // 请求失败执行代码
+            console.log("error response:%o", response);
+        });
+        $scope.update_user=function (user) {
+            console.log("user:%s",user);
+            userService.save($scope.user);
+        };
+        $scope.delete_user=function (id) {
+            if(confirm("确定删除当前用户么?")){
+                userService.delete(id).then(function (response) {
+                    if(response.data.success){
+                        userService.loadUserList($scope.limit, $scope.offset)
+                        .then(function successCallback(response) {
+                            $scope.users = response.data.rows;
+                        }, function errorCallback(response) {
+                            console.log("error response:%o", response);
+                        });
+                    }
+                },function(response){
+                    console.log("error response:%o",response);
+                });;
+            }
+        };
+
         $scope.$watch('limit', function (newValue, oldValue) {
             if (newValue != oldValue) {
                 userService.loadUserList($scope.limit, $scope.offset).then(function successCallback(response) {
@@ -234,10 +280,20 @@
 
     app.controller('add_user_controller', function($scope,$rootScope,$location,$http,projectRootPath,userService) {
         $scope.save=function(){
-            alert(JSON.stringify(Form));
-            console.log("form:%o",Form.$error);
+            console.log("form:%o,form info:%s",Form.$error,JSON.stringify(Form));
             var promise=userService.save($scope.user);
             promise.then(function (response) {
+                console.log("response data:%o",response.data)
+                if(response.data.user.id>0){
+//                    userService.loadUserList($scope.limit, $scope.offset).then(function successCallback(response) {
+//                        $scope.users = response.data.rows;
+//                        console.log("success response:%o", response);
+//                    }, function errorCallback(response) {
+//                        console.log("error response:%o", response);
+//                    });
+                    //加载首页数据
+                    $location.path("/");
+                }
                 console.log("success response:%o",response);
             },function(response){
                 console.log("error response:%o",response);
