@@ -6,6 +6,7 @@
     <link href="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/angular-moment-picker/0.10.1/angular-moment-picker.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!--<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
     <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular.min.js"></script>
     <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular-route.min.js"></script>
     <script src="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
@@ -13,6 +14,11 @@
     <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
     <script src="https://cdn.bootcss.com/angular-moment-picker/0.10.1/angular-moment-picker.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+    <style>
+        .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+    </style>
 </head>
 <body ng-app="myApp">
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -35,7 +41,7 @@
         </div>
     </div>
 </nav><br/><br/><br/>
-<div class="container-fluid" ng-view></div>
+<div class="container-fluid" ng-view class="modal-demo"></div>
 <script type="text/html" id="userlist_view_tpl">
     <table ng-show="users.length>0" class="table table-hover">
         <caption>用户数据列表渲染</caption>
@@ -59,8 +65,8 @@
             <td>{{user.adddate|parsedate}}</td>
             <td>{{user.deliveryaddress}}</td>
             <td>
-                <div class="btn-group" role="group" aria-label="...">
-                    <button type="button" class="btn btn-default btn-sm" ng-click="update_user(user);">修改</button>
+                <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="update_user_modal(user);">修改</button>
                     <button type="button" class="btn btn-default btn-sm" ng-click="delete_user(user.id);">删除</button>
                 </div>
             </td>
@@ -154,7 +160,7 @@
         var source = buffer.join( "&" ).replace( /%20/g, "+" );
         return( source );
     }
-    var app = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angular-loading-bar','moment-picker']);
+    var app = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angular-loading-bar','moment-picker','ui.bootstrap']);
     app.run(function() {
     });
     app.constant("projectRootPath", get_context_path());
@@ -220,7 +226,7 @@
             return moment.unix(text).format("YYYY-MM-DD hh:mm:ss a");
         }
     });
-    app.controller('userlist_controller', function ($scope, $rootScope, $location, $http, projectRootPath, page, userService) {
+    app.controller('userlist_controller', function ($scope, $rootScope, $location, $http, projectRootPath, page, userService,$uibModal,$document) {
         $scope.limit = page.limit;
         $scope.offset = page.offset;
         console.log("page:%o,limit:%s,offset:%s", page, $scope.limit, $scope.offset);
@@ -235,6 +241,31 @@
         $scope.update_user=function (user) {
             console.log("user:%s",user);
             userService.save($scope.user);
+        };
+        $scope.update_user_modal=function (user) {
+            try {
+                console.log("未引入jquery angular.element($document.getElementById(\"add_user_view_tpl\")):%o",angular.element($document[0].getElementById("add_user_view_tpl")));
+                console.log("$document.getElementById(\"add_user_view_tpl\"):%o",$document[0].getElementById("add_user_view_tpl"));
+                console.log("引入jquery后angular.element(\"#add_user_view_tpl\"):%o",angular.element("#add_user_view_tpl"));
+            }catch(e){
+                console.error(e);
+            }
+            $scope.user=user;
+            $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                template : angular.element($document[0].getElementById("add_user_view_tpl")).html(),
+                controller: 'add_user_controller',
+                controllerAs: 'add_user_controller',
+                size: "",
+                appendTo: null?angular.element($document[0].querySelector('.modal-demo')) : undefined,
+                resolve: {
+                    items: function () {
+                        return ["1","2"];
+                    }
+                }
+            });
         };
         $scope.delete_user=function (id) {
             if(confirm("确定删除当前用户么?")){
