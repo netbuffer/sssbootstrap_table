@@ -258,6 +258,14 @@ public class TestSpringDataJpa {
 	}
 
 	@Test
+	public void testSortWithManyFields(){
+		Sort sort=new Sort(Sort.Direction.ASC,"age")
+				.and(new Sort(Sort.Direction.DESC,"adddate"))
+				.and(new Sort(Sort.Direction.DESC,"version"));
+		userDao.findTop5ByPhoneContaining("1",sort);
+	}
+
+	@Test
 	public void testQuerySex(){
 		logger.debug("获取sex:{}",userDao.querySex(1L));
 	}
