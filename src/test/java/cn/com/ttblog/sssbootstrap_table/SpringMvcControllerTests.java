@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,6 +24,7 @@ import cn.com.ttblog.sssbootstrap_table.controller.RegisterController;
 @WebAppConfiguration
 @ContextConfiguration(locations={"classpath:spring/spring-mvc.xml","classpath:spring/spring-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles(profiles = "test")
 public class SpringMvcControllerTests {
 	
 	@Autowired

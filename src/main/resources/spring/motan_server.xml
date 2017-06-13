@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:motan="http://api.weibo.com/schema/motan"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+ 							http://api.weibo.com/schema/motan http://api.weibo.com/schema/motan.xsd">
+	<!--协议配置-->
+	<motan:protocol id="demoMotan" name="motan"
+					threads="2"
+					iothreads="2"
+					maxWorkerThread="2"
+					minWorkerThread="1"
+					maxClientConnection="2"
+					minClientConnection="1"
+	/>
+	<!-- service implemention bean -->
+	<!--<bean id="serviceImpl" class="cn.com.ttblog.sssbootstrap_table.rpc.serviceimpl.FooServiceImpl" />-->
+	<!-- exporting service by motan -->
+	<!--<motan:service interface="cn.com.ttblog.sssbootstrap_table.rpc.service.FooService" ref="serviceImpl" export="8002" />-->
+	<bean id="userRpcServiceImpl" class="cn.com.ttblog.sssbootstrap_table.rpc.serviceimpl.UserRpcServiceImpl">
+		<property name="userService" ref="userServiceImpl"/>
+	</bean>
+	<motan:service interface="cn.com.ttblog.sssbootstrap_table.rpc.service.UserRpcService" ref="userRpcServiceImpl" export="8003" />
+</beans>

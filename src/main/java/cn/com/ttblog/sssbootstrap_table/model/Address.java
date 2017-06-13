@@ -3,10 +3,14 @@ package cn.com.ttblog.sssbootstrap_table.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "address")
-public class Address {
+public class Address implements Serializable{
+
+	private static final long serialVersionUID = 4193866401992779318L;
+
 	@Id
 	@GeneratedValue
 	private Long id;

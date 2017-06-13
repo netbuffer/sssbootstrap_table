@@ -206,4 +206,9 @@ public class UserServiceImpl implements IUserService{
         LOG.info("execute save success");
     }
 
+	@Override
+	public User findById(Long userId) {
+		return userDao.findOne(userId);
+	}
+
 }

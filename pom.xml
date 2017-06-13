@@ -40,6 +40,7 @@
         <spring-data-redis.version>1.7.5.RELEASE</spring-data-redis.version>
         <druid.version>1.0.29</druid.version>
         <guava.version>19.0</guava.version>
+        <motan.version>0.3.0</motan.version>
     </properties>
 
     <dependencies>
@@ -301,6 +302,25 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.weibo</groupId>
+            <artifactId>motan-core</artifactId>
+            <version>${motan.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.weibo</groupId>
+            <artifactId>motan-transport-netty</artifactId>
+            <version>${motan.version}</version>
+        </dependency>
+
+        <!-- dependencies blow were only needed for spring-based features -->
+        <dependency>
+            <groupId>com.weibo</groupId>
+            <artifactId>motan-springsupport</artifactId>
+            <version>${motan.version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <!--IntelliJ IDEA需要配置打包选项-->

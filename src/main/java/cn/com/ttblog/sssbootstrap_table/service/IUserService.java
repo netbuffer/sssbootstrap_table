@@ -27,4 +27,5 @@ public interface IUserService {
 	Page<User> getUserList(final int page, int size, Sort sort, final Map param);
 	Future<User> saveUserAsync(User user);
     void saveUserAsyncReturnVoid(User user);
+    User findById(Long userId);
 }

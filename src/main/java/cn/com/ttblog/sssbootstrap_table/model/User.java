@@ -72,7 +72,7 @@ public class User implements Serializable {
 	 * address表的user_id字段
 	 * @return
      */
-	@OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+	@OneToMany(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
 	@JoinColumn(name = "user_id")
 	@Access(AccessType.PROPERTY)//不添加此注解会抛错误:Could not determine type for: java.util.List, at table: user, for columns: [org.hibernate.mapping.Column(addresses)]
 	public List<Address> getAddresses() {
@@ -145,7 +145,7 @@ public class User implements Serializable {
 	 * 使用user表的id字段
 	 * @return
      */
-	@OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+	@OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
 	@JoinColumn(name = "id")
 	@Access(AccessType.PROPERTY)
 	public Card getCard() {

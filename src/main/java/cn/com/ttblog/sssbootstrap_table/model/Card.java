@@ -17,6 +17,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "card")
 public class Card implements Serializable{
+
+    private static final long serialVersionUID = 4193866401992779318L;
+
 	private Long userId;
 	private String cardNo;
     public Card(){

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:motan="http://api.weibo.com/schema/motan"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+ 							http://api.weibo.com/schema/motan http://api.weibo.com/schema/motan.xsd">
+	<!-- reference to the remote service -->
+	<!--<motan:referer id="remoteService" interface="cn.com.ttblog.sssbootstrap_table.rpc.service.FooService" directUrl="localhost:8002"/>-->
+	<motan:referer id="userRpcService" interface="cn.com.ttblog.sssbootstrap_table.rpc.service.UserRpcService" directUrl="localhost:8003"/>
+</beans>
