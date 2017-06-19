@@ -749,4 +749,14 @@ public class TestController {
 		}
 		return (User) session.getAttribute("user");
 	}
+
+	/**
+	 * return null view ,404页面
+	 * @return
+	 */
+	@RequestMapping(value = "nullview")
+	public String nullView(){
+		LOG.info("返回空视图");
+		return null;
+	}
 }
