@@ -75,7 +75,7 @@
 	<import resource="spring-data-jpa.xml" />
 	<import resource="spring-data-jedis.xml" />
 	<import resource="motan_server.xml" />
-	<import resource="motan_client.xml" />
+	<!--<import resource="motan_client.xml" />-->
 	<beans profile="test">
 		<util:list id="config_list" list-class="java.util.ArrayList">
 			<value>
