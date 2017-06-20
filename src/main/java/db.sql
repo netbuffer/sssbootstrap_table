@@ -116,3 +116,6 @@ CREATE TABLE `t_crud_demosub` (
 
 ALTER TABLE `user`
 ADD COLUMN `version`  int UNSIGNED NULL comment "乐观锁版本控制用" AFTER `comments`;
+
+-- order by field自定义排序
+select * from user where id in(6,1,5,2,3,4) order by FIELD(id,6,1,5,2,3,4)
