@@ -18,6 +18,9 @@
 		<context:exclude-filter type="regex" expression="cn.com.ttblog.sssbootstrap_table.testpackage.*" />
     </context:component-scan>
 
+	<!--获取spring context工具类 -->
+	<bean id="springContextHolder" class="cn.com.ttblog.sssbootstrap_table.util.SpringContextHolder" lazy-init="false"/>
+
 	<!--使@Async生效，任务执行线程池-->
 	<task:executor id="sss_task_executor" pool-size="5"/>
 	<task:annotation-driven executor="sss_task_executor" />
