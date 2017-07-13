@@ -4,11 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -18,6 +14,10 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import cn.com.ttblog.sssbootstrap_table.service.IUserService;
+import com.beust.jcommander.internal.Lists;
+import com.beust.jcommander.internal.Maps;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -88,6 +88,9 @@ public class TestController {
 
 	@Autowired
 	private MessageSource ms;
+
+	@Resource
+	private IUserService userService;
 
 	/**
 	 * 当前控制器异常捕获,如果当前控制器未设置，则去@ControllerAdvice标记中的类寻找@ExceptionHandler标记的方法处理异常
@@ -600,5 +603,26 @@ public class TestController {
 		m.put("date",new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 		return "custom_view";//需要返回视图bean的id
 //		return "customView";
+	}
+
+	/**
+	 * freemarker模板渲染测试
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/freemarker")
+	public String freemarker(Model model){
+		model.addAttribute("currentDate",new Date());
+		Map m= Maps.newHashMap();
+		m.put("a","a");
+		m.put("b","b");
+		model.addAttribute("mapData",m);
+		List list= Lists.newArrayList();
+		list.add("a");
+		list.add("b");
+		list.add("c");
+		model.addAttribute("listData",list);
+		model.addAttribute("users",userService.getUserList("desc",10,0));
+		return "freemarker";
 	}
 }
