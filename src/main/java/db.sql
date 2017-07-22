@@ -66,7 +66,7 @@ CREATE TABLE if not exists `statistics` (
   `usertotal` bigint(20)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---触发器测试
+-- 触发器测试
 DROP TRIGGER IF EXISTS tri_countUserTotal;
 CREATE TRIGGER tri_countUserTotal AFTER
 INSERT ON USER
