@@ -11,3 +11,5 @@
 /META-INF/**
 /sssbootstrap_table.iml
 /User.json
+/.gradle/
+/out/
