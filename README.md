@@ -41,3 +41,4 @@ git->clone;eclipse->File->Import->Existing Maven projects，导入到eclipse后�
 * `thymeleaf` thymeleaf模板渲染测试分支
 * `freemarker` freemarker模板渲染测试分支
 * `angular1` angular1.6.4测试分支
+* `gradle` 使用gradle构建项目
