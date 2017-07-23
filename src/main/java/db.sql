@@ -118,4 +118,13 @@ ALTER TABLE `user`
 ADD COLUMN `version`  int UNSIGNED NULL comment "乐观锁版本控制用" AFTER `comments`;
 
 -- order by field自定义排序
-select * from user where id in(6,1,5,2,3,4) order by FIELD(id,6,1,5,2,3,4)
+select * from user where id in(6,1,5,2,3,4) order by FIELD(id,6,1,5,2,3,4);
+
+-- 联合主键测试
+DROP TABLE IF EXISTS `user_favorites`;
+CREATE TABLE `user_favorites` (
+  `user_id` bigint(20) NOT NULL,
+  `goods_id` bigint(20) NOT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`goods_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
