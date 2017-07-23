@@ -3,21 +3,20 @@ group 'cn.com.ttblog'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
-
+//打包javaee插件
 apply plugin: 'war'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-//springVersion = "4.2.6.RELEASE"
-//println springVersion
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
 repositories {
-//    mavenCentral()
+    //本地仓库
     mavenLocal()
+    //中央仓库
     mavenCentral()
 }
 
