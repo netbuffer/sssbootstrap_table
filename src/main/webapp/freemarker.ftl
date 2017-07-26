@@ -26,6 +26,29 @@
 	listData<hr/>
 	<#list listData as d>
     	list:${d}<br/>
+	</#list><hr/>
+	<#list ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"] as x>
+	${x}&emsp;
 	</#list>
+	<#list 1..5 as i>
+	${i}&emsp;
+	</#list>
+	<#list 5..1 as i>
+	${i}&emsp;
+	</#list>
+	<#list [1 + 1, "abc"] as o>
+	${o}&emsp;
+	</#list>
+	<h1>字符串渲染</h1>
+	${"我的文件保存在C:\\盘"}<br/>
+	${'我名字是\"annlee\"'}<br/>
+    可以在指定字符串内容的引号前增加r标记,在r标记后的内容将会直接输出:${r"${foo}"}&emsp;${r"C:\foo\bar"}<br/>
+	<h1>判断对象为空</h1>
+	${abc!'name为空'}
+	<#if abc??>
+		${abc}
+	<#else>
+	    变量abc为空
+	</#if>
 </body>
 </html>
