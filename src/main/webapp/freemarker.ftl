@@ -50,5 +50,9 @@
 	<#else>
 	    变量abc为空
 	</#if>
+	<h1>数字格式化</h1>
+	<#setting number_format="0.00">
+	${1000}<br/>
+	${134/100}
 </body>
 </html>
