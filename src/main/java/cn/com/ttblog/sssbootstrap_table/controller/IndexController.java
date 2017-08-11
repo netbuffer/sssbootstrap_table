@@ -242,10 +242,23 @@ public class IndexController {
 	public FileSystemResource getFile(@PathVariable("file_name") String fileName,HttpServletRequest request) {
 	    return new FileSystemResource(new File(request.getServletContext().getRealPath("export")+ File.separator+fileName+".xls")); 
 	}
-	
+
 	@RequestMapping("/testerror")
 	public String testthrowException() {
 		throw new RuntimeException("test error");
+	}
+
+	/**
+	 * 单独设置某个session的超时时间
+	 * @param session
+	 * @param seconds
+	 * @return
+	 */
+	@RequestMapping("/session/timeout")
+	public HttpSession sessionTimeout(HttpSession session, @RequestParam(value = "seconds",required = false,defaultValue = "60") Integer seconds) {
+		//seconds
+		session.setMaxInactiveInterval(seconds);
+		return session;
 	}
 
 	@ExceptionHandler
