@@ -23,7 +23,16 @@ The project constructed by `maven`, please execute under the `src/main/java` `SQ
 项目采用`maven`构建，运行前请先执行`src/main/java`下的`sql`脚本到你的`mysql`数据库中，然后修改`src/main/resource`下的`jdbc.properties`配置文件中的数据库配置信息，进入项目目录，执行`mvn tomcat7:run`来运行
 
 git->clone;eclipse->File->Import->Existing Maven projects，导入到eclipse后，等maven依赖下载完，右键项目，run as->maven build->tomcat7:run
+---
+* `develop`开发分支  
+* `jwt` json web token测试分支
+* `beetl` beetl模板渲染测试分支
+* `thymeleaf` thymeleaf模板渲染测试分支
+* `freemarker` freemarker模板渲染测试分支
+* `angular1` angular1.6.4测试分支
+* `gradle` 使用gradle构建项目
 
+# other projects
 > `ssmbootstrap_table(spring+springmvc+mybatis)` github:[https://github.com/netbuffer/ssmbootstrap_table](https://github.com/netbuffer/ssmbootstrap_table)`/`git@osc:[https://git.oschina.net/gradle/ssmbootstrap_table](https://git.oschina.net/gradle/ssmbootstrap_table)
 
 > `ssmbt(ssmbootstrap_table maven module )` github:[https://github.com/netbuffer/ssmbt](https://github.com/netbuffer/ssmbt)`/`git@osc:[https://git.oschina.net/netbuffer/ssmbt](https://git.oschina.net/netbuffer/ssmbt)    
@@ -35,12 +44,3 @@ git->clone;eclipse->File->Import->Existing Maven projects，导入到eclipse后�
 > `jfinal-bootstrap-table(jfinal)`github:[https://github.com/netbuffer/jfinal-bootstrap-table](https://github.com/netbuffer/jfinal-bootstrap-table)`/`git@osc:[http://git.oschina.net/gradle/jfinal-bootstrap-table](http://git.oschina.net/gradle/jfinal-bootstrap-table)  
 
 > `medoo_bootstrap_table(php5)`github:[https://github.com/netbuffer/medoo_bootstrap_table](https://github.com/netbuffer/medoo_bootstrap_table)`/`git@osc:[http://git.oschina.net/gradle/medoo_bootstrap_table](http://git.oschina.net/gradle/medoo_bootstrap_table)
-
----
-* `develop`开发分支  
-* `jwt` json web token测试分支
-* `beetl` beetl模板渲染测试分支
-* `thymeleaf` thymeleaf模板渲染测试分支
-* `freemarker` freemarker模板渲染测试分支
-* `angular1` angular1.6.4测试分支
-* `gradle` 使用gradle构建项目
