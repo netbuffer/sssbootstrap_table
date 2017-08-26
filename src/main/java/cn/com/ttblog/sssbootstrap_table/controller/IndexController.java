@@ -255,6 +255,7 @@ public class IndexController {
 	 * @return
 	 */
 	@RequestMapping("/session/timeout")
+	@ResponseBody
 	public HttpSession sessionTimeout(HttpSession session, @RequestParam(value = "seconds",required = false,defaultValue = "60") Integer seconds) {
 		//seconds
 		session.setMaxInactiveInterval(seconds);
