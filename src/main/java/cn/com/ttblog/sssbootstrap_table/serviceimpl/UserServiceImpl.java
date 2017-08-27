@@ -3,6 +3,7 @@ package cn.com.ttblog.sssbootstrap_table.serviceimpl;
 import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.annotation.Resource;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +34,8 @@ public class UserServiceImpl implements IUserService{
 	private static final Logger LOG= LoggerFactory.getLogger(UserServiceImpl.class);
 	@Autowired
 	private IUserDao userDao;
+	@Resource
+	private TransactionTemplate transactionTemplate;
 
 	@Override
 	public User getUserById(long userId) {
@@ -53,19 +61,27 @@ public class UserServiceImpl implements IUserService{
 	 * @param user
 	 */
 	@Override
-	public void addUser(User user) {
-		//锁定当前用户名的请求
-		synchronized (user.getName().intern()){
-//		synchronized (user.getName()){
-			User exist=userDao.findByName(user.getName());
-			if(exist!=null&&exist.getId()>0){
-				return;
+	public void addUser(final User user) {
+		transactionTemplate.execute(new TransactionCallback<User>() {
+			@Override
+			public User doInTransaction(TransactionStatus status) {
+				LOG.info("TransactionStatus:{}", ToStringBuilder.reflectionToString(status));
+				//锁定当前用户名的请求
+				User saved=null;
+				synchronized (user.getName().intern()){
+		//		synchronized (user.getName()){
+					User exist=userDao.findByName(user.getName());
+					if(exist!=null&&exist.getId()>0){
+						return null;
+					}
+					user.setDeliveryaddress("thread:"+Thread.currentThread().getName()+",time:"+new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+					saved=userDao.saveAndFlush(user);
+				}
+				//事务测试
+				int i=1/0;
+				return saved;
 			}
-			user.setDeliveryaddress("thread:"+Thread.currentThread().getName()+",time:"+new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-			userDao.saveAndFlush(user);
-		}
-		//事务测试
-//		int i=1/0;
+		});
 	}
 
 	@Override

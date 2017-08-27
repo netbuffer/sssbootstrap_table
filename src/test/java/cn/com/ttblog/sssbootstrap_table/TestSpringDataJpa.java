@@ -224,7 +224,6 @@ public class TestSpringDataJpa {
 	}
 
 	@Test
-	@Ignore
 	public void testAddUserTran(){
 		User u=new User();
 		u.setName("事务测试");
