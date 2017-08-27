@@ -2,15 +2,11 @@
 <beans
         xmlns="http://www.springframework.org/schema/beans"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:tx="http://www.springframework.org/schema/tx"
         xmlns:jpa="http://www.springframework.org/schema/data/jpa"
         xmlns:aop="http://www.springframework.org/schema/aop"
-        xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-		">
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
     <bean id="oridataSource" class="com.alibaba.druid.pool.DruidDataSource"
           destroy-method="close">
@@ -81,30 +77,16 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!--编程式事务控制模板-->
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
+
     <!-- Spring Data Jpa配置 -->
     <jpa:repositories base-package="cn.com.ttblog.sssbootstrap_table"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"
                       repository-impl-postfix="Impl">
     </jpa:repositories>
-
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="save*" propagation="REQUIRED" rollback-for="exception" />
-            <!--设置事务传播行为与隔离级别isolation="DEFAULT"-->
-            <tx:method name="add*" propagation="REQUIRED" rollback-for="exception"  />
-            <tx:method name="del*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="insert*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="update*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="modify*" propagation="REQUIRED" rollback-for="exception" />
-            <!--对于查询操作不需要事务-->
-            <tx:method name="*" read-only="true" />
-        </tx:attributes>
-    </tx:advice>
-    <aop:config>
-        <!--排除redisservice层切面写法-->
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..)) and !execution(* cn.com.ttblog.sssbootstrap_table.service.RedisService.*(..))" />
-        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />-->
-    </aop:config>
 
 </beans>
