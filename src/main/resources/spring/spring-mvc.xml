@@ -97,6 +97,7 @@
 		<property name="converters">
 			<set>
 				<bean id="stringToTimestampConverter" class="cn.com.ttblog.sssbootstrap_table.converters.StringToTimestampConverter"/>
+				<bean id="dateConverter" class="cn.com.ttblog.sssbootstrap_table.converters.DateConverter" />
 			</set>
 		</property>
 	</bean>
