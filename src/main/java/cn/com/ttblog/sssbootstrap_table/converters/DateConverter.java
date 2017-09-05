@@ -1,6 +1,6 @@
 package cn.com.ttblog.sssbootstrap_table.converters;
 
-import com.beust.jcommander.internal.Lists;
+import com.google.common.collect.Lists;
 import org.springframework.core.convert.converter.Converter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
