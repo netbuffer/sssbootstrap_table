@@ -7,6 +7,15 @@ public class UserFavoritesPK implements Serializable {
     private Long userId;
     private Long goodsId;
 
+    public UserFavoritesPK(){
+
+    }
+
+    public UserFavoritesPK(Long userId,Long goodsId){
+        this.userId=userId;
+        this.goodsId=goodsId;
+    }
+
     public Long getUserId() {
         return userId;
     }

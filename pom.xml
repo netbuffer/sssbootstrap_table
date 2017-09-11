@@ -40,6 +40,7 @@
         <spring-data-redis.version>1.7.5.RELEASE</spring-data-redis.version>
         <druid.version>1.0.29</druid.version>
         <guava.version>19.0</guava.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -74,7 +75,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

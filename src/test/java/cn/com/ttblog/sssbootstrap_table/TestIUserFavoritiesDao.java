@@ -2,6 +2,7 @@ package cn.com.ttblog.sssbootstrap_table;
 
 import cn.com.ttblog.sssbootstrap_table.dao.IUserFavoritesDao;
 import cn.com.ttblog.sssbootstrap_table.model.UserFavorites;
+import cn.com.ttblog.sssbootstrap_table.model.UserFavoritesPK;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -28,5 +29,10 @@ public class TestIUserFavoritiesDao {
 		userFavorites.setUserId(1L);
 		userFavorites.setRemark("test");
 		userFavoritesDao.save(userFavorites);
+	}
+
+	@Test
+	public void testFindOne(){
+		userFavoritesDao.findOne(new UserFavoritesPK(1L,2L));
 	}
 }
