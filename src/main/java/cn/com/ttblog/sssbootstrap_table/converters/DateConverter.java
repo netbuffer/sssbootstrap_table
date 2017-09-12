@@ -1,6 +1,7 @@
 package cn.com.ttblog.sssbootstrap_table.converters;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 
 import java.text.DateFormat;
@@ -13,11 +14,10 @@ import java.util.List;
  */
 public class DateConverter implements Converter<String, Date> {
 
-    private static final List<String> formarts = Lists.newArrayList("yyyy-MM", "yyyy-MM-dd", "yyyy-MM-dd hh:mm", "yyyy-MM-dd hh:mm:ss");
+    private static final List<String> formarts = Lists.newArrayList("yyyy-MM", "yyyy-MM-dd", "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
 
     public Date convert(String source) {
-        String value = source.trim();
-        if ("".equals(value)) {
+        if (StringUtils.isEmpty(source)||StringUtils.isEmpty(source.trim())) {
             return null;
         }
         if (source.matches("^\\d{4}-\\d{1,2}$")) {
