@@ -2,6 +2,7 @@ package cn.com.ttblog.sssbootstrap_table.converters;
 
 import com.google.common.collect.Lists;
 import org.springframework.core.convert.converter.Converter;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class DateConverter implements Converter<String, Date> {
         Date date = null;
         try {
             DateFormat dateFormat = new SimpleDateFormat(format);
-            date = (Date) dateFormat.parse(dateStr);
+            date = dateFormat.parse(dateStr);
         } catch (Exception e) {
         }
         return date;
