@@ -84,7 +84,13 @@ public class IndexController {
 			param.put("loginname", username);
 			param.put("logintime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 			param.put("loginip", request.getRemoteAddr());
-			applicationContext.publishEvent(new LoginEvent(param));  
+			//测试捕获监听器中抛出的错误
+			try {
+				applicationContext.publishEvent(new LoginEvent(param));
+			}catch (Exception e){
+				LOGGER.error("登录发生错误:{}",e.getMessage());
+				e.printStackTrace();
+			}
 			if(requri!=null&&requri.length()>0){
 				String uri=new String(Base64.decodeBase64(requri));
 				String touri=uri.substring(request.getContextPath().length()+1);
