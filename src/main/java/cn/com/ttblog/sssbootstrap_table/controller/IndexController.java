@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cn.com.ttblog.sssbootstrap_table.Constant.ConfigConstant;
+import cn.com.ttblog.sssbootstrap_table.constant.ConfigConstant;
 import cn.com.ttblog.sssbootstrap_table.util.JWTUtil;
 import com.github.jscookie.javacookie.*;
 import org.apache.commons.codec.binary.Base64;
@@ -92,6 +92,8 @@ public class IndexController {
 			tokenParam.put("issuer","https://github.com/netbuffer/sssbootstrap_table.git");
 			tokenParam.put("expire",expire);
 			Map claims=new HashedMap();
+			claims.put("username",username);
+			claims.put("login_time",new Date());
 			tokenParam.put("claims",claims);
 			String token=JWTUtil.createToken(tokenParam,ConfigConstant.JWT_SIGN_KEY);
 			cookies.set("token",token,Cookies.Attributes.empty().expires(Expiration.date(expire)).httpOnly(true));

@@ -40,7 +40,7 @@
         <spring-data-redis.version>1.7.5.RELEASE</spring-data-redis.version>
         <druid.version>1.0.29</druid.version>
         <guava.version>19.0</guava.version>
-        <jjwt.version>0.7.0</jjwt.version>
+        <jjwt.version>0.9.0</jjwt.version>
     </properties>
 
     <dependencies>

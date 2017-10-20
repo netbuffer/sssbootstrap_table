@@ -37,7 +37,7 @@ public class JWTUtil {
                 .setExpiration((Date) param.get("expire"))
                 .signWith(SignatureAlgorithm.HS512, signKey)
                 .compact();
-        LOGGER.info("sign key:{}",signKey);
+        LOGGER.info("custom sign key:{}",signKey);
         return compactJws;
     }
 

@@ -1,6 +1,6 @@
 package cn.com.ttblog.sssbootstrap_table.filter;
 
-import cn.com.ttblog.sssbootstrap_table.Constant.ConfigConstant;
+import cn.com.ttblog.sssbootstrap_table.constant.ConfigConstant;
 import com.alibaba.fastjson.JSONObject;
 import com.github.jscookie.javacookie.Cookies;
 import io.jsonwebtoken.Claims;
@@ -35,10 +35,12 @@ public class JwtFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String token = request.getHeader("Authorization");
+        //尝试从header中Authorization信息头取token
         if (token != null && token.length() > 9) {
             findToken = true;
             token = token.substring(7); // The part after "Bearer "
         } else {
+            //尝试从cookie中获取token
             Cookies cookies = Cookies.initFromServlet(request, response);
             token = cookies.get("token");
             if (token != null && token.length() > 3) {

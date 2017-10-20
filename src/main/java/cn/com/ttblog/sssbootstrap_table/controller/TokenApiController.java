@@ -1,6 +1,6 @@
 package cn.com.ttblog.sssbootstrap_table.controller;
 
-import cn.com.ttblog.sssbootstrap_table.Constant.ConfigConstant;
+import cn.com.ttblog.sssbootstrap_table.constant.ConfigConstant;
 import cn.com.ttblog.sssbootstrap_table.util.JWTUtil;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
