@@ -1,5 +1,6 @@
 package cn.com.ttblog.sssbootstrap_table;
 
+import cn.com.ttblog.sssbootstrap_table.service.IUserService;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +42,12 @@ public class TestSpringProfile {
 		log.info("getEnvironment：{}", applicationContext.getEnvironment());
 		log.info("getDefaultProfiles：{},getActiveProfiles:{}", applicationContext.getEnvironment().getDefaultProfiles(),applicationContext.getEnvironment().getActiveProfiles());
 		log.info("userFromSpring：{}", applicationContext.getBean("userFromSpring", User.class));
+	}
+
+	@Test
+	public void testGetInterface() {
+		IUserService userService=applicationContext.getBean("userServiceImpl", IUserService.class);
+		log.info("userServiceImpl：{},getUserById(1):{}", userService,userService.getUserById(1));
 	}
 
 	@Test
