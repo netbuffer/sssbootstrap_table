@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +92,7 @@ public class IndexController {
 				LOGGER.error("登录发生错误:{}",e.getMessage());
 				e.printStackTrace();
 			}
-			if(requri!=null&&requri.length()>0){
+			if(StringUtils.isNotBlank(requri)){
 				String uri=new String(Base64.decodeBase64(requri));
 				String touri=uri.substring(request.getContextPath().length()+1);
 				LOGGER.debug("request.getContextPath():{}  decode-requri:{}  touri:{}",request.getContextPath(),uri,touri);

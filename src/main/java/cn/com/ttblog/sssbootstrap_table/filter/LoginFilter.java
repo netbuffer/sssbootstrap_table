@@ -83,7 +83,7 @@ public class LoginFilter implements Filter {
 		LOG.debug("cookies:"+cs.get().toString());
 		Object islogin=httpServletRequest.getSession().getAttribute(ConfigConstant.ISLOGIN);
 		if ( islogin!= null&&Boolean.parseBoolean(islogin.toString())) {
-			LOG.debug("p1");
+			LOG.debug("get login status from session");
 			if(uri.endsWith(ConfigConstant.PROJECTNAME+"/")){
 				httpServletResponse.sendRedirect(httpServletRequest
 						.getContextPath() + "/manage.html");
@@ -91,7 +91,7 @@ public class LoginFilter implements Filter {
 				filterChain.doFilter(httpServletRequest, httpServletResponse);
 			}
 		} else if(cookies!=null){
-			LOG.debug("p2");
+			LOG.debug("get login status from cookie");
 			boolean find=false;
 			for(Cookie cookie:cookies){
 				if(cookie.getName().equals(ConfigConstant.USERNAME)&&cookie.getValue().length()>0){
@@ -115,6 +115,8 @@ public class LoginFilter implements Filter {
 					String requri=Base64.encodeBase64String(requrib.getBytes());
 					httpServletResponse.sendRedirect(httpServletRequest
 							.getContextPath() + "/index.html?requri="+requri);
+				}else {
+					LOG.info("no cookie httpServletResponse.isCommitted():{}",httpServletResponse.isCommitted());
 				}
 				return ;
 			}
@@ -130,6 +132,8 @@ public class LoginFilter implements Filter {
 				String requri=Base64.encodeBase64String(requrib.getBytes());
 				httpServletResponse.sendRedirect(httpServletRequest
 						.getContextPath() + "/index.html?requri="+requri);
+			}else {
+				LOG.info("no cookie&session httpServletResponse.isCommitted():{}",httpServletResponse.isCommitted());
 			}
 			return ;
 		}
@@ -138,6 +142,6 @@ public class LoginFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		LOG.debug("destory");
+		LOG.debug("loginfilter destory");
 	}
 }
