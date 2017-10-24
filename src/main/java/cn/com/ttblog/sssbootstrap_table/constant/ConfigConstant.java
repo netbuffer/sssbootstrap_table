@@ -12,7 +12,7 @@ public class ConfigConstant {
 	public static final String VAL_USERNAME = "admin";
 	public static final String VAL_PWD = "admin";
 	/**
-	 * jwt的secret key
+	 * jwt的secret key,用来生成签名部分,校验签名是否合法，判断数据包是否被篡改
 	 */
 	public static final String JWT_SIGN_KEY = "sssbootstrap_table";
 }

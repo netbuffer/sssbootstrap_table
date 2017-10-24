@@ -23,6 +23,7 @@ public class TrimRequestWrapper extends HttpServletRequestWrapper {
 	/**
 	 * 重写getParameterValues方法来删除多余的空格
 	 */
+	@Override
 	public String[] getParameterValues(String parameter) {
 		String[] results = super.getParameterValues(parameter);
 		if (results == null)
@@ -38,6 +39,7 @@ public class TrimRequestWrapper extends HttpServletRequestWrapper {
 	/**
 	 * 重写getParameter方法去空白
 	 */
+	@Override
 	public String getParameter(String name){
 		return null!=super.getParameter(name)?super.getParameter(name).trim():"";
 	}

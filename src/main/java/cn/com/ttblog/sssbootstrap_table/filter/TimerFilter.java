@@ -25,8 +25,9 @@ public class TimerFilter implements Filter {
 			.getLogger(TimerFilter.class);
 	public static final NumberFormat FORMAT = new DecimalFormat("0.000");
 
+	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+						 FilterChain chain) throws IOException, ServletException {
 		boolean enable = Boolean.parseBoolean(filterConfig
 				.getInitParameter("enable"));
 		if (enable) {
@@ -45,10 +46,12 @@ public class TimerFilter implements Filter {
 		}
 	}
 
+	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		this.filterConfig = filterConfig;
 	}
 
+	@Override
 	public void destroy() {
 	}
 

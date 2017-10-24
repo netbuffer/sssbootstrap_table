@@ -23,7 +23,7 @@ public class JWTUtil {
         Key key = MacProvider.generateKey();
         String compactJws = Jwts.builder()
                 .setSubject(param.get("sub").toString())
-                .signWith(SignatureAlgorithm.HS512, key)
+                .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
         LOGGER.info("sign key:{}",key);
         return compactJws;
@@ -35,7 +35,7 @@ public class JWTUtil {
                 .setSubject(param.get("sub").toString())
                 .setIssuer(param.get("issuer").toString())
                 .setExpiration((Date) param.get("expire"))
-                .signWith(SignatureAlgorithm.HS512, signKey)
+                .signWith(SignatureAlgorithm.HS256, signKey)
                 .compact();
         LOGGER.info("custom sign key:{}",signKey);
         return compactJws;
@@ -49,5 +49,9 @@ public class JWTUtil {
         //密钥错误会抛出SignatureException，说明该token是伪造的
         //如果过期时间exp字段已经早于当前时间，会抛出ExpiredJwtException，说明token已经失效
         return Jwts.parser().setSigningKey(signKey).parseClaimsJws(token);
+    }
+
+    public static Jws<Claims> parseToken(String token){
+        return Jwts.parser().parseClaimsJws(token);
     }
 }
