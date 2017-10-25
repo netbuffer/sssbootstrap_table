@@ -13,6 +13,8 @@ public class ConfigConstant {
 	public static final String VAL_PWD = "admin";
 	/**
 	 * jwt的secret key,用来生成签名部分,校验签名是否合法，判断数据包是否被篡改
+	 * 这个key是base64形式的,其它视作不合法字符
+	 * https://baike.baidu.com/item/base64/8545775?fr=aladdin
 	 */
 	public static final String JWT_SIGN_KEY = "sssbootstrap_table";
 }
