@@ -96,9 +96,11 @@ public class IndexController {
 				String uri=new String(Base64.decodeBase64(requri));
 				String touri=uri.substring(request.getContextPath().length()+1);
 				LOGGER.debug("request.getContextPath():{}  decode-requri:{}  touri:{}",request.getContextPath(),uri,touri);
+				if(StringUtils.isNotBlank(touri)&&!touri.equals("/")){
+					return "redirect:/"+touri;
+				}
 //				/sssbootstrap_table
 //				/sssbootstrap_table/test/form?null
-				return "redirect:/"+touri;
 			}
 			return "redirect:/manage.html";
 		} else {
