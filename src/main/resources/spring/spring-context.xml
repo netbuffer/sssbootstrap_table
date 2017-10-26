@@ -10,7 +10,9 @@
                         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
                         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
                         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-	
+
+	<description>spring主配置文件</description>
+	<context:annotation-config/>
 	<context:component-scan base-package="cn.com.ttblog.sssbootstrap_table">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController" />
@@ -77,6 +79,7 @@
 	<!--导入spring-data-jpa配置-->
 	<import resource="spring-data-jpa.xml" />
 	<import resource="spring-data-jedis.xml" />
+	<import resource="spring-session.xml" />
 	<beans profile="test">
 		<util:list id="config_list" list-class="java.util.ArrayList">
 			<value>

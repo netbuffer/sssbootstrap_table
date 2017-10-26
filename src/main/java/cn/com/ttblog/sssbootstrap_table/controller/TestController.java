@@ -731,7 +731,7 @@ public class TestController {
 	 */
 	@RequestMapping(value = "/session")
 	@ResponseBody
-	public User sessionVal(HttpServletRequest request,@RequestParam(value = "type",required = false) String type){
+	public User sessionVal(HttpServletRequest request,@RequestParam(value = "type",required = false,defaultValue = "c") String type){
 		HttpSession session=request.getSession();
 		switch (type){
 			case "c":
@@ -746,6 +746,8 @@ public class TestController {
 				u.setName(u.getName()+"-update");
 				logger.info("u.getClass().getName():{},u:{},u.gethash:{}",u.getClass().getName(),u,u.getClass().hashCode());
 				break;
+			default:
+				logger.info("type:{}",type);
 		}
 		return (User) session.getAttribute("user");
 	}
