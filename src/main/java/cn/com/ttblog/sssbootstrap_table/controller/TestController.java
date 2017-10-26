@@ -143,7 +143,7 @@ public class TestController {
 	}
 
 	//注入方法
-	@Value("#{configProperties['url']}")
+	@Value("#{configProperties['jdbc.url']}")
     public void setJdbcUrl(String url) {
 		JDBCURL = url;
     }
