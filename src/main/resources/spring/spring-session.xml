@@ -8,6 +8,7 @@
         https://docs.spring.io/spring-session/docs/current/reference/html5/guides/httpsession-xml.html
     </description>
     <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
-        <property name="maxInactiveIntervalInSeconds" value="1" />
+        <!--session过期时间-->
+        <!--<property name="maxInactiveIntervalInSeconds" value="1" />-->
     </bean>
 </beans>
