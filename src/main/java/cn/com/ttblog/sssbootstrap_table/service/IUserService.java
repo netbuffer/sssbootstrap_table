@@ -24,6 +24,7 @@ public interface IUserService {
 	void addUMtest() throws IllegalArgumentException;
 	void deleteById(Long id);
 	User updateUserWithOptLock(User updateUser);
+	User save(User user);
 	Page<User> getUserList(final int page, int size, Sort sort, final Map param);
 	Future<User> saveUserAsync(User user);
     void saveUserAsyncReturnVoid(User user);

@@ -165,6 +165,11 @@ public class UserServiceImpl implements IUserService{
 		return userDao.save(user);
 	}
 
+	@Override
+	public User save(User user) {
+		return userDao.save(user);
+	}
+
 	/**
 	 * @Async 异步保存用户
 	 * @param user
