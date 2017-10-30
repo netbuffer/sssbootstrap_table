@@ -38,7 +38,7 @@
         <spring-data-jpa.version>1.10.1.RELEASE</spring-data-jpa.version>
         <jedis.version>2.9.0</jedis.version>
         <spring-data-redis.version>1.7.5.RELEASE</spring-data-redis.version>
-        <druid.version>1.0.29</druid.version>
+        <druid.version>1.1.5</druid.version>
         <guava.version>19.0</guava.version>
         <junit.version>4.12</junit.version>
     </properties>
