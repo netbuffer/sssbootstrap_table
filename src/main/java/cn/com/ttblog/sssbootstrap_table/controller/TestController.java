@@ -757,8 +757,32 @@ public class TestController {
 	 * @return
 	 */
 	@RequestMapping(value = "nullview")
-	public String nullView(){
-		LOG.info("返回空视图");
-		return null;
+	public String nullView(@RequestParam(value = "null",defaultValue = "true",required = false)Boolean isNull){
+		if(isNull){
+			LOG.info("返回空视图null");
+			return null;
+		}else {
+			LOG.info("返回空视图\"\"");
+			return "";
+		}
 	}
+
+	@RequestMapping(value = "attrr",method = RequestMethod.GET)
+	@ResponseBody
+	public String attrRequire(@RequestAttribute(name = "attr") String attr){
+		return attr;
+	}
+
+	@RequestMapping(value = "attrforward",method = RequestMethod.GET)
+	public String attrForword(@RequestParam(value = "attr",required = false,defaultValue = "RequestAttribute") String requestAttribute,HttpServletRequest request){
+		request.setAttribute("attr",requestAttribute);
+		return "forward:/test/attrn";
+	}
+
+	@RequestMapping(value = "attrn",method = RequestMethod.GET)
+	@ResponseBody
+	public String attrNoRequire(@RequestAttribute(name = "attr",required = false) String attr){
+		return attr;
+	}
+
 }
