@@ -345,5 +345,11 @@ public class TestSpringDataJpa {
 		param.put("age","2");
 		logger.debug("testGetUserSum:{}",userService.getUserList(1,5,new Sort(Sort.Direction.DESC,"adddate"),param));
 	}
+
+	@Test
+	public void testNestingTransaction(){
+		User user=new User("aaa","男",22,"13288383832","收获地址",(int)(System.currentTimeMillis()/1000),"remark",1);
+		userService.nestingTransaction(user);
+	}
 //	@Modifying +jpql修改数据
 }

@@ -4,49 +4,55 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@Entity
+@Table(name = "menu")
+@XmlRootElement
 public class Menu {
 
-	private Long id;
+    private Long id;
+    private String name;
+    private Long parentId;
+    List<Menu> menus;
 
-	private String name;
+    @Transient
+    public List<Menu> getMenus() {
+        return menus;
+    }
 
-	private Long parentId;
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
 
-	List<Menu> menus;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
+        return id;
+    }
 
-	public List<Menu> getMenus() {
-		return menus;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getParentId() {
+        return parentId;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
 
-	public void setName(String name) {
-		this.name = name == null ? null : name.trim();
-	}
-
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
-
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }

@@ -90,12 +90,13 @@
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="save*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="add*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="del*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="insert*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="update*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="modify*" propagation="REQUIRED" rollback-for="exception" />
+            <tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="del*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="modify*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="nestingTransaction*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
             <!--对于查询操作不需要事务-->
             <tx:method name="*" read-only="true" />
         </tx:attributes>
