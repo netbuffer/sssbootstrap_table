@@ -48,6 +48,16 @@
 			</list>
 		</property>
 	</bean>
+	<!--fastjson spring jsonp适配-->
+	<bean id="fastJsonpResponseBodyAdvice" class="com.alibaba.fastjson.support.spring.FastJsonpResponseBodyAdvice">
+		<constructor-arg>
+			<list>
+				<value>callback</value>
+				<value>jsonp</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
 	<!-- fastjsonView -->
 	<bean id="fastJsonJsonView" class="com.alibaba.fastjson.support.spring.FastJsonJsonView">
 		<property name="fastJsonConfig" ref="fastJsonConfig" />
@@ -109,11 +119,11 @@
 			<!-- fastjson常见问题 -->
 			<!-- https://github.com/alibaba/fastjson/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98 -->
 			<bean
-				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				class="com.alibaba.fastjson.support.spring.FastJsonpHttpMessageConverter4">
 				<!-- MediaTypes -->
 				<property name="supportedMediaTypes">
 					<list>
-						<value>application/json</value>
+						<value>application/json;charset=UTF-8</value>
 					</list>
 				</property>
 				<!-- FastJsonConfig -->
