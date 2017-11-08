@@ -103,8 +103,9 @@
                 1.测试menuService.findOne方法不启用事务情况下，执行userService.nestingTransaction()方法
             -->
             <tx:method name="nestingTransaction*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <!--<tx:method name="*" read-only="true" />-->
             <!--将findOne方法以非事务方式运行-->
-            <tx:method name="findOne" propagation="NOT_SUPPORTED" />
+            <!--<tx:method name="findOne" propagation="NOT_SUPPORTED" />-->
 
             <!-- 2.测试只读连接情况下的执行
                 只读连接中不能发生写操作，否则会出错:java.sql.SQLException: Connection is read-only. Queries leading to data modification are not allowed
