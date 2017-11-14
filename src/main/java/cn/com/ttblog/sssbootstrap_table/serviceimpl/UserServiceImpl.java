@@ -220,12 +220,21 @@ public class UserServiceImpl implements IUserService{
 	public User nestingTransaction(User user) {
     	user=userDao.save(user);
 //    	这里如果自己try catch，并且catch中没有throw 出异常，spring会报错:Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly
-    	try{
-			menuService.findOne(1L);
-		}catch (Exception e){
-    		LOG.error("sub method error:{}",e.getMessage());
-		}
+//    	try{
+//			menuService.findOne(1L);
+//		}catch (Exception e){
+//    		LOG.error("sub method error:{}",e.getMessage());
+//		}
 //		menuService.findOne(1L);
+		/**
+		 * 默认的事务隔离级别 ，传播行为下
+		 * 子方法出错: nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly
+		 */
+		try{
+			menuService.addMenu(null);
+		}catch (Exception e){
+			LOG.error("sub method error:{}",e.getMessage());
+		}
 		return user;
 	}
 
