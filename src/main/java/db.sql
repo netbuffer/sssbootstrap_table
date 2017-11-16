@@ -128,3 +128,11 @@ CREATE TABLE `user_favorites` (
   `remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`,`goods_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- 同一会话下先执行insert aaa
+begin;
+insert into user(name) values("aaa");
+-- 再begin开事务执行insert bbb，那么此时之前的事务会自动提交
+begin;
+insert into user(name) values("bbb");
+rollback;
