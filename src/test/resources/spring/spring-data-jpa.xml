@@ -115,8 +115,8 @@
         </tx:attributes>
     </tx:advice>
     <aop:config>
-        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />-->
-        <aop:advisor advice-ref="testNestingTransactionAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />
+        <!--<aop:advisor advice-ref="testNestingTransactionAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />-->
         <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
     </aop:config>
 

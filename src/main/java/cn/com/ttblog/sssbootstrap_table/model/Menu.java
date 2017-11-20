@@ -44,6 +44,7 @@ public class Menu {
         this.name = name == null ? null : name.trim();
     }
 
+    @Column(name = "parent_id")
     public Long getParentId() {
         return parentId;
     }
@@ -52,6 +53,7 @@ public class Menu {
         this.parentId = parentId;
     }
 
+    @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }

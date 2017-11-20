@@ -27,4 +27,16 @@ public class MenuServiceImpl implements IMenuService{
 		int i=1/0;
 		return menuDao.findOne(id);
 	}
+
+	@Override
+	public void delete(Long id) {
+		menuDao.delete(id);
+	}
+
+	@Override
+	public void deleteTwiceTest(Long id) {
+//		重复删除会引发 :No class entity xxx with id xxx exists
+		this.delete(id);
+		this.delete(id);
+	}
 }

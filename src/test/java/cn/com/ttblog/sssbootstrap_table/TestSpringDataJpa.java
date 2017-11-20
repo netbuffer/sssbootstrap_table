@@ -4,6 +4,7 @@ import cn.com.ttblog.sssbootstrap_table.dao.CrudDao;
 import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.CrudService;
+import cn.com.ttblog.sssbootstrap_table.service.IMenuService;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -53,6 +54,8 @@ public class TestSpringDataJpa {
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private EntityManagerFactory em;
+	@Resource
+	private IMenuService menuService;
 
 	// @Before
 	// public void before() {
@@ -350,6 +353,11 @@ public class TestSpringDataJpa {
 	public void testNestingTransaction(){
 		User user=new User("aaa","男",22,"13288383832","收获地址",(int)(System.currentTimeMillis()/1000),"remark",1);
 		userService.nestingTransaction(user);
+	}
+
+	@Test
+	public void testDeleteTwice(){
+		menuService.deleteTwiceTest(1L);
 	}
 //	@Modifying +jpql修改数据
 }

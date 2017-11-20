@@ -6,4 +6,6 @@ public interface IMenuService {
 	void addMenu(Menu m);
 	Menu save(Menu m);
 	Menu findOne(Long id);
+	void delete(Long id);
+	void deleteTwiceTest(Long id);
 }
