@@ -37,6 +37,9 @@ import java.util.concurrent.Future;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 // 表示继承了SpringJUnit4ClassRunner类
+/**
+ * 配置文件先去src/main/resources下加载，没有的再去src/test/resources下加载
+ */
 @ContextConfiguration(locations = { "classpath:spring/spring-context.xml"})
 @ActiveProfiles(value = "test")
 public class TestSpringDataJpa {
