@@ -12,6 +12,7 @@
 * zxing
 * itextpdf
 * jedis([spring-data-redis](http://docs.spring.io/spring-data/redis/docs/1.7.6.RELEASE/reference/html/))
+* JsonPath:[https://github.com/json-path/JsonPath](https://github.com/json-path/JsonPath)
 
 > ## github:[https://github.com/netbuffer/sssbootstrap_table](https://github.com/netbuffer/sssbootstrap_table)
 > ## git@osc:[http://git.oschina.net/netbuffer/sssbootstrap_table](http://git.oschina.net/netbuffer/sssbootstrap_table)
