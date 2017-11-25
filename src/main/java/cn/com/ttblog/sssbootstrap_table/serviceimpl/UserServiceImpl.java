@@ -72,6 +72,10 @@ public class UserServiceImpl implements IUserService{
 		//事务测试
 //		int i=1/0;
 	}
+	@Override
+	public Page<User> getUserList(Pageable pageable) {
+		return userDao.findAll(pageable);
+	}
 
 	@Override
 	public List<User> getUserList(String order, int limit, int offset) {

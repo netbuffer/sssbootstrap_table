@@ -14,6 +14,7 @@ public interface IUserService {
 	Page<User> getUserByName(String userName, Pageable page);
 	void addUser(User user);
 	List<User> getUserList(String order, int limit, int offset);
+	Page<User> getUserList(Pageable pageable);
 	//带有查询条件
 	List<User> getUserList(String search, String order, int limit,int offset);
 	long getUserListCount();

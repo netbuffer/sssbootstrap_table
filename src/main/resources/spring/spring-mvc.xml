@@ -115,6 +115,10 @@
 	<!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射,使 Spring MVC 支持 JSR303 validator via
 		@Valid, and also bind your properties file -->
 	<mvc:annotation-driven conversion-service="conversionService" enable-matrix-variables="true">
+		<!--分页请求参数解析-->
+		<mvc:argument-resolvers>
+			<bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />
+		</mvc:argument-resolvers>
 		<mvc:message-converters>
 			<!-- fastjson常见问题 -->
 			<!-- https://github.com/alibaba/fastjson/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98 -->
