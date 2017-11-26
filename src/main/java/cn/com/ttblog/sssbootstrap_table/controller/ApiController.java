@@ -2,11 +2,8 @@ package cn.com.ttblog.sssbootstrap_table.controller;
 
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
-import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
-import com.alibaba.fastjson.support.spring.annotation.FastJsonView;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.codehaus.jackson.map.annotate.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +27,6 @@ public class ApiController {
 	@Autowired
 	private IUserService userService;
 
-	@JsonView
-	@FastJsonView(exclude ={@FastJsonFilter(clazz = User.class,props = {"id","sex"})})
 	@GetMapping(value = { "user", "/user/{id}", "/user/index/{id}" })
 	public User user(@PathVariable("id") Long id) {
 		User u=userService.getUserById(id);

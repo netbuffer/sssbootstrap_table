@@ -779,10 +779,15 @@ public class TestController {
 		return "forward:/test/attrn";
 	}
 
-	@RequestMapping(value = "attrn",method = RequestMethod.GET)
+	@RequestMapping(value = "/request",method = RequestMethod.GET,produces = {"text/html"})
+	public String returnHtml(){
+		return "index";
+	}
+
+	@RequestMapping(value = "/request",method = RequestMethod.GET)
 	@ResponseBody
-	public String attrNoRequire(@RequestAttribute(name = "attr",required = false) String attr){
-		return attr;
+	public String returnBody(){
+		return "hello";
 	}
 
 }
