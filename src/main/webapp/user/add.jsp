@@ -45,7 +45,7 @@
 </script>	
 </head>
 <body>
-	<form action="<c:choose><c:when test="${not empty from&&from=='user'}">${pageContext.request.contextPath }/user</c:when><c:otherwise>${pageContext.request.contextPath }/test/form</c:otherwise></c:choose>" method="post">
+	<form action="<c:choose><c:when test="${not empty from&&from=='user'}">${pageContext.request.contextPath }/user/save</c:when><c:otherwise>${pageContext.request.contextPath }/test/form</c:otherwise></c:choose>" method="post">
 			<%--<c:choose>
 				<c:when test="${not empty from&&from=='user'}"></c:when>
 				<c:otherwise></c:otherwise>

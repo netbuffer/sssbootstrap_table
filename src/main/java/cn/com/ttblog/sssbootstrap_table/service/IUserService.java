@@ -14,6 +14,7 @@ public interface IUserService {
 	Page<User> getUserByName(String userName, Pageable page);
 	void addUser(User user);
 	List<User> getUserList(String order, int limit, int offset);
+	Page<User> getUserList(Pageable pageable);
 	//带有查询条件
 	List<User> getUserList(String search, String order, int limit,int offset);
 	long getUserListCount();
@@ -24,7 +25,9 @@ public interface IUserService {
 	void addUMtest() throws IllegalArgumentException;
 	void deleteById(Long id);
 	User updateUserWithOptLock(User updateUser);
+	User save(User user);
 	Page<User> getUserList(final int page, int size, Sort sort, final Map param);
 	Future<User> saveUserAsync(User user);
     void saveUserAsyncReturnVoid(User user);
+	User nestingTransaction(User user);
 }

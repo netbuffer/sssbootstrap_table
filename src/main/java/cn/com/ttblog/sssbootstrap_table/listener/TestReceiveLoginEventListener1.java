@@ -27,6 +27,8 @@ public class TestReceiveLoginEventListener1 implements SmartApplicationListener 
 	@Override
 	public void onApplicationEvent(final ApplicationEvent event) {
 		log.info("{}收到loginevent:{}" ,this.getClass().getName(), event.getSource());
+		//在发布事件的地方try-catch可以捕获到错误
+		throw new RuntimeException("error");
 	}
 	
     @Override  

@@ -66,7 +66,7 @@ CREATE TABLE if not exists `statistics` (
   `usertotal` bigint(20)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---触发器测试
+-- 触发器测试
 DROP TRIGGER IF EXISTS tri_countUserTotal;
 CREATE TRIGGER tri_countUserTotal AFTER
 INSERT ON USER
@@ -116,3 +116,23 @@ CREATE TABLE `t_crud_demosub` (
 
 ALTER TABLE `user`
 ADD COLUMN `version`  int UNSIGNED NULL comment "乐观锁版本控制用" AFTER `comments`;
+
+-- order by field自定义排序
+select * from user where id in(6,1,5,2,3,4) order by FIELD(id,6,1,5,2,3,4);
+
+-- 联合主键测试
+DROP TABLE IF EXISTS `user_favorites`;
+CREATE TABLE `user_favorites` (
+  `user_id` bigint(20) NOT NULL,
+  `goods_id` bigint(20) NOT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`goods_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- 同一会话下先执行insert aaa
+begin;
+insert into user(name) values("aaa");
+-- 再begin开事务执行insert bbb，那么此时之前的事务会自动提交
+begin;
+insert into user(name) values("bbb");
+rollback;

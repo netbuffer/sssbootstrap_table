@@ -35,49 +35,22 @@ public class UserController {
 //	public void initBinder(WebDataBinder binder){
 //	}
 
-	/**
-	 * 保存用户信息 使用异步方式
-	 * @param user
-	 * @return
-	 */
-	@RequestMapping(value = "/save/async",method=RequestMethod.GET)
-	@ResponseBody
-	public String asyncSave(User user){
-		if(user.getAdddate()==null){
-			user.setAdddate((int)(System.currentTimeMillis()/1000));
-		}
-		logger.debug("async save user:{}",user);
-//		userService.saveUserAsync(user);
-        userService.saveUserAsyncReturnVoid(user);
-        //直接返回，不会在saveUserAsyncReturnVoid方法阻塞
-		return "OK";
-	}
-
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value = {"/","/add"},method=RequestMethod.GET)
 	public String add(Map m){
 		logger.debug("to get user page");
 		m.put("from","user");
 		return "user/add";
 	}
 
-	@ModelAttribute
-	public void getUser(@RequestParam(value = "id",required = false) Long id,Map m){
-		if(id!=null&&id>0){
-			User user=userService.getUserById(id);
-			logger.info("modelattribute执行!,查询用户:{},放入map:{}",id,user);
-//			m.put("user",user);
-			m.put("u",user);//放入的键不是类名小写的话,那么在方法入参上需要加@ModelAttribute("u") User user标记
-		}
-	}
 	//增
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(value = "/save",method=RequestMethod.POST)
 	public String save(@Valid User user){
 		logger.debug("save user:{}",user);
 		if(user.getAdddate()==null){
 			user.setAdddate((int)(System.currentTimeMillis() / 1000));
 		}
 		userService.addUser(user);
-		return "redirect:user";
+		return "redirect:/user/add";
 	}
 
 	//删
@@ -119,6 +92,33 @@ public class UserController {
 		return result;
 	}
 
+	/**
+	 * 保存用户信息 使用异步方式
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/save/async",method=RequestMethod.GET)
+	@ResponseBody
+	public String asyncSave(User user){
+		if(user.getAdddate()==null){
+			user.setAdddate((int)(System.currentTimeMillis()/1000));
+		}
+		logger.debug("async save user:{}",user);
+//		userService.saveUserAsync(user);
+        userService.saveUserAsyncReturnVoid(user);
+        //直接返回，不会在saveUserAsyncReturnVoid方法阻塞
+		return "OK";
+	}
+
+	@ModelAttribute
+	public void getUser(@RequestParam(value = "id",required = false) Long id,Map m){
+		if(id!=null&&id>0){
+			User user=userService.getUserById(id);
+			logger.info("modelattribute执行!,查询用户:{},放入map:{}",id,user);
+//			m.put("user",user);
+			m.put("u",user);//放入的键不是类名小写的话,那么在方法入参上需要加@ModelAttribute("u") User user标记
+		}
+	}
 	@RequestMapping(value="/photos",method={RequestMethod.GET,RequestMethod.HEAD})
 	public String photos() {
 		logger.debug("go to user-photos");
@@ -245,10 +245,10 @@ public class UserController {
 	}
 
 	@RequestMapping("/showUserXML")
-	public ModelAndView showUserXML(HttpServletRequest request, Model model) {
-		ModelAndView mav = new ModelAndView("xStreamMarshallingView");
-		int userId = Integer.parseInt("1");
-		User user = userService.getUserById(userId);
+	public ModelAndView showUserXML(@RequestParam(value = "uid",required = false,defaultValue = "1") Long uid) {
+		ModelAndView mav = new ModelAndView("marshallingView");
+		User user = userService.getUserById(uid);
+		mav.addObject("user",user);
 		return mav;
 	}
 

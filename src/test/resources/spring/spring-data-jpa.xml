@@ -39,9 +39,6 @@
             </list>
         </property>
     </bean>
-    <aop:config>
-        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
-    </aop:config>
 
     <!--  log4jdbc-log4j2 -->
     <bean id="dataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
@@ -66,6 +63,8 @@
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.format_sql">false</prop>
                 <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+                <!--自动创建|更新|验证数据库表结构-->
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
             </props>
         </property>
     </bean>
@@ -88,18 +87,37 @@
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="save*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="add*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="del*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="insert*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="update*" propagation="REQUIRED" rollback-for="exception" />
-            <tx:method name="modify*" propagation="REQUIRED" rollback-for="exception" />
+            <tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="del*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+            <tx:method name="modify*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
             <!--对于查询操作不需要事务-->
             <tx:method name="*" read-only="true" />
         </tx:attributes>
     </tx:advice>
+    <tx:advice id="testNestingTransactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!--
+                1.测试menuService.findOne方法不启用事务情况下，执行userService.nestingTransaction()方法
+            -->
+            <!--<tx:method name="nestingTransaction*" propagation="REQUIRED" rollback-for="java.lang.Exception" />-->
+            <!--<tx:method name="*" read-only="true" />-->
+            <!--将findOne方法以非事务方式运行-->
+            <!--<tx:method name="findOne" propagation="NOT_SUPPORTED" />-->
+
+            <!-- 2.测试只读连接情况下的执行
+                只读连接中不能发生写操作，否则会出错:java.sql.SQLException: Connection is read-only. Queries leading to data modification are not allowed
+            -->
+            <!--<tx:method name="*" read-only="true" />-->
+            <tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+        </tx:attributes>
+    </tx:advice>
     <aop:config>
         <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />
+        <!--<aop:advisor advice-ref="testNestingTransactionAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />-->
+        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
     </aop:config>
 
 </beans>

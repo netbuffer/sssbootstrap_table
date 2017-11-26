@@ -196,7 +196,9 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
+    <listener>
+        <listener-class>cn.com.ttblog.sssbootstrap_table.listener.ApplicationListener</listener-class>
+    </listener>
     <!-- https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_StatViewServlet%E9%85%8D%E7%BD%AE -->
     <servlet>
         <servlet-name>druidstat</servlet-name>

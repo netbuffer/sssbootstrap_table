@@ -19,6 +19,7 @@ import com.github.jscookie.javacookie.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class IndexController {
 	@Resource
 	private IUserService userService;
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 	
 	@Autowired  
     private ApplicationContext applicationContext;
@@ -67,7 +68,7 @@ public class IndexController {
 	 */
 	@RequestMapping("/mappings")
 	public String mappings(Model model){
-		logger.info("查看springmvc映射");
+		LOGGER.info("查看springmvc映射");
 		model.addAttribute("handlerMappings",handlerMapping.getHandlerMethods());
 		return "mappings";
 	}
@@ -76,7 +77,7 @@ public class IndexController {
 	public String login(HttpSession session, HttpServletRequest request,
 			HttpServletResponse response, String username, String password,@RequestParam(value="requri",required=false) String requri) {
 //		RequestContextUtils.getWebApplicationContext(request)
-		logger.info("进入username:{},pwd:{},requri:{}", username, password,requri);
+		LOGGER.info("进入username:{},pwd:{},requri:{}", username, password,requri);
 		if (username.equals(ConfigConstant.VAL_USERNAME)
 				&& password.equals(ConfigConstant.VAL_PWD)) {
 			session.setAttribute(ConfigConstant.ISLOGIN, true);
@@ -101,14 +102,22 @@ public class IndexController {
 			param.put("loginname", username);
 			param.put("logintime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 			param.put("loginip", request.getRemoteAddr());
-			applicationContext.publishEvent(new LoginEvent(param));  
-			if(requri!=null&&requri.length()>0){
+			//测试捕获监听器中抛出的错误
+			try {
+				applicationContext.publishEvent(new LoginEvent(param));
+			}catch (Exception e){
+				LOGGER.error("登录发生错误:{}",e.getMessage());
+				e.printStackTrace();
+			}
+			if(StringUtils.isNotBlank(requri)){
 				String uri=new String(Base64.decodeBase64(requri));
 				String touri=uri.substring(request.getContextPath().length()+1);
-				logger.debug("request.getContextPath():{}  decode-requri:{}  touri:{}",request.getContextPath(),uri,touri);
+				LOGGER.debug("request.getContextPath():{}  decode-requri:{}  touri:{}",request.getContextPath(),uri,touri);
+				if(StringUtils.isNotBlank(touri)&&!touri.equals("/")){
+					return "redirect:/"+touri;
+				}
 //				/sssbootstrap_table
 //				/sssbootstrap_table/test/form?null
-				return "redirect:/"+touri;
 			}
 			return "redirect:/manage.html";
 		} else {
@@ -118,19 +127,19 @@ public class IndexController {
 	
 	@RequestMapping("/demo")
 	public String demolist() {
-		logger.debug("demo");
+		LOGGER.debug("demo");
 		return "redirect:/demolist.html";
 	}
 
 	@RequestMapping("/exit")
 	public String exit(HttpSession session,HttpServletRequest request,
 			HttpServletResponse response) {
-		logger.debug("用户{}退出系统",session.getAttribute(ConfigConstant.USERNAME));
+		LOGGER.debug("用户{}退出系统",session.getAttribute(ConfigConstant.USERNAME));
 		//删除cookie
 		Cookie cookie = new Cookie(ConfigConstant.USERNAME, null); 
 		cookie.setMaxAge(0);
 		session.invalidate();
-		logger.debug("exit c2:{}",cookie);
+		LOGGER.debug("exit c2:{}",cookie);
 		response.addCookie(cookie);
 		return "redirect:/index.html";
 	}
@@ -148,12 +157,12 @@ public class IndexController {
 		// Display the amount of free memory in the Java Virtual Machine.
 		long freeMem = Runtime.getRuntime().freeMemory() / 1024 / 1024;
 		System.out.println(df.format(freeMem) + " MB");
-		logger.info("执行前:{}", model);
+		LOGGER.info("执行前:{}", model);
 		int newcount = userService.getNewData();
 		String username = session.getAttribute(ConfigConstant.USERNAME).toString();
 		model.addAttribute("newcount", newcount);
 		model.addAttribute("username", username);
-		logger.info("执行后:{}", model);
+		LOGGER.info("执行后:{}", model);
 		return "newdata";
 	}
 
@@ -165,7 +174,7 @@ public class IndexController {
 //	@Timed
 	@RequestMapping("/datacount")
 	public @ResponseBody Map<String, Object> datacount() {
-		logger.debug("获取datacount");
+		LOGGER.debug("获取datacount");
 		List<Map<String, Object>> counts = userService.getDataSum();
 		JSONArray categorys = new JSONArray();
 		JSONArray nums = new JSONArray();
@@ -173,7 +182,7 @@ public class IndexController {
 			categorys.add(m.get("adddate")==null?"":m.get("adddate").toString());
 			nums.add(m.get("num").toString());
 		}
-		logger.debug("categorys:{},nums:{}", categorys, nums);
+		LOGGER.debug("categorys:{},nums:{}", categorys, nums);
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("c", categorys);
 		data.put("d", nums);
@@ -190,9 +199,9 @@ public class IndexController {
 		File dir=new File(projectPath);
 		if(!dir.exists()){
 			if(dir.mkdir()){
-				logger.debug("创建目录:{}",dir.getAbsolutePath());
+				LOGGER.debug("创建目录:{}",dir.getAbsolutePath());
 			}else{
-				logger.debug("创建目录:{}失败!,请检查权限!",dir.getAbsolutePath());
+				LOGGER.debug("创建目录:{}失败!,请检查权限!",dir.getAbsolutePath());
 				throw new RuntimeException("没有创建:"+dir.getAbsolutePath()+"目录的权限!");
 			}
 		}
@@ -203,7 +212,7 @@ public class IndexController {
 			Map<String, Object> m = BeanMapUtil.transBean2Map(users.get(i));
 			mps.add(m);
 		}
-		logger.info("users:{}", mps);
+		LOGGER.info("users:{}", mps);
 		List<String> titles = new ArrayList<String>(mps.get(0).size() - 1);
 		titles.add("adddate");
 		titles.add("age");
@@ -222,7 +231,7 @@ public class IndexController {
 		columns.add("性别");
 		String file = projectPath + format.format(new Date()) + "."
 				+ ConfigConstant.EXCELSTR;
-		logger.info("文件路径:{}", file);
+		LOGGER.info("文件路径:{}", file);
 		POIExcelUtil.export(titles,columns, mps, file);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -240,7 +249,7 @@ public class IndexController {
 				e1.printStackTrace();
 			}
 		}
-		logger.debug("下载文件名字:{}",filename);
+		LOGGER.debug("下载文件名字:{}",filename);
 		headers.setContentDispositionFormData("attachment",filename);
 		try {
 //			http://stackoverflow.com/questions/11203111/downloading-a-spring-mvc-generated-file-not-working-in-ie ie下载问题
@@ -259,10 +268,24 @@ public class IndexController {
 	public FileSystemResource getFile(@PathVariable("file_name") String fileName,HttpServletRequest request) {
 	    return new FileSystemResource(new File(request.getServletContext().getRealPath("export")+ File.separator+fileName+".xls")); 
 	}
-	
+
 	@RequestMapping("/testerror")
 	public String testthrowException() {
 		throw new RuntimeException("test error");
+	}
+
+	/**
+	 * 单独设置某个session的超时时间
+	 * @param session
+	 * @param seconds
+	 * @return
+	 */
+	@RequestMapping("/session/timeout")
+	@ResponseBody
+	public HttpSession sessionTimeout(HttpSession session, @RequestParam(value = "seconds",required = false,defaultValue = "60") Integer seconds) {
+		//seconds
+		session.setMaxInactiveInterval(seconds);
+		return session;
 	}
 
 	@ExceptionHandler

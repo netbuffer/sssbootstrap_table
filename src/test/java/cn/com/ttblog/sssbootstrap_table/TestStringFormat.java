@@ -2,6 +2,7 @@ package cn.com.ttblog.sssbootstrap_table;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import org.junit.Test;
 import org.springframework.util.AntPathMatcher;
@@ -30,6 +31,7 @@ public class TestStringFormat {
         System.out.printf("上面价格的指数和浮点数结果的长度较短的是：%g %n", 50 * 0.85);
         System.out.printf("上面的折扣是%d%% %n", 85);
         System.out.printf("字母A的散列码是：%h %n", 'A');
+        System.out.printf("MessageFormat.format:%s",MessageFormat.format("参数1:{0},参数2:{1}","a","b"));
     }
 
     @Test

@@ -143,7 +143,7 @@ public class TestController {
 	}
 
 	//注入方法
-	@Value("#{configProperties['url']}")
+	@Value("#{configProperties['jdbc.url']}")
     public void setJdbcUrl(String url) {
 		JDBCURL = url;
     }
@@ -731,7 +731,7 @@ public class TestController {
 	 */
 	@RequestMapping(value = "/session")
 	@ResponseBody
-	public User sessionVal(HttpServletRequest request,@RequestParam(value = "type",required = false) String type){
+	public User sessionVal(HttpServletRequest request,@RequestParam(value = "type",required = false,defaultValue = "c") String type){
 		HttpSession session=request.getSession();
 		switch (type){
 			case "c":
@@ -746,7 +746,48 @@ public class TestController {
 				u.setName(u.getName()+"-update");
 				logger.info("u.getClass().getName():{},u:{},u.gethash:{}",u.getClass().getName(),u,u.getClass().hashCode());
 				break;
+			default:
+				logger.info("type:{}",type);
 		}
 		return (User) session.getAttribute("user");
 	}
+
+	/**
+	 * return null view ,404页面
+	 * @return
+	 */
+	@RequestMapping(value = "nullview")
+	public String nullView(@RequestParam(value = "null",defaultValue = "true",required = false)Boolean isNull){
+		if(isNull){
+			LOG.info("返回空视图null");
+			return null;
+		}else {
+			LOG.info("返回空视图\"\"");
+			return "";
+		}
+	}
+
+	@RequestMapping(value = "attrr",method = RequestMethod.GET)
+	@ResponseBody
+	public String attrRequire(@RequestAttribute(name = "attr") String attr){
+		return attr;
+	}
+
+	@RequestMapping(value = "attrforward",method = RequestMethod.GET)
+	public String attrForword(@RequestParam(value = "attr",required = false,defaultValue = "RequestAttribute") String requestAttribute,HttpServletRequest request){
+		request.setAttribute("attr",requestAttribute);
+		return "forward:/test/attrn";
+	}
+
+	@RequestMapping(value = "/request",method = RequestMethod.GET,produces = {"text/html"})
+	public String returnHtml(){
+		return "index";
+	}
+
+	@RequestMapping(value = "/request",method = RequestMethod.GET)
+	@ResponseBody
+	public String returnBody(){
+		return "hello";
+	}
+
 }
