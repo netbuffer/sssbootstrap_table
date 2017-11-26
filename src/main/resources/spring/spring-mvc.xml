@@ -28,8 +28,19 @@
 		class="cn.com.ttblog.sssbootstrap_table.util.TestBeanPostProcessor"
 		lazy-init="false" />
 
+	<bean id="userSerializeFilter" class="com.alibaba.fastjson.serializer.Labels$DefaultLabelFilter">
+		<constructor-arg name="includes" value="['normal']"/>
+		<!--定制输出json视图，隐藏隐私字段-->
+		<constructor-arg name="excludes" value="['secret']"/>
+	</bean>
+
 	<!-- fastjson配置 -->
 	<bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
+		<property name="classSerializeFilters">
+			<map>
+				<entry key="cn.com.ttblog.sssbootstrap_table.model.User" value-ref="userSerializeFilter"/>
+			</map>
+		</property>
 		<!-- Default charset -->
 		<property name="charset" value="UTF-8" />
 		<!-- Default dateFormat -->
