@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * jsonp测试
@@ -70,6 +72,7 @@ public class JsonpController {
 	 * 通过一个TaskExecutor，Spring
 	 * MVC可以在另外的线程中调用Callable。当Callable返回时，请求再携带Callable返回的值
 	 * ，再次被分配到Servlet容器中恢复处理流程
+	 * <mvc:async-support default-timeout="5000"></mvc:async-support> spring mvc总配置默认的超时时间
 	 * @param str
 	 * @return
 	 */
@@ -88,19 +91,21 @@ public class JsonpController {
 
 	@RequestMapping(value = "/asyncd", method = RequestMethod.GET)
 	@ResponseBody
-	public DeferredResult<String> asyncd(final String str) {
-		DeferredResult<String> dr = new DeferredResult<String>();
-		dr.onCompletion(new Runnable() {
+	public DeferredResult<String> asyncd(final String str,@RequestParam(value = "sleep",required = false,defaultValue = "3")final Integer sleep) {
+		final DeferredResult<String> dr = new DeferredResult<String>();
+		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				logger.info("asyncd task start");
 				try {
-					TimeUnit.SECONDS.sleep(3);
+					TimeUnit.SECONDS.sleep(sleep);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				logger.debug("run with:{}",str);
+				logger.info("asyncd task end");
+				dr.setResult("hello:"+str);
 			}
-		});
+		},"deffered-execute-thread").start();
 		return dr;
 	}
 
@@ -293,5 +298,14 @@ public class JsonpController {
 			arr.add(rs);
 		}
 		return arr;
+	}
+
+	@ExceptionHandler
+	@ResponseBody
+	public Map handleAllException(Exception ex) {
+		Map result= Maps.newHashMap();
+		result.put("success",false);
+		result.put("msg",ex.getMessage());
+		return result;
 	}
 }
