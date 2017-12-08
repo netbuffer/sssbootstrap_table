@@ -86,6 +86,7 @@ public class IndexController {
 			param.put("logintime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 			param.put("loginip", request.getRemoteAddr());
 			//测试捕获监听器中抛出的错误
+			LOGGER.info("发布事件:{}",applicationContext);
 			try {
 				applicationContext.publishEvent(new LoginEvent(param));
 			}catch (Exception e){

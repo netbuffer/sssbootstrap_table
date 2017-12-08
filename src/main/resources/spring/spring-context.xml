@@ -15,7 +15,6 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController" />
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
-		<context:exclude-filter type="regex" expression="cn.com.ttblog.sssbootstrap_table.testpackage.*" />
     </context:component-scan>
 
 	<!--获取spring context工具类 -->
