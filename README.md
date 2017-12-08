@@ -28,6 +28,7 @@ git->clone;eclipse->File->Import->Existing Maven projects，导入到eclipse后�
 ---
 * `develop`开发分支  
 * `jwt` json web token测试分支
+* `spring-session` session持久化到redis  
 * `beetl` beetl模板渲染测试分支
 * `thymeleaf` thymeleaf模板渲染测试分支
 * `freemarker` freemarker模板渲染测试分支
