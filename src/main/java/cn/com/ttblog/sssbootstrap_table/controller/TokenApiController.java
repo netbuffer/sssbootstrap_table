@@ -4,7 +4,6 @@ import cn.com.ttblog.sssbootstrap_table.constant.ConfigConstant;
 import cn.com.ttblog.sssbootstrap_table.util.JWTUtil;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
@@ -67,7 +67,7 @@ public class TokenApiController {
 		claims.put("claims1",claims1);
 		claims.put("claims2",claims2);
 		tokenParam.put("claims",claims);
-		return JWTUtil.createToken(tokenParam,ConfigConstant.JWT_SIGN_KEY);
+		return JWTUtil.createToken(tokenParam, ConfigConstant.JWT_SIGN_KEY);
 	}
 
 	/**

@@ -1,13 +1,5 @@
 package cn.com.ttblog.sssbootstrap_table.controller;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import cn.com.ttblog.sssbootstrap_table.constant.ConfigConstant;
 import cn.com.ttblog.sssbootstrap_table.model.User;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
