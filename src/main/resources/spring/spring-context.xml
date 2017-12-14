@@ -76,6 +76,7 @@
 	<!--导入spring-data-jpa配置-->
 	<import resource="spring-data-jpa.xml" />
 	<import resource="spring-data-jedis.xml" />
+	<import resource="spring-zookeeper.xml" />
 	<beans profile="test">
 		<util:list id="config_list" list-class="java.util.ArrayList">
 			<value>
