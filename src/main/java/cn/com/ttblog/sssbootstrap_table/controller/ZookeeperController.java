@@ -20,6 +20,15 @@ public class ZookeeperController {
     @Autowired
     private ZookeeperClient zkClient;
 
+    @GetMapping(value = "/children")
+    public Object getChildren(String path) {
+        LOGGER.info("get children:{}",path);
+        if (zkClient.zkClient.exists(path)) {
+            return zkClient.zkClient.getChildren(path);
+        }
+        return null;
+    }
+
     @GetMapping(value = "/get")
     public Object getData(String path) {
         LOGGER.info("get data");
