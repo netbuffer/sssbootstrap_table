@@ -22,7 +22,7 @@ public class ZookeeperController {
 
     @GetMapping(value = "/children")
     public Object getChildren(String path) {
-        LOGGER.info("get children:{}",path);
+        LOGGER.info("get children:{}", path);
         if (zkClient.zkClient.exists(path)) {
             return zkClient.zkClient.getChildren(path);
         }
@@ -45,7 +45,7 @@ public class ZookeeperController {
                 }
             });
         }
-        return zkClient.zkClient.readData(path,true);
+        return zkClient.zkClient.readData(path, true);
     }
 
     @GetMapping(value = "/create")
@@ -66,4 +66,15 @@ public class ZookeeperController {
         return result;
     }
 
+
+    @GetMapping(value = "/update")
+    public String update(String path, String data) {
+        zkClient.zkClient.writeData(path, data);
+        return data;
+    }
+
+    @GetMapping(value = "/delete")
+    public boolean delete(String path) {
+        return zkClient.zkClient.delete(path);
+    }
 }
