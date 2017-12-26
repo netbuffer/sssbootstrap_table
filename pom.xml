@@ -44,7 +44,7 @@
         <junit.version>4.12</junit.version>
         <json-path.version>2.4.0</json-path.version>
         <commons-lang3.version>3.7</commons-lang3.version>
-        <zookeeper.version>3.5.3-beta</zookeeper.version>
+        <zookeeper.version>3.4.10</zookeeper.version>
         <!--手动指定项目编码-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

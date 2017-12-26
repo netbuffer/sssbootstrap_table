@@ -1,7 +1,6 @@
 package cn.com.ttblog.sssbootstrap_table;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.zookeeper.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +28,6 @@ public class TestZkClient {
 
     @Test
     public void testCreate() throws KeeperException, InterruptedException {
-        LOGGER.info("client-config:{}", ToStringBuilder.reflectionToString(zooKeeper.getClientConfig()));
         TimeUnit.SECONDS.sleep(3);
         LOGGER.info("session time out:{}", zooKeeper.getSessionTimeout());
         String createPath = "/" + RandomStringUtils.random(8, true, true);
