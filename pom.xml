@@ -45,6 +45,7 @@
         <json-path.version>2.4.0</json-path.version>
         <commons-lang3.version>3.7</commons-lang3.version>
         <zookeeper.version>3.5.3-beta</zookeeper.version>
+        <elastic-job-lite.version>2.1.5</elastic-job-lite.version>
         <!--手动指定项目编码-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -346,6 +347,21 @@
             <artifactId>zkclient</artifactId>
             <version>0.10</version>
         </dependency>
+
+        <!-- 引入elastic-job-lite核心模块 -->
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-core</artifactId>
+            <version>${elastic-job-lite.version}</version>
+        </dependency>
+
+        <!-- 使用springframework自定义命名空间时引入 -->
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-spring</artifactId>
+            <version>${elastic-job-lite.version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <!--IntelliJ IDEA需要配置打包选项-->

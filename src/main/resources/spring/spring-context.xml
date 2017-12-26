@@ -77,6 +77,8 @@
 	<import resource="spring-data-jpa.xml" />
 	<import resource="spring-data-jedis.xml" />
 	<import resource="spring-zookeeper.xml" />
+	<import resource="spring-elastic-job.xml" />
+
 	<beans profile="test">
 		<util:list id="config_list" list-class="java.util.ArrayList">
 			<value>
