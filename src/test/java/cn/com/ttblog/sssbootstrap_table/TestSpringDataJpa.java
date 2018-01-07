@@ -23,7 +23,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +47,9 @@ import java.util.concurrent.Future;
 public class TestSpringDataJpa {
 
 	private static Logger logger = LoggerFactory.getLogger(TestSpringDataJpa.class);
+
+	@Resource
+	private EntityManager entityManager;
 	@Resource
 	private IUserService userService;
 	@Resource 
@@ -361,6 +366,13 @@ public class TestSpringDataJpa {
 	@Test
 	public void testDeleteTwice(){
 		menuService.deleteTwiceTest(1L);
+	}
+
+	@Test
+	public void testEntityManager(){
+		String query="select now()";
+		Query nativeQuery=entityManager.createNativeQuery(query);
+		logger.info("result:{}",nativeQuery.getResultList());
 	}
 //	@Modifying +jpql修改数据
 }
