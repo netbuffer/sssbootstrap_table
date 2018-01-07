@@ -2,7 +2,10 @@ package cn.com.ttblog.sssbootstrap_table.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Entity
 @Table(name = "user")
 @XmlRootElement
+@Indexed
 public class User implements Serializable {
 
 	/**
@@ -31,6 +35,7 @@ public class User implements Serializable {
 	 * 用户id
 	 */
 	private Long id;
+	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	//引用ValidationMessages资源文件中key为username.valid的信息
 	@Size(min = 1, max = 20,message = "{username.valid}")
 	private String name;

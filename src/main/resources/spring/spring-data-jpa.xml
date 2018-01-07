@@ -65,6 +65,8 @@
                 <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
                 <!--自动创建|更新|验证数据库表结构-->
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.search.default.directory_provider">filesystem</prop>
+                <prop key="hibernate.search.default.indexBase">d:/hibernate-search-index</prop>
             </props>
         </property>
     </bean>
