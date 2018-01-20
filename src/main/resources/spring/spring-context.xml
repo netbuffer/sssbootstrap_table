@@ -22,7 +22,7 @@
 
 	<!--使@Async生效，任务执行线程池-->
 	<task:executor id="sss_task_executor" pool-size="5"/>
-	<task:annotation-driven executor="sss_task_executor" />
+	<task:annotation-driven executor="sss_task_executor" exception-handler="asyncExceptionHandler" />
 
 	<bean id="configProperties"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">

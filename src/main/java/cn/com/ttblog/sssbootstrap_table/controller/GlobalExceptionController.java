@@ -23,6 +23,7 @@ public class GlobalExceptionController {
 		ModelAndView model = new ModelAndView("error");
 		model.addObject("errCode", ex.getErrCode());
 		model.addObject("errMsg", ex.getErrMsg());
+		model.addObject("stackTrace",ExceptionUtils.getStackTrace(ex));
 		return model;
 
 	}
