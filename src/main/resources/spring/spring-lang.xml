@@ -5,6 +5,6 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd">
 
     <lang:groovy id="test" refresh-check-delay="2000"
-                 script-source="classpath:Demo.groovy" init-method="exec"/>
+                 script-source="classpath:cn/com/ttblog/sssbootstrap_table/groovy/Demo.groovy" init-method="exec"/>
 
 </beans>
