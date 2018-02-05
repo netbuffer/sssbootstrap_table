@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sse-test</title>
+</head>
+<body>
+<div id="content"></div>
+<script src="js/common.js"></script>
+<script src="//cdn.bootcss.com/event-source-polyfill/0.0.9/eventsource.min.js"></script>
+<script type="text/javascript">
+    (function () {
+        var es = new EventSource(util.get_base_path() + "/sse");
+        var listener = function (event) {
+            var div = document.createElement("div");
+            var type = event.type;
+            div.appendChild(document.createTextNode(type + ": " + (type === "message" ? event.data : es.url)));
+            document.body.appendChild(div);
+        };
+        es.addEventListener("open", listener);
+        es.addEventListener("message", listener);
+        es.addEventListener("error", listener);
+    })();
+</script>
+</body>
+</html>

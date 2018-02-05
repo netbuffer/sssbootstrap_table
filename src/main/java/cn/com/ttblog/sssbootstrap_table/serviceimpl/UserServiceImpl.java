@@ -2,6 +2,7 @@ package cn.com.ttblog.sssbootstrap_table.serviceimpl;
 
 import cn.com.ttblog.sssbootstrap_table.dao.IUserDao;
 import cn.com.ttblog.sssbootstrap_table.model.User;
+import cn.com.ttblog.sssbootstrap_table.service.IMenuService;
 import cn.com.ttblog.sssbootstrap_table.service.IUserService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -15,6 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +31,8 @@ public class UserServiceImpl implements IUserService{
 	private static final Logger LOG= LoggerFactory.getLogger(UserServiceImpl.class);
 	@Autowired
 	private IUserDao userDao;
+	@Resource
+	private IMenuService menuService;
 
 	@Override
 	public User getUserById(long userId) {
@@ -66,6 +71,10 @@ public class UserServiceImpl implements IUserService{
 		}
 		//事务测试
 //		int i=1/0;
+	}
+	@Override
+	public Page<User> getUserList(Pageable pageable) {
+		return userDao.findAll(pageable);
 	}
 
 	@Override
@@ -165,6 +174,11 @@ public class UserServiceImpl implements IUserService{
 		return userDao.save(user);
 	}
 
+	@Override
+	public User save(User user) {
+		return userDao.save(user);
+	}
+
 	/**
 	 * @Async 异步保存用户
 	 * @param user
@@ -205,5 +219,27 @@ public class UserServiceImpl implements IUserService{
 		}
         LOG.info("execute save success");
     }
+
+	@Override
+	public User nestingTransaction(User user) {
+    	user=userDao.save(user);
+//    	这里如果自己try catch，并且catch中没有throw 出异常，spring会报错:Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly
+//    	try{
+//			menuService.findOne(1L);
+//		}catch (Exception e){
+//    		LOG.error("sub method error:{}",e.getMessage());
+//		}
+//		menuService.findOne(1L);
+		/**
+		 * 默认的事务隔离级别 ，传播行为下
+		 * 子方法出错: nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly
+		 */
+		try{
+			menuService.addMenu(null);
+		}catch (Exception e){
+			LOG.error("sub method error:{}",e.getMessage());
+		}
+		return user;
+	}
 
 }

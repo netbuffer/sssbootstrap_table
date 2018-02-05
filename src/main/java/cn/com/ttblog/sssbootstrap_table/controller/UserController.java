@@ -245,10 +245,10 @@ public class UserController {
 	}
 
 	@RequestMapping("/showUserXML")
-	public ModelAndView showUserXML(HttpServletRequest request, Model model) {
-		ModelAndView mav = new ModelAndView("xStreamMarshallingView");
-		int userId = Integer.parseInt("1");
-		User user = userService.getUserById(userId);
+	public ModelAndView showUserXML(@RequestParam(value = "uid",required = false,defaultValue = "1") Long uid) {
+		ModelAndView mav = new ModelAndView("marshallingView");
+		User user = userService.getUserById(uid);
+		mav.addObject("user",user);
 		return mav;
 	}
 

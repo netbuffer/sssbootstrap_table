@@ -36,8 +36,7 @@ public class ControllerAspect {
 				ToStringBuilder.reflectionToString(joinPoint));
 		Object[] arr = joinPoint.getArgs();
 		if (arr.length > 0) {
-			LOG.warn("method param:{}",
-					ToStringBuilder.reflectionToString(joinPoint.getArgs()[0]));
+			LOG.warn("method param:{}",joinPoint.getArgs()[0]==null?null: ToStringBuilder.reflectionToString(joinPoint.getArgs()[0]));
 		}
 	}
 

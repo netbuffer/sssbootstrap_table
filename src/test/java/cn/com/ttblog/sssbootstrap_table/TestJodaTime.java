@@ -1,6 +1,7 @@
 package cn.com.ttblog.sssbootstrap_table;
 
 import cn.com.ttblog.sssbootstrap_table.util.JodaTimeUtil;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -162,5 +163,16 @@ public class TestJodaTime {
 				System.out.printf("FRIDAY");
 				break;
 		}
+	}
+
+	@Test
+	public void testDateTimeProperties(){
+		DateTime dateTime=DateTime.now();
+		DateTime.Property month=dateTime.dayOfMonth();
+		DateTime.Property week=dateTime.dayOfWeek();
+		DateTime.Property year=dateTime.dayOfYear();
+		System.out.printf("dateTime.dayOfMonth():%s,min:%s,max:%s\n",month.get(),month.getMinimumValue(),month.getMaximumValue());
+		System.out.printf("dateTime.dayOfWeek():%s,min:%s,max:%s\n",week.get(),week.getMinimumValue(),week.getMaximumValue());
+		System.out.printf("dateTime.dayOfYear():%s,min:%s,max:%s\n",year.get(),year.getMinimumValue(),year.getMaximumValue());
 	}
 }

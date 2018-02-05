@@ -1,13 +1,10 @@
 package cn.com.ttblog.sssbootstrap_table;
 
+import org.junit.Test;
+import org.springframework.util.Base64Utils;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.Arrays;
-import org.junit.Test;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.Base64Utils;
-import sun.misc.BASE64Decoder;
 
 /**
  * http://blog.csdn.net/lonely_fireworks/article/details/7962171

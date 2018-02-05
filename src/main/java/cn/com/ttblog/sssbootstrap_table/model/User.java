@@ -1,5 +1,6 @@
 package cn.com.ttblog.sssbootstrap_table.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
@@ -101,6 +102,7 @@ public class User implements Serializable {
 		this.name = name == null ? null : name.trim();
 	}
 
+	@JSONField(label = "secret")
 	public String getSex() {
 		return sex;
 	}
@@ -117,6 +119,7 @@ public class User implements Serializable {
 		this.age = age;
 	}
 
+	@JSONField(label = "secret")
 	public String getPhone() {
 		return phone;
 	}
@@ -125,6 +128,7 @@ public class User implements Serializable {
 		this.phone = phone == null ? null : phone.trim();
 	}
 
+	@JSONField(label = "secret")
 	public String getDeliveryaddress() {
 		return deliveryaddress;
 	}
