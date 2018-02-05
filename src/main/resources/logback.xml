@@ -13,9 +13,7 @@
 	<jmxConfigurator />
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder charset="utf-8">
-			<pattern>
-				%date [%thread] %-5level %logger{80} - %msg%n
-			</pattern>
+			<pattern>%highlight(%date) %cyan([%thread]) %green(%-5level) %yellow(%logger{36}) - %blue(%msg%n)</pattern>
 		</encoder>
 	</appender>
 	<appender name="logfile"

@@ -228,6 +228,13 @@ public class TestController {
 		return "success";
 	}
 
+	@RequestMapping(value = { "/getSessionAttr" })
+	public @ResponseBody Object getSessionAttr(ModelMap m, @RequestParam(value = "param",required = false,defaultValue = "name") String param) {
+		Object ret=m.get(param);
+		logger.debug("getSessionAttr:{}",param,ret);
+		return ret;
+	}
+
 	/**
 	 * 返回本地化信息
 	 * 

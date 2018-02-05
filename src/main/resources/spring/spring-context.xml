@@ -5,11 +5,11 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-                        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
-                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
-                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 	
 	<context:component-scan base-package="cn.com.ttblog.sssbootstrap_table">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -22,7 +22,7 @@
 
 	<!--使@Async生效，任务执行线程池-->
 	<task:executor id="sss_task_executor" pool-size="5"/>
-	<task:annotation-driven executor="sss_task_executor" />
+	<task:annotation-driven executor="sss_task_executor" exception-handler="asyncExceptionHandler" />
 
 	<bean id="configProperties"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">

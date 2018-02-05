@@ -9,4 +9,5 @@ public class ConfigConstant {
 	public static final String USERNAME = "username";
 	public static final String EXCELSTR = "xls";
 	public static final String PROJECTNAME = "sssbootstrap_table";
+	public static final String DATE_LONG_FORMAT="yyyy-MM-dd HH:mm:ss";
 }
