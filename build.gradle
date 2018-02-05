@@ -14,8 +14,11 @@ tasks.withType(JavaCompile) {
 }
 
 repositories {
-    //本地仓库
+    //本地仓库https://docs.gradle.org/4.5/dsl/org.gradle.api.artifacts.dsl.RepositoryHandler.html#org.gradle.api.artifacts.dsl.RepositoryHandler:mavenLocal()
     mavenLocal()
+    maven {
+        url = "http://maven.aliyun.com/nexus/content/groups/public/"
+    }
     //中央仓库
     mavenCentral()
 }
