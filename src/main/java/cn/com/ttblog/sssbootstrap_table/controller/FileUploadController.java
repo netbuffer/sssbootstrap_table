@@ -4,15 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +26,16 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import cn.com.ttblog.sssbootstrap_table.model.FileMsgBean;
 import cn.com.ttblog.sssbootstrap_table.util.AjaxUtils;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Controller
 @RequestMapping("/fileupload")
 public class FileUploadController {
 
 	private static final Logger log=LoggerFactory.getLogger(FileUploadController.class);
+
+	@Resource
+	private CommonsMultipartResolver commonsMultipartResolver;
 
 	@ModelAttribute
 	public void ajaxAttribute(WebRequest request, Model model) {
@@ -44,6 +45,12 @@ public class FileUploadController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String fileUploadForm() {
 		return "/user/photos";
+	}
+
+	@RequestMapping(value = "/isMultipart",method=RequestMethod.POST)
+	@ResponseBody
+	public boolean judgeIsMultipart(HttpServletRequest request) {
+		return commonsMultipartResolver.isMultipart(request);
 	}
 
 	@RequestMapping(value="/upload",method=RequestMethod.POST)
