@@ -15,7 +15,7 @@
 * JsonPath:[https://github.com/json-path/JsonPath](https://github.com/json-path/JsonPath)
 
 > ## github:[https://github.com/netbuffer/sssbootstrap_table](https://github.com/netbuffer/sssbootstrap_table)
-> ## git@osc:[http://git.oschina.net/netbuffer/sssbootstrap_table](http://git.oschina.net/netbuffer/sssbootstrap_table)
+> ## git@osc:[http://gitee.com/netbuffer/sssbootstrap_table](http://gitee.com/netbuffer/sssbootstrap_table)
 
 ## How to run
 The project constructed by `maven`, please execute under the `src/main/java` `SQL script` to your `MySQL` database operation, and then modify the database configuration information `jdbc.properties` under the path `src/main/resource` configuration file in the project directory, enter, execute `mvn tomcat7:run` to run
@@ -35,14 +35,14 @@ git->clone;eclipse->File->Import->Existing Maven projects，导入到eclipse后�
 * `gradle` 使用gradle构建项目
 
 # other projects
-> `ssmbootstrap_table(spring+springmvc+mybatis)` github:[https://github.com/netbuffer/ssmbootstrap_table](https://github.com/netbuffer/ssmbootstrap_table)`/`git@osc:[https://git.oschina.net/gradle/ssmbootstrap_table](https://git.oschina.net/gradle/ssmbootstrap_table)
+> `ssmbootstrap_table(spring+springmvc+mybatis)` github:[https://github.com/netbuffer/ssmbootstrap_table](https://github.com/netbuffer/ssmbootstrap_table)`/`git@osc:[https://gitee.com/netbuffer/ssmbootstrap_table](https://gitee.com/netbuffer/ssmbootstrap_table)
 
-> `ssmbt(ssmbootstrap_table maven module )` github:[https://github.com/netbuffer/ssmbt](https://github.com/netbuffer/ssmbt)`/`git@osc:[https://git.oschina.net/netbuffer/ssmbt](https://git.oschina.net/netbuffer/ssmbt)    
+> `ssmbt(ssmbootstrap_table maven module )` github:[https://github.com/netbuffer/ssmbt](https://github.com/netbuffer/ssmbt)`/`git@osc:[https://gitee.com/netbuffer/ssmbt](https://gitee.com/netbuffer/ssmbt)    
 
-> `sshbootstrap_table(spring+struts2+hibernate)` github:[https://github.com/netbuffer/sshbootstrap-table](https://github.com/netbuffer/sshbootstrap-table)`/`git@osc:[https://git.oschina.net/netbuffer/sshbootstrap-table](https://git.oschina.net/netbuffer/sshbootstrap-table)    
+> `sshbootstrap_table(spring+struts2+hibernate)` github:[https://github.com/netbuffer/sshbootstrap-table](https://github.com/netbuffer/sshbootstrap-table)`/`git@osc:[https://gitee.com/netbuffer/sshbootstrap-table](https://gitee.com/netbuffer/sshbootstrap-table)    
 
-> `spring-boot-bootstrap_table(springboot)` github:[https://github.com/netbuffer/spring-boot-bootstrap_table](https://github.com/netbuffer/spring-boot-bootstrap_table)`/`git@osc:[https://git.oschina.net/netbuffer/spring-boot-bootstrap_table](https://git.oschina.net/netbuffer/spring-boot-bootstrap_table)   
+> `spring-boot-bootstrap_table(springboot)` github:[https://github.com/netbuffer/spring-boot-bootstrap_table](https://github.com/netbuffer/spring-boot-bootstrap_table)`/`git@osc:[https://gitee.com/netbuffer/spring-boot-bootstrap_table](https://gitee.com/netbuffer/spring-boot-bootstrap_table)   
 
-> `jfinal-bootstrap-table(jfinal)`github:[https://github.com/netbuffer/jfinal-bootstrap-table](https://github.com/netbuffer/jfinal-bootstrap-table)`/`git@osc:[http://git.oschina.net/gradle/jfinal-bootstrap-table](http://git.oschina.net/gradle/jfinal-bootstrap-table)  
+> `jfinal-bootstrap-table(jfinal)`github:[https://github.com/netbuffer/jfinal-bootstrap-table](https://github.com/netbuffer/jfinal-bootstrap-table)`/`git@osc:[http://gitee.com/netbuffer/jfinal-bootstrap-table](http://gitee.com/netbuffer/jfinal-bootstrap-table)  
 
-> `medoo_bootstrap_table(php5)`github:[https://github.com/netbuffer/medoo_bootstrap_table](https://github.com/netbuffer/medoo_bootstrap_table)`/`git@osc:[http://git.oschina.net/gradle/medoo_bootstrap_table](http://git.oschina.net/gradle/medoo_bootstrap_table)
+> `medoo_bootstrap_table(php5)`github:[https://github.com/netbuffer/medoo_bootstrap_table](https://github.com/netbuffer/medoo_bootstrap_table)`/`git@osc:[http://gitee.com/netbuffer/medoo_bootstrap_table](http://gitee.com/netbuffer/medoo_bootstrap_table)
