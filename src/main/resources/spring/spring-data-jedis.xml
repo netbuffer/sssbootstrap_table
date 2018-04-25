@@ -24,7 +24,7 @@
         <property name="port" value="${redis.port}" />
         <property name="poolConfig" ref="poolConfig" />
         <!--使用的哪个数据库-->
-        <property name="database" value="${redis.db}" />
+        <property name="database" value="${redis.database}" />
     </bean>
     <!--消息监听 http://docs.spring.io/spring-data/redis/docs/1.8.1.RELEASE/reference/html/#pubsub -->
     <!-- the default ConnectionFactory -->

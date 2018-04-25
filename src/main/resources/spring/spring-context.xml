@@ -73,9 +73,12 @@
 		<!-- 设置cookie可见的地址，默认是“/”即对网站所有地址都是可见的，如果设为其它地址，则只有该地址或其后的地址才可见 -->
 		<property name="cookiePath" value="/" />
 	</bean>
+
 	<!--导入spring-data-jpa配置-->
 	<import resource="spring-data-jpa.xml" />
 	<import resource="spring-data-jedis.xml" />
+	<import resource="spring-cache.xml" />
+
 	<beans profile="test">
 		<util:list id="config_list" list-class="java.util.ArrayList">
 			<value>
