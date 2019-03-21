@@ -40,4 +40,10 @@ public class ApiController {
 		return userService.getUserList(pageable);
 	}
 
+	@GetMapping(value = "system/prop")
+	public String getSystemProp(String prop) {
+		//user.dir
+		return System.getProperty(prop);
+	}
+
 }
