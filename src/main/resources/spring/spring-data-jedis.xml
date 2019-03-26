@@ -5,36 +5,36 @@
         xmlns:redis="http://www.springframework.org/schema/redis"
         xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-		http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis.xsd
-		">
+		http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis.xsd">
     <description>
         jedis配置
     </description>
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="minIdle" value="${redis.minIdle}" />
-        <property name="maxIdle" value="${redis.maxIdle}" />
-        <property name="maxTotal" value="${redis.maxTotal}" />
-        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
-        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
-        <property name="testOnReturn" value="${redis.testOnReturn}" />
+        <property name="minIdle" value="${redis.minIdle}"/>
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxTotal" value="${redis.maxTotal}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}"/>
+        <property name="testOnReturn" value="${redis.testOnReturn}"/>
     </bean>
     <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="hostName" value="${redis.host}" />
+        <property name="hostName" value="${redis.host}"/>
         <property name="password" value="${redis.password}"/>
-        <property name="port" value="${redis.port}" />
-        <property name="poolConfig" ref="poolConfig" />
+        <property name="port" value="${redis.port}"/>
+        <property name="poolConfig" ref="poolConfig"/>
         <!--使用的哪个数据库-->
-        <property name="database" value="${redis.db}" />
+        <property name="database" value="${redis.database}"/>
     </bean>
     <!--消息监听 http://docs.spring.io/spring-data/redis/docs/1.8.1.RELEASE/reference/html/#pubsub -->
     <!-- the default ConnectionFactory -->
     <redis:listener-container>
         <!-- the method attribute can be skipped as the default method name is "handleMessage" -->
-        <redis:listener ref="listener" method="handleMessage" topic="java" />
-        <redis:listener ref="chatroomListener" method="handleMessage" topic="chatroom" />
+        <redis:listener ref="listener" topic="*"/>
+        <redis:listener ref="chatroomListener" method="handleMessage" topic="chatroom"/>
     </redis:listener-container>
+    <bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-        <property name="connectionFactory"   ref="redisConnectionFactory" />
+        <property name="connectionFactory" ref="redisConnectionFactory"/>
     </bean>
     <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
         <property name="connectionFactory" ref="redisConnectionFactory"/>
