@@ -16,7 +16,7 @@
     </context-param>
     <context-param>
         <param-name>webAppRootKey</param-name>
-        <param-value>webapp.root</param-value>
+        <param-value>${project.build.finalName}</param-value>
     </context-param>
     <context-param>
         <param-name>contextConfigLocation</param-name>
