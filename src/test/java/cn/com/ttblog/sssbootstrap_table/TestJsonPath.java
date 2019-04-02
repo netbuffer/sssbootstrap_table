@@ -14,11 +14,11 @@ import java.io.IOException;
  */
 public class TestJsonPath {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(TestJsonPath.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestJsonPath.class);
 
     @Test
     public void testJsonPath() throws IOException {
-        String json=FileUtils.readFileToString(new File(TestJsonPath.class.getResource("/json-path/data.json").getPath()),"UTF-8");
-        LOGGER.info("JsonPath.read(json, \"$.store.book[*].author\"):{}",JsonPath.read(json, "$.store.book[*].author"));
+        String json = FileUtils.readFileToString(new File(TestJsonPath.class.getResource("/json-path/data.json").getPath()), "UTF-8");
+        LOGGER.info("JsonPath.read(json, \"$.store.book[*].author\"):{}", JsonPath.read(json, "$.store.book[*].author").toString());
     }
 }
