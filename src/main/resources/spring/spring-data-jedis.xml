@@ -29,7 +29,7 @@
     <!-- the default ConnectionFactory -->
     <redis:listener-container>
         <!-- the method attribute can be skipped as the default method name is "handleMessage" -->
-        <redis:listener ref="listener" topic="*"/>
+        <redis:listener ref="redisMessageListener" topic="*"/>
         <redis:listener ref="chatroomListener" method="handleMessage" topic="chatroom"/>
     </redis:listener-container>
     <bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>

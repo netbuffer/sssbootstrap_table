@@ -20,13 +20,13 @@ public class TestBeanPostProcessor implements BeanPostProcessor {
 
 	public Object postProcessAfterInitialization(Object bean, String beanName)
 			throws BeansException {
-		log.info("postProcess-[After]-init:{}",beanName);
+		log.debug("postProcess-[After]-init:{}",beanName);
 		return bean;
 	}
 
 	public Object postProcessBeforeInitialization(Object bean, String beanName)
 			throws BeansException {
-		log.info("postProcess-[Before]-init:{}",beanName);
+		log.debug("postProcess-[Before]-init:{}",beanName);
 		List<Class<?>> clazzes = getAllClasses(bean);
 
 		for (Class<?> clazz : clazzes) {

@@ -13,6 +13,9 @@ public class StringToTimestampConverter implements Converter<String,Integer>{
     private static final SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     public Integer convert(String source) {
+        if(!source.matches("^\\d{4}-\\d{1,2}-\\d{1,2} {1}\\d{1,2}:\\d{1,2}:\\d{1,2}$")){
+            return null;
+        }
         Date d=null;
         try{
             d=format.parse(source);

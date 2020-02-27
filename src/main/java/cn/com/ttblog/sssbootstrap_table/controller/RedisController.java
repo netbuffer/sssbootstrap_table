@@ -12,7 +12,10 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * redis发布订阅机制测试
@@ -53,11 +56,11 @@ public class RedisController {
      * @return
      */
     @RequestMapping(value = "dbsize/{db}",method = RequestMethod.GET)
-    public Long dbsize(@PathVariable(value = "db") final Integer db){
+    public Long dbsize(@PathVariable(value = "db") final Long db){
         return stringRedisTemplate.execute(new RedisCallback<Long>() {
             @Override
             public Long doInRedis(RedisConnection redisConnection) throws DataAccessException {
-                redisConnection.select(db);
+                redisConnection.select(db.intValue());
                 Long dbSize=redisConnection.dbSize();
                 LOGGER.debug("查询:{}号数据库的key数:{},redisConnection:{}",db,dbSize,redisConnection);
                 return dbSize;

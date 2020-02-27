@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 /**
  * redis发布订阅:http://docs.spring.io/spring-data/redis/docs/1.8.1.RELEASE/reference/html/#pubsub
  */
-@Component(value = "listener")
+@Component(value = "redisMessageListener")
 public class RedisMessageListener implements MessageListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(RedisMessageListener.class);
