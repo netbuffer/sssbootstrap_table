@@ -11,14 +11,14 @@
                         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
                         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 	
-	<context:component-scan base-package="cn.com.ttblog.sssbootstrap_table">
+	<context:component-scan base-package="cn.netbuffer.sssbootstrap_table">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController" />
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
     </context:component-scan>
 
 	<!--获取spring context工具类 -->
-	<bean id="springContextHolder" class="cn.com.ttblog.sssbootstrap_table.util.SpringContextHolder" lazy-init="false"/>
+	<bean id="springContextHolder" class="cn.netbuffer.sssbootstrap_table.util.SpringContextHolder" lazy-init="false"/>
 
 	<!--使@Async生效，任务执行线程池-->
 	<task:executor id="sss_task_executor" pool-size="5"/>
@@ -62,7 +62,7 @@
 	<!--<bean class="com.intera.util.web.servlet.filter.JsonpCallbackFilter"-->
 		<!--id="jsonpCallbackFilter" />-->
 	<!-- loginFilter 登录处理 -->	
-	<bean class="cn.com.ttblog.sssbootstrap_table.filter.LoginFilter"
+	<bean class="cn.netbuffer.sssbootstrap_table.filter.LoginFilter"
 		id="loginFilter" />
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
@@ -91,7 +91,7 @@
 				classpath*:env/jedis.test.properties
 			</value>
 		</util:list>
-		<bean id="userFromSpring" class="cn.com.ttblog.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
+		<bean id="userFromSpring" class="cn.netbuffer.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
 			<property name="id" value="1" />
 			<property name="name" value="test-user" />
 		</bean>
@@ -108,7 +108,7 @@
 				classpath*:env/jedis.develop.properties
 			</value>
 		</util:list>
-		<bean id="userFromSpring" class="cn.com.ttblog.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
+		<bean id="userFromSpring" class="cn.netbuffer.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
 			 <property name="id" value="1" />
              <property name="name" value="develop-user" />
 		</bean>
@@ -125,7 +125,7 @@
 				classpath*:env/jedis.production.properties
 			</value>
 		</util:list>
-		<bean id="userFromSpring" class="cn.com.ttblog.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
+		<bean id="userFromSpring" class="cn.netbuffer.sssbootstrap_table.model.User" lazy-init="false" init-method="init">
 			 <property name="id" value="2" />
              <property name="name" value="production-user" />
 		</bean>

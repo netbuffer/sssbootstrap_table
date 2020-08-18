@@ -35,7 +35,7 @@
           scope="prototype">
         <property name="patterns">
             <list>
-                <value>cn.com.ttblog.sssbootstrap_table.service.*</value>
+                <value>cn.netbuffer.sssbootstrap_table.service.*</value>
             </list>
         </property>
     </bean>
@@ -53,7 +53,7 @@
         <!-- 注入数据源 -->
         <property name="dataSource" ref="dataSource" />
         <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
-        <property name="packagesToScan" value="cn.com.ttblog.sssbootstrap_table" />
+        <property name="packagesToScan" value="cn.netbuffer.sssbootstrap_table" />
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -79,7 +79,7 @@
     </bean>
 
     <!-- Spring Data Jpa配置 -->
-    <jpa:repositories base-package="cn.com.ttblog.sssbootstrap_table"
+    <jpa:repositories base-package="cn.netbuffer.sssbootstrap_table"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"
                       repository-impl-postfix="Impl">
@@ -100,8 +100,8 @@
     </tx:advice>
     <aop:config>
         <!--排除redisservice层切面写法-->
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..)) and !execution(* cn.com.ttblog.sssbootstrap_table.service.RedisService.*(..))" />
-        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.com.ttblog.sssbootstrap_table.service..*.*(..))" />-->
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.netbuffer.sssbootstrap_table.service..*.*(..)) and !execution(* cn.netbuffer.sssbootstrap_table.service.RedisService.*(..))" />
+        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.netbuffer.sssbootstrap_table.service..*.*(..))" />-->
         <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
     </aop:config>
 

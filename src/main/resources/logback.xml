@@ -64,7 +64,7 @@
 	<logger name="org.springframework" level="INFO" />
 	<logger name="com.alibaba" level="DEBUG" />
 	<logger name="java.sql" level="OFF" />
-	<logger name="cn.com.ttblog.sssbootstrap_table" level="INFO" />
+	<logger name="cn.netbuffer.sssbootstrap_table" level="INFO" />
 	<!-- log4j-jdbc-remix/log4jdbc-log4j2 result以表格打印结果 -->
 	<logger name="jdbc.resultsettable" level="INFO" />
 	<logger name="jdbc.connection" level="OFF" />

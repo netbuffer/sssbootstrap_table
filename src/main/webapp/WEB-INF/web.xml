@@ -28,7 +28,7 @@
     <!--启用http basic认证-->
     <filter>
         <filter-name>httpBasicOauthFilter</filter-name>
-        <filter-class>cn.com.ttblog.sssbootstrap_table.filter.HttpBasicOauthFilter</filter-class>
+        <filter-class>cn.netbuffer.sssbootstrap_table.filter.HttpBasicOauthFilter</filter-class>
         <async-supported>true</async-supported>
         <init-param>
             <param-name>enable</param-name>
@@ -170,7 +170,7 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <listener>
-        <listener-class>cn.com.ttblog.sssbootstrap_table.listener.ApplicationListener</listener-class>
+        <listener-class>cn.netbuffer.sssbootstrap_table.listener.ApplicationListener</listener-class>
     </listener>
     <!-- https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_StatViewServlet%E9%85%8D%E7%BD%AE -->
     <servlet>
