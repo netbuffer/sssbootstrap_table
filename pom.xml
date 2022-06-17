@@ -39,7 +39,7 @@
         <jedis.version>2.9.0</jedis.version>
         <spring-data-redis.version>1.7.5.RELEASE</spring-data-redis.version>
         <druid.version>1.1.5</druid.version>
-        <fastjson.version>1.2.40</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <guava.version>19.0</guava.version>
         <junit.version>4.12</junit.version>
         <json-path.version>2.4.0</json-path.version>
